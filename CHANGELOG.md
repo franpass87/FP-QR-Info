@@ -1,3 +1,8 @@
+## [0.1.16] - 2026-04-14
+### Changed
+- Sezione nutrizionale vino semplificata: rimosso il paragrafo testuale ridondante “Valori medi per vino…” perché i dati sono già presenti in tabella.
+- Compatibilità contenuti legacy: eliminazione automatica frontend anche della frase estesa ridondante (IT/EN) se presente in landing già salvate.
+
 ## [0.1.15] - 2026-04-14
 ### Changed
 - Sezione ingredienti vino ulteriormente semplificata per produzione: rimossa la frase operativa su additivi/coadiuvanti/ordine elenco.

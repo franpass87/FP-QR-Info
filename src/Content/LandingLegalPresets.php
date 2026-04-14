@@ -191,12 +191,7 @@ final class LandingLegalPresets
             'fp-qr-info'
         ) . '</em></p>';
 
-        $foot = '<p><em>' . esc_html__(
-            'Valori medi per vino per 100 ml: energia 330 kJ / 79 kcal; grassi 0 g (di cui saturi 0 g); carboidrati 2,6 g (di cui zuccheri 0,6 g); proteine 0 g; sale 0,01 g.',
-            'fp-qr-info'
-        ) . '</em></p>';
-
-        return $head . $table . $saltNote . $foot;
+        return $head . $table . $saltNote;
     }
 
     private static function nutritionEnHtml(): string
@@ -229,12 +224,7 @@ final class LandingLegalPresets
             'fp-qr-info'
         ) . '</em></p>';
 
-        $foot = '<p><em>' . esc_html__(
-            'Average wine values per 100 ml: energy 330 kJ / 79 kcal; fat 0 g (of which saturates 0 g); carbohydrate 2.6 g (of which sugars 0.6 g); protein 0 g; salt 0.01 g.',
-            'fp-qr-info'
-        ) . '</em></p>';
-
-        return $head . $table . $saltNote . $foot;
+        return $head . $table . $saltNote;
     }
 
     private static function ingredientsItHtml(): string
