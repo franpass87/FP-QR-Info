@@ -24,6 +24,41 @@ final class LandingCpt
         add_action('save_post_' . self::POST_TYPE, [$this, 'saveMeta']);
         add_filter('manage_' . self::POST_TYPE . '_posts_columns', [$this, 'addColumns']);
         add_action('manage_' . self::POST_TYPE . '_posts_custom_column', [$this, 'renderColumn'], 10, 2);
+        add_action('admin_enqueue_scripts', [$this, 'enqueueStoryAssets']);
+    }
+
+    /**
+     * Enqueue media picker per immagine storia (solo schermata CPT).
+     *
+     * @param string $hook Suffisso hook schermata corrente.
+     */
+    public function enqueueStoryAssets(string $hook): void
+    {
+        if ($hook !== 'post.php' && $hook !== 'post-new.php') {
+            return;
+        }
+
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen instanceof \WP_Screen || $screen->post_type !== self::POST_TYPE) {
+            return;
+        }
+
+        wp_enqueue_media();
+        wp_enqueue_script(
+            'fp-qr-info-admin-story',
+            FP_QR_INFO_URL . 'assets/js/admin-story-media.js',
+            ['jquery'],
+            FP_QR_INFO_VERSION,
+            true
+        );
+        wp_localize_script(
+            'fp-qr-info-admin-story',
+            'FP_QRI_STORY_MEDIA',
+            [
+                'title' => esc_html__('Seleziona immagine bottiglia', 'fp-qr-info'),
+                'button' => esc_html__('Usa questa immagine', 'fp-qr-info'),
+            ]
+        );
     }
 
     /**
@@ -102,6 +137,38 @@ final class LandingCpt
         <p>
             <button type="button" class="button" id="fp-qri-regenerate-token"><?php esc_html_e('Rigenera token', 'fp-qr-info'); ?></button>
         </p>
+        <hr>
+        <h3><?php esc_html_e('Storia ed etichetta', 'fp-qr-info'); ?></h3>
+        <p class="description"><?php esc_html_e('Immagine a tutto schermo e testo narrativo sul vino e sull’etichetta (opzionale ma consigliato per un’esperienza QR curata).', 'fp-qr-info'); ?></p>
+        <?php
+        $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
+        $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
+        $storyEn = (string) get_post_meta($post->ID, 'fp_qr_info_story_en', true);
+        $storyPreviewUrl = '';
+        if ($storyImageId > 0) {
+            $storyPreviewUrl = (string) wp_get_attachment_image_url($storyImageId, 'medium');
+        }
+        ?>
+        <p>
+            <label for="fp_qr_info_story_image_id"><strong><?php esc_html_e('Immagine bottiglia', 'fp-qr-info'); ?></strong></label><br>
+            <input type="hidden" id="fp_qr_info_story_image_id" name="fp_qr_info_story_image_id" value="<?php echo esc_attr((string) $storyImageId); ?>">
+            <button type="button" class="button" id="fp-qri-story-select-image"><?php esc_html_e('Seleziona dalla libreria', 'fp-qr-info'); ?></button>
+            <button type="button" class="button" id="fp-qri-story-remove-image" style="<?php echo $storyImageId > 0 ? '' : 'display:none;'; ?>"><?php esc_html_e('Rimuovi immagine', 'fp-qr-info'); ?></button>
+        </p>
+        <div id="fp-qri-story-image-preview" style="max-width:320px;margin-bottom:12px;">
+            <?php if ($storyPreviewUrl !== ''): ?>
+                <img src="<?php echo esc_url($storyPreviewUrl); ?>" alt="" style="max-width:100%;height:auto;border-radius:8px;border:1px solid #dcdcde;">
+            <?php endif; ?>
+        </div>
+        <p>
+            <label for="fp_qr_info_story_it"><?php esc_html_e('Storia (Italiano)', 'fp-qr-info'); ?></label><br>
+            <textarea id="fp_qr_info_story_it" name="fp_qr_info_story_it" rows="6" class="large-text"><?php echo esc_textarea($storyIt); ?></textarea>
+        </p>
+        <p>
+            <label for="fp_qr_info_story_en"><?php esc_html_e('Story (English)', 'fp-qr-info'); ?></label><br>
+            <textarea id="fp_qr_info_story_en" name="fp_qr_info_story_en" rows="6" class="large-text"><?php echo esc_textarea($storyEn); ?></textarea>
+        </p>
+        <hr>
         <?php
         foreach ($fields as $fieldKey => $label) {
             $itValue = (string) get_post_meta($post->ID, 'fp_qr_info_' . $fieldKey . '_it', true);
@@ -236,6 +303,24 @@ final class LandingCpt
         }
         $token = $this->ensureUniqueToken($token, $postId);
         update_post_meta($postId, self::META_TOKEN, $token);
+
+        $storyImageId = isset($_POST['fp_qr_info_story_image_id']) ? absint(wp_unslash((string) $_POST['fp_qr_info_story_image_id'])) : 0;
+        if ($storyImageId > 0 && get_post($storyImageId) === null) {
+            $storyImageId = 0;
+        }
+        if ($storyImageId > 0 && get_post_type($storyImageId) !== 'attachment') {
+            $storyImageId = 0;
+        }
+        update_post_meta($postId, 'fp_qr_info_story_image_id', $storyImageId);
+
+        $storyIt = isset($_POST['fp_qr_info_story_it'])
+            ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_story_it']))
+            : '';
+        $storyEn = isset($_POST['fp_qr_info_story_en'])
+            ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_story_en']))
+            : '';
+        update_post_meta($postId, 'fp_qr_info_story_it', $storyIt);
+        update_post_meta($postId, 'fp_qr_info_story_en', $storyEn);
 
         foreach (array_keys($this->getFields()) as $fieldKey) {
             $itValue = isset($_POST['fp_qr_info_' . $fieldKey . '_it'])

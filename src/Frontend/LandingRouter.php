@@ -126,6 +126,43 @@ final class LandingRouter
                 'label_en' => __('INGREDIENTS', 'fp-qr-info'),
             ],
         ];
+
+        $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
+        $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
+        $storyEn = (string) get_post_meta($post->ID, 'fp_qr_info_story_en', true);
+        $storyImageUrl = '';
+        if ($storyImageId > 0) {
+            $storyImageUrl = (string) wp_get_attachment_image_url($storyImageId, 'full');
+        }
+        $storyTitleIt = __('Storia ed etichetta', 'fp-qr-info');
+        $storyTitleEn = __('Story & label', 'fp-qr-info');
+        $storyHasImage = $storyImageUrl !== '';
+        $storyHasText = $storyIt !== '' || $storyEn !== '';
+        $storyShowHero = $storyHasImage;
+        $storyShowBlock = !$storyHasImage && $storyHasText;
+
+        $i18nPayload = [
+            'sections' => [],
+            'story' => [
+                'mode' => $storyShowHero ? 'hero' : ($storyShowBlock ? 'card' : 'none'),
+                'title' => ['it' => $storyTitleIt, 'en' => $storyTitleEn],
+                'body' => ['it' => $storyIt, 'en' => $storyEn],
+            ],
+        ];
+        foreach ($sections as $key => $section) {
+            $i18nPayload['sections'][] = [
+                'id' => $key,
+                'label' => ['it' => $section['label_it'], 'en' => $section['label_en']],
+                'body' => ['it' => $section['it'], 'en' => $section['en']],
+            ];
+        }
+        $i18nJson = wp_json_encode(
+            $i18nPayload,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE
+        );
+        if ($i18nJson === false) {
+            $i18nJson = '{}';
+        }
         ?>
         <!DOCTYPE html>
         <html <?php language_attributes(); ?>>
@@ -150,9 +187,71 @@ final class LandingRouter
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
                     background: var(--fpqi-bg);
                     color: var(--fpqi-text);
-                    padding: 24px 16px 40px;
+                    padding: 0 0 40px;
                 }
-                .fpqi-wrap { max-width: 720px; margin: 0 auto; }
+                .fpqi-wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 0; }
+                .fpqi-story-hero {
+                    position: relative;
+                    min-height: 100vh;
+                    min-height: 100dvh;
+                    width: 100%;
+                    background-size: cover;
+                    background-position: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                }
+                .fpqi-story-hero::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 72%);
+                    pointer-events: none;
+                }
+                .fpqi-story-hero-inner {
+                    position: relative;
+                    z-index: 1;
+                    padding: 28px 20px 36px;
+                    max-width: 720px;
+                    margin: 0 auto;
+                    width: 100%;
+                    color: #f8fafc;
+                }
+                .fpqi-story-hero-inner h2 {
+                    margin: 0 0 10px;
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    color: #e9d5ff;
+                }
+                .fpqi-story-hero-inner p {
+                    margin: 0;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    color: #f1f5f9;
+                    white-space: pre-wrap;
+                }
+                .fpqi-story-card {
+                    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 55%);
+                    border: 1px solid var(--fpqi-border);
+                    border-radius: var(--fpqi-radius);
+                    padding: 18px 16px;
+                    margin-bottom: 18px;
+                }
+                .fpqi-story-card h2 {
+                    margin: 0 0 10px;
+                    font-size: 1rem;
+                    color: var(--fpqi-primary);
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
+                .fpqi-story-card p {
+                    margin: 0;
+                    color: var(--fpqi-muted);
+                    line-height: 1.55;
+                    white-space: pre-wrap;
+                }
                 .fpqi-head {
                     display: flex;
                     justify-content: space-between;
@@ -207,47 +306,88 @@ final class LandingRouter
             </style>
         </head>
         <body>
+        <?php if ($storyShowHero): ?>
+            <section
+                class="fpqi-story-hero"
+                style="background-image: url('<?php echo esc_url($storyImageUrl); ?>');"
+                role="img"
+                aria-label="<?php echo esc_attr($title); ?>"
+            >
+                <div class="fpqi-story-hero-inner">
+                    <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
+                    <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                </div>
+            </section>
+        <?php endif; ?>
         <div class="fpqi-wrap">
+            <?php if ($storyShowBlock): ?>
+                <section class="fpqi-story-card" aria-labelledby="fpqi-story-title">
+                    <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
+                    <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                </section>
+            <?php endif; ?>
             <header class="fpqi-head">
                 <div>
                     <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
                     <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
                 </div>
                 <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
-                    <button type="button" data-lang="it" aria-pressed="true">ITA</button>
-                    <button type="button" data-lang="en" aria-pressed="false">ENG</button>
+                    <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
+                    <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
                 </div>
             </header>
-            <?php foreach ($sections as $section): ?>
-                <section class="fpqi-card">
-                    <h2 data-lang-it="<?php echo esc_attr($section['label_it']); ?>" data-lang-en="<?php echo esc_attr($section['label_en']); ?>">
-                        <?php echo esc_html($section['label_it']); ?>
-                    </h2>
-                    <p data-lang-it="<?php echo esc_attr($section['it']); ?>" data-lang-en="<?php echo esc_attr($section['en']); ?>">
-                        <?php echo esc_html($section['it']); ?>
-                    </p>
+            <?php foreach ($i18nPayload['sections'] as $idx => $sec): ?>
+                <section class="fpqi-card" data-section-id="<?php echo esc_attr((string) $sec['id']); ?>">
+                    <h2 class="fpqi-section-title"><?php echo esc_html((string) $sec['label']['it']); ?></h2>
+                    <p class="fpqi-section-body"><?php echo esc_html((string) $sec['body']['it']); ?></p>
                 </section>
             <?php endforeach; ?>
         </div>
+        <script type="application/json" id="fpqi-landing-i18n"><?php echo $i18nJson; ?></script>
         <script>
             (function () {
+                var raw = document.getElementById('fpqi-landing-i18n');
+                var data = {};
+                try {
+                    data = JSON.parse(raw ? raw.textContent : '{}');
+                } catch (e) {
+                    data = {};
+                }
                 var currentLang = 'it';
-                var buttons = document.querySelectorAll('[data-lang]');
+                var buttons = document.querySelectorAll('.fpqi-lang-btn');
                 function applyLang(lang) {
                     currentLang = lang;
                     buttons.forEach(function (btn) {
                         btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
                     });
-                    document.querySelectorAll('[data-lang-it]').forEach(function (el) {
-                        var value = el.getAttribute('data-lang-' + lang);
-                        if (typeof value === 'string') {
-                            el.textContent = value;
+                    var sections = data.sections || [];
+                    sections.forEach(function (sec) {
+                        var wrap = document.querySelector('[data-section-id="' + sec.id + '"]');
+                        if (!wrap) {
+                            return;
+                        }
+                        var titleEl = wrap.querySelector('.fpqi-section-title');
+                        var bodyEl = wrap.querySelector('.fpqi-section-body');
+                        if (titleEl && sec.label) {
+                            titleEl.textContent = sec.label[lang] || '';
+                        }
+                        if (bodyEl && sec.body) {
+                            bodyEl.textContent = sec.body[lang] || '';
                         }
                     });
+                    var story = data.story || {};
+                    var stTitle = document.getElementById('fpqi-story-title');
+                    var stBody = document.getElementById('fpqi-story-body');
+                    if (stTitle && story.title) {
+                        stTitle.textContent = story.title[lang] || '';
+                    }
+                    if (stBody && story.body) {
+                        stBody.textContent = story.body[lang] || '';
+                    }
                 }
                 buttons.forEach(function (btn) {
                     btn.addEventListener('click', function () {
-                        applyLang(btn.getAttribute('data-lang'));
+                        applyLang(btn.getAttribute('data-lang') || 'it');
                     });
                 });
                 applyLang(currentLang);

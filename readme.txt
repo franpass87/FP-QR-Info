@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ Ogni landing include contenuti ITA/ENG per:
 - Informazioni di smaltimento
 - Informazioni nutrizionali
 - Ingredienti
+- (Opzionale) Storia del vino e dell’etichetta con immagine bottiglia e testi dedicati
 
 Le pagine generate sono pubbliche ma impostate come non indicizzabili (`noindex`) solo per le route gestite dal plugin.
 
@@ -31,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.2 =
+* Storia ed etichetta: immagine hero a tutto schermo, testi bilingua; selettore lingua aggiornato via JSON.
 
 = 0.1.1 =
 * Prima release operativa con route standalone, contenuti IT/EN, dashboard admin FP, copy URL e stampa etichetta QR.
