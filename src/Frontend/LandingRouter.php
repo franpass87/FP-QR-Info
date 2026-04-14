@@ -107,6 +107,7 @@ final class LandingRouter
     private function renderStandalonePage(\WP_Post $post): void
     {
         $title = get_the_title($post);
+        $homeUrl = home_url('/');
         $sectionHeadline = [
             'it' => __('INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI', 'fp-qr-info'),
             'en' => __('DISPOSAL, NUTRITIONAL INFO AND INGREDIENTS', 'fp-qr-info'),
@@ -155,6 +156,10 @@ final class LandingRouter
         $i18nPayload = [
             'sections' => [],
             'sectionHeadline' => $sectionHeadline,
+            'homeLinkLabel' => [
+                'it' => __('Torna alla home', 'fp-qr-info'),
+                'en' => __('Back to home', 'fp-qr-info'),
+            ],
             'story' => [
                 'mode' => $storyShowHero ? 'hero' : ($storyShowBlock ? 'card' : 'none'),
                 'title' => ['it' => $storyTitleIt, 'en' => $storyTitleEn],
@@ -541,6 +546,30 @@ final class LandingRouter
                 .fpqi-pack-body p {
                     margin: 0 0 6px;
                 }
+                .fpqi-site-footer {
+                    margin-top: 14px;
+                    margin-bottom: 8px;
+                    text-align: center;
+                }
+                .fpqi-home-link {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 42px;
+                    padding: 8px 16px;
+                    border-radius: 999px;
+                    border: 1px solid var(--fpqi-border);
+                    background: #fff;
+                    color: var(--fpqi-primary);
+                    font-weight: 700;
+                    text-decoration: none;
+                    letter-spacing: 0.02em;
+                    transition: background-color 0.2s ease, border-color 0.2s ease;
+                }
+                .fpqi-home-link:hover {
+                    background: #f8fafc;
+                    border-color: var(--fpqi-primary);
+                }
             </style>
         </head>
         <body>
@@ -598,6 +627,9 @@ final class LandingRouter
                     <div class="fpqi-section-body fpqi-legal-html"><?php echo $sec['body']['it']; ?></div>
                 </section>
             <?php endforeach; ?>
+            <footer class="fpqi-site-footer">
+                <a href="<?php echo esc_url($homeUrl); ?>" class="fpqi-home-link" id="fpqi-home-link"><?php esc_html_e('Torna alla home', 'fp-qr-info'); ?></a>
+            </footer>
         </div>
         <script type="application/json" id="fpqi-landing-i18n"><?php echo $i18nJson; ?></script>
         <script>
@@ -635,6 +667,7 @@ final class LandingRouter
                     var stTitle = document.getElementById('fpqi-story-title');
                     var stBody = document.getElementById('fpqi-story-body');
                     var sectionTitle = document.getElementById('fpqi-main-section-title');
+                    var homeLink = document.getElementById('fpqi-home-link');
                     if (stTitle && story.title) {
                         stTitle.textContent = story.title[lang] || '';
                     }
@@ -643,6 +676,9 @@ final class LandingRouter
                     }
                     if (sectionTitle && data.sectionHeadline) {
                         sectionTitle.textContent = data.sectionHeadline[lang] || '';
+                    }
+                    if (homeLink && data.homeLinkLabel) {
+                        homeLink.textContent = data.homeLinkLabel[lang] || '';
                     }
                 }
                 buttons.forEach(function (btn) {

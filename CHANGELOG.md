@@ -1,3 +1,9 @@
+## [0.1.30] - 2026-04-14
+### Added
+- Footer in fondo alla landing con link alla home del sito.
+### Changed
+- Etichetta link home localizzata e sincronizzata con switch lingua (IT/EN).
+
 ## [0.1.29] - 2026-04-14
 ### Changed
 - Immagine bottiglia nella hero inserita in un box/card dedicato (sfondo, bordo, raggio, ombra) per coerenza con gli altri contenitori della landing.
