@@ -228,6 +228,13 @@ final class LandingRouter
                     justify-content: center;
                     padding: 70px 20px 20px;
                 }
+                .fpqi-story-hero-visual-box {
+                    background: var(--fpqi-surface);
+                    border: 1px solid var(--fpqi-border);
+                    border-radius: var(--fpqi-radius);
+                    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+                    padding: 16px;
+                }
                 .fpqi-story-hero-image {
                     display: block;
                     width: min(92vw, 520px);
@@ -554,7 +561,9 @@ final class LandingRouter
                     </header>
                 </div>
                 <div class="fpqi-story-hero-visual">
-                    <img class="fpqi-story-hero-image" src="<?php echo esc_url($storyImageUrl); ?>" alt="<?php echo esc_attr($title); ?>">
+                    <div class="fpqi-story-hero-visual-box">
+                        <img class="fpqi-story-hero-image" src="<?php echo esc_url($storyImageUrl); ?>" alt="<?php echo esc_attr($title); ?>">
+                    </div>
                 </div>
                 <div class="fpqi-story-hero-inner">
                     <div class="fpqi-story-content-box">

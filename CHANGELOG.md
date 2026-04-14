@@ -1,3 +1,7 @@
+## [0.1.29] - 2026-04-14
+### Changed
+- Immagine bottiglia nella hero inserita in un box/card dedicato (sfondo, bordo, raggio, ombra) per coerenza con gli altri contenitori della landing.
+
 ## [0.1.28] - 2026-04-14
 ### Changed
 - Headline “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” resa in box/card dedicato (sfondo, bordo, raggio e padding) per coerenza con gli altri blocchi.
