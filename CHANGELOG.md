@@ -1,3 +1,7 @@
+## [0.1.32] - 2026-04-14
+### Changed
+- Etichetta footer link aggiornata da “Torna alla home” a formulazione più neutra “Vai al sito web” (EN: “Visit website”).
+
 ## [0.1.31] - 2026-04-14
 ### Changed
 - Box immagine bottiglia riallineato allo stile delle altre card: dimensioni più compatte, layout centrato a larghezza contenuto, rimosso effetto eccessivo di card “fuori scala”.

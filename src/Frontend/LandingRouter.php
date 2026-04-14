@@ -157,8 +157,8 @@ final class LandingRouter
             'sections' => [],
             'sectionHeadline' => $sectionHeadline,
             'homeLinkLabel' => [
-                'it' => __('Torna alla home', 'fp-qr-info'),
-                'en' => __('Back to home', 'fp-qr-info'),
+                'it' => __('Vai al sito web', 'fp-qr-info'),
+                'en' => __('Visit website', 'fp-qr-info'),
             ],
             'story' => [
                 'mode' => $storyShowHero ? 'hero' : ($storyShowBlock ? 'card' : 'none'),
@@ -633,7 +633,7 @@ final class LandingRouter
                 </section>
             <?php endforeach; ?>
             <footer class="fpqi-site-footer">
-                <a href="<?php echo esc_url($homeUrl); ?>" class="fpqi-home-link" id="fpqi-home-link"><?php esc_html_e('Torna alla home', 'fp-qr-info'); ?></a>
+                <a href="<?php echo esc_url($homeUrl); ?>" class="fpqi-home-link" id="fpqi-home-link"><?php esc_html_e('Vai al sito web', 'fp-qr-info'); ?></a>
             </footer>
         </div>
         <script type="application/json" id="fpqi-landing-i18n"><?php echo $i18nJson; ?></script>
