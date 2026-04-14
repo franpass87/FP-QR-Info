@@ -654,15 +654,27 @@ final class LandingRouter
 
         if ($lang === 'en') {
             return str_replace(
-                'Example (wine — adapt to the actual product)',
-                'Wine — ingredients declaration',
+                [
+                    'Example (wine — adapt to the actual product)',
+                    'The “contains sulphites” indication may be required on the physical label under wine-sector rules even when the full list is provided electronically: confirm mandatory on-pack wording with your sector advisor.',
+                ],
+                [
+                    'Wine — ingredients declaration',
+                    '',
+                ],
                 $html
             );
         }
 
         return str_replace(
-            'Esempio (vino — da adattare al prodotto reale)',
-            'Vino — dichiarazione ingredienti',
+            [
+                'Esempio (vino — da adattare al prodotto reale)',
+                'L’indicazione «contiene solfiti» può essere richiesta sull’etichetta fisica ai sensi della normativa sui vini anche quando l’elenco completo è fornito per via elettronica: verificare il testo obbligatorio sul recipiente con il consulente di settore.',
+            ],
+            [
+                'Vino — dichiarazione ingredienti',
+                '',
+            ],
             $html
         );
     }

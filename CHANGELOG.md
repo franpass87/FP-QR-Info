@@ -1,3 +1,8 @@
+## [0.1.14] - 2026-04-14
+### Changed
+- Sezione ingredienti vino resa più “production-ready”: rimossa la nota consulenziale su «contiene solfiti» dai preset IT/EN.
+- Compatibilità contenuti legacy: in frontend viene eliminata automaticamente la vecchia frase consulenziale se presente in landing già salvate.
+
 ## [0.1.13] - 2026-04-14
 ### Changed
 - Preset nutrizionale vino aggiornato con valori già compilati per 100 ml (330 kJ / 79 kcal; grassi 0 g; saturi 0 g; carboidrati 2,6 g; zuccheri 0,6 g; proteine 0 g; sale 0,01 g).

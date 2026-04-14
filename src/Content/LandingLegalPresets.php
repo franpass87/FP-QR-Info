@@ -258,11 +258,7 @@ final class LandingLegalPresets
             . '<p>' . esc_html__(
                 'Ove siano utilizzati additivi, coadiuvanti tecnologici o altri ingredienti, inserirli con la denominazione legalmente prevista (inclusi i numeri E ove applicabili) e nell’ordine previsto dal regolamento (UE) n. 1169/2011.',
                 'fp-qr-info'
-            ) . '</p>'
-            . '<p><em>' . esc_html__(
-                'L’indicazione «contiene solfiti» può essere richiesta sull’etichetta fisica ai sensi della normativa sui vini anche quando l’elenco completo è fornito per via elettronica: verificare il testo obbligatorio sul recipiente con il consulente di settore.',
-                'fp-qr-info'
-            ) . '</em></p>';
+            ) . '</p>';
     }
 
     private static function ingredientsEnHtml(): string
@@ -286,11 +282,7 @@ final class LandingLegalPresets
             . '<p>' . esc_html__(
                 'Where additives, technological aids or other ingredients are used, list them with the legally required designation (including E numbers where applicable) and in the order required by Regulation (EU) No 1169/2011.',
                 'fp-qr-info'
-            ) . '</p>'
-            . '<p><em>' . esc_html__(
-                'The “contains sulphites” indication may be required on the physical label under wine-sector rules even when the full list is provided electronically: confirm mandatory on-pack wording with your sector advisor.',
-                'fp-qr-info'
-            ) . '</em></p>';
+            ) . '</p>';
     }
 
     /**
