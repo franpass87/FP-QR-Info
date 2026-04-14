@@ -203,8 +203,7 @@ final class LandingRouter
                     min-height: 100vh;
                     min-height: 100dvh;
                     width: 100%;
-                    background-size: cover;
-                    background-position: center;
+                    background: radial-gradient(circle at 20% 15%, rgba(99, 102, 241, 0.22), transparent 40%), linear-gradient(180deg, #111827 0%, #1f2937 40%, #0f172a 100%);
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
@@ -215,6 +214,23 @@ final class LandingRouter
                     inset: 0;
                     background: linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 72%);
                     pointer-events: none;
+                }
+                .fpqi-story-hero-visual {
+                    position: relative;
+                    z-index: 1;
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 70px 20px 20px;
+                }
+                .fpqi-story-hero-image {
+                    display: block;
+                    width: min(92vw, 520px);
+                    max-height: min(68vh, 760px);
+                    object-fit: contain;
+                    object-position: center center;
+                    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.45));
                 }
                 .fpqi-story-hero-top {
                     position: relative;
@@ -506,9 +522,7 @@ final class LandingRouter
         <?php if ($storyShowHero): ?>
             <section
                 class="fpqi-story-hero"
-                style="background-image: url('<?php echo esc_url($storyImageUrl); ?>');"
-                role="img"
-                aria-label="<?php echo esc_attr($title); ?>"
+                aria-label="<?php echo esc_attr($storyTitleIt); ?>"
             >
                 <div class="fpqi-story-hero-top">
                     <header class="fpqi-head">
@@ -521,6 +535,9 @@ final class LandingRouter
                             <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
                         </div>
                     </header>
+                </div>
+                <div class="fpqi-story-hero-visual">
+                    <img class="fpqi-story-hero-image" src="<?php echo esc_url($storyImageUrl); ?>" alt="<?php echo esc_attr($title); ?>">
                 </div>
                 <div class="fpqi-story-hero-inner">
                     <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>

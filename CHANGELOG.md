@@ -1,3 +1,9 @@
+## [0.1.21] - 2026-04-14
+### Changed
+- Hero landing con immagine storia riprogettata per bottiglia scontornata: visual centrale con `object-fit: contain` (niente crop 16:9 di background).
+- Header/top controls invariati in testa, con area immagine separata per valorizzare asset PNG trasparente.
+- Testo aiuto admin aggiornato: consigliata immagine bottiglia scontornata (PNG trasparente).
+
 ## [0.1.20] - 2026-04-14
 ### Changed
 - Landing con hero immagine: titolo principale e switch lingua spostati in testa all’hero (overlay top) invece che sotto la hero.

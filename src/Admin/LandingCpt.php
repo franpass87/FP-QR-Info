@@ -230,7 +230,7 @@ final class LandingCpt
         </p>
         <hr>
         <h3><?php esc_html_e('Storia ed etichetta', 'fp-qr-info'); ?></h3>
-        <p class="description"><?php esc_html_e('Immagine a tutto schermo e testo narrativo sul vino e sull’etichetta (opzionale ma consigliato per un’esperienza QR curata).', 'fp-qr-info'); ?></p>
+        <p class="description"><?php esc_html_e('Immagine bottiglia scontornata (consigliato PNG trasparente) e testo narrativo sul vino/etichetta. La landing mostra la bottiglia centrata senza taglio 16:9.', 'fp-qr-info'); ?></p>
         <?php
         $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
         $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
