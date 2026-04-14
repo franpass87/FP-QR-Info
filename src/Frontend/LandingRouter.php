@@ -246,21 +246,22 @@ final class LandingRouter
                 }
                 .fpqi-story-hero-top .fpqi-head {
                     margin-bottom: 0;
+                    background: #ffffff;
+                    border: 1px solid rgba(15, 23, 42, 0.12);
+                    border-radius: 14px;
+                    padding: 12px 14px;
+                    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
                 }
                 .fpqi-story-hero-top .fpqi-title,
                 .fpqi-story-hero-top .fpqi-intro {
-                    color: #f8fafc;
+                    color: var(--fpqi-text);
                 }
                 .fpqi-story-hero-top .fpqi-lang {
-                    border-color: rgba(255, 255, 255, 0.35);
-                    background: rgba(255, 255, 255, 0.12);
-                    backdrop-filter: blur(2px);
+                    border-color: var(--fpqi-border);
+                    background: #ffffff;
                 }
                 .fpqi-story-hero-top .fpqi-lang button {
-                    color: #f8fafc;
-                }
-                .fpqi-story-hero-top .fpqi-lang button[aria-pressed="false"] {
-                    opacity: 0.9;
+                    color: var(--fpqi-text);
                 }
                 .fpqi-story-hero-inner {
                     position: relative;

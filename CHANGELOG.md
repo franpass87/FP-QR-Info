@@ -1,3 +1,7 @@
+## [0.1.23] - 2026-04-14
+### Changed
+- Hero landing: sezione di testa (titolo + switch lingua) resa su sfondo bianco con card/header chiaro, al posto dell’aspetto scuro/trasparente precedente.
+
 ## [0.1.22] - 2026-04-14
 ### Changed
 - Testo introduttivo sezioni reso un vero titolo di sezione (headline) sotto il nome vino.
