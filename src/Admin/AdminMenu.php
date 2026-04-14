@@ -20,6 +20,7 @@ final class AdminMenu
     public function register(): void
     {
         add_action('admin_menu', [$this, 'registerMenu']);
+        add_action('admin_menu', [$this, 'normalizeSubmenuLabels'], 99);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAssets']);
         add_filter('admin_body_class', [$this, 'filterAdminBodyClass']);
     }
@@ -38,6 +39,35 @@ final class AdminMenu
             'dashicons-media-code',
             '56.18'
         );
+
+        add_submenu_page(
+            self::MENU_SLUG,
+            esc_html__('Dashboard', 'fp-qr-info'),
+            esc_html__('Dashboard', 'fp-qr-info'),
+            'edit_posts',
+            self::MENU_SLUG,
+            [$this, 'renderDashboard']
+        );
+    }
+
+    /**
+     * Forza etichetta "Dashboard" sulla prima voce submenu del plugin.
+     */
+    public function normalizeSubmenuLabels(): void
+    {
+        global $submenu;
+        if (!isset($submenu[self::MENU_SLUG]) || !is_array($submenu[self::MENU_SLUG])) {
+            return;
+        }
+
+        foreach ($submenu[self::MENU_SLUG] as $index => $item) {
+            if (!isset($item[2]) || $item[2] !== self::MENU_SLUG) {
+                continue;
+            }
+
+            $submenu[self::MENU_SLUG][$index][0] = esc_html__('Dashboard', 'fp-qr-info');
+            break;
+        }
     }
 
     /**

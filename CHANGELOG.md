@@ -1,3 +1,8 @@
+## [0.1.9] - 2026-04-14
+### Changed
+- Menu admin: aggiunta voce submenu esplicita **Dashboard** sotto `FP QR Info` per rendere visibile e raggiungibile la pagina dashboard.
+- Allineata l’etichetta della voce dashboard nel submenu (`Dashboard`) per evitare ambiguità tra dashboard e lista `QR Landing`.
+
 ## [0.1.8] - 2026-04-14
 ### Changed
 - Schermata lista `QR Landing` (`edit.php?post_type=fp_qr_landing`) allineata al design system FP con banner header dedicato (titolo, descrizione, badge versione).
