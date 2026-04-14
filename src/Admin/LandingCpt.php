@@ -27,6 +27,34 @@ final class LandingCpt
         add_filter('manage_' . self::POST_TYPE . '_posts_columns', [$this, 'addColumns']);
         add_action('manage_' . self::POST_TYPE . '_posts_custom_column', [$this, 'renderColumn'], 10, 2);
         add_action('admin_enqueue_scripts', [$this, 'enqueueStoryAssets']);
+        add_action('edit_form_after_title', [$this, 'renderEditorHeader']);
+    }
+
+    /**
+     * Renderizza un header in stile FP nella schermata editor del CPT.
+     *
+     * @param \WP_Post $post Post corrente in modifica.
+     */
+    public function renderEditorHeader(\WP_Post $post): void
+    {
+        if ($post->post_type !== self::POST_TYPE) {
+            return;
+        }
+
+        ?>
+        <div class="fpqri-editor-header" role="region" aria-label="<?php echo esc_attr__('FP QR Info editor', 'fp-qr-info'); ?>">
+            <div class="fpqri-editor-header-content">
+                <h2 class="fpqri-editor-header-title">
+                    <span class="dashicons dashicons-media-code" aria-hidden="true"></span>
+                    <?php esc_html_e('FP QR Info', 'fp-qr-info'); ?>
+                </h2>
+                <p class="fpqri-editor-header-desc">
+                    <?php esc_html_e('Compila i contenuti IT/EN e genera una landing QR pronta per etichetta e stampa.', 'fp-qr-info'); ?>
+                </p>
+            </div>
+            <span class="fpqri-editor-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
+        </div>
+        <?php
     }
 
     /**

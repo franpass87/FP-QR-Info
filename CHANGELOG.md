@@ -1,3 +1,8 @@
+## [0.1.7] - 2026-04-14
+### Changed
+- Editor del CPT `fp_qr_landing`: aggiunto header in stile FP sopra le metabox (banner gradiente, descrizione e badge versione) per rendere la schermata coerente con il design system anche fuori dalla dashboard.
+- Restyling visivo della schermata editor: metabox con gerarchia card più evidente, azioni rapide con pulsante primario gradiente e dettagli UI più riconoscibili in stile FP.
+
 ## [0.1.6] - 2026-04-14
 ### Changed
 - Admin dashboard e schermata CPT: UI allineata al **FP Admin UI Design System** (token `--fpdms-*`, banner gradiente standard FP Mail, card con header/body, badge, status pill, bottoni `fpqri-btn*`), classe body `fpqri-admin-shell`, enqueue CSS con fallback `$_GET['page']`.

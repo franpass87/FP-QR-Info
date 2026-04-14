@@ -284,6 +284,59 @@ body[class*="fpqri"] #wpbody-content > .wrap.fpqri-admin-page {
 }
 
 /* CPT — metabox coerenti con token FP */
+.post-type-fp_qr_landing .wp-heading-inline {
+    display: none;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header {
+    background: var(--fpdms-gradient-primary);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 2rem;
+    margin: 0 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    color: #fff;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header-content {
+    flex: 1;
+    min-width: 200px;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header-title {
+    margin: 0 0 0.25rem;
+    color: #fff !important;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header-title .dashicons {
+    font-size: 1.35rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header-desc {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 0.95rem;
+    color: #fff !important;
+}
+
+.post-type-fp_qr_landing .fpqri-editor-header-badge {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+}
+
 .post-type-fp_qr_landing #poststuff .postbox {
     border-radius: var(--radius-lg);
     border: 1px solid var(--fpdms-border);
@@ -311,4 +364,12 @@ body[class*="fpqri"] #wpbody-content > .wrap.fpqri-admin-page {
 
 .post-type-fp_qr_landing #fp_qr_info_actions .button {
     margin-bottom: 6px;
+}
+
+.post-type-fp_qr_landing #fp_qr_info_actions .button-primary,
+.post-type-fp_qr_landing #fp_qr_info_actions .button:first-of-type {
+    background: var(--fpdms-gradient-primary);
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
 }
