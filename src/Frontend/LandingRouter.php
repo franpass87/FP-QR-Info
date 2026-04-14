@@ -122,8 +122,8 @@ final class LandingRouter
                 'label_en' => __('Environmental labelling / Packaging', 'fp-qr-info'),
             ],
             'nutrition' => [
-                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true)),
-                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true)),
+                'it' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true), 'it')),
+                'en' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true), 'en')),
                 'label_it' => __('INFORMAZIONI NUTRIZIONALI', 'fp-qr-info'),
                 'label_en' => __('NUTRITIONAL INFO', 'fp-qr-info'),
             ],
@@ -664,6 +664,66 @@ final class LandingRouter
             'Esempio (vino — da adattare al prodotto reale)',
             'Vino — dichiarazione ingredienti',
             $html
+        );
+    }
+
+    /**
+     * Normalizza testi nutrizionali legacy rimuovendo i segnaposto e inserendo valori vino.
+     *
+     * @param string $html Blocco nutrizionale salvato.
+     * @param string $lang Lingua corrente (it|en).
+     * @return string HTML normalizzato.
+     */
+    private function normalizeLegacyNutritionCopy(string $html, string $lang): string
+    {
+        if ($html === '') {
+            return $html;
+        }
+
+        $replaced = str_replace(
+            [
+                '… kJ / … kcal',
+                '… g',
+                'Sostituire i segni «…» con i valori analitici del prodotto. Il valore energetico deve essere espresso in chilojoule (kJ) e in chilocalorie (kcal), con il kJ indicato per primo (art. 33, paragrafo 5, e Allegato XV). Le quantità di nutrienti si esprimono in grammi (g) per 100 ml (art. 32).',
+                'Replace the ellipses with product analytical values. Energy value must be given in kilojoules (kJ) and kilocalories (kcal), with kJ first (Article 33(5) and Annex XV). Amounts of nutrients are expressed in grams (g) per 100 ml (Article 32).',
+            ],
+            [
+                '330 kJ / 79 kcal',
+                '0 g',
+                'Valori medi per vino per 100 ml: energia 330 kJ / 79 kcal; grassi 0 g (di cui saturi 0 g); carboidrati 2,6 g (di cui zuccheri 0,6 g); proteine 0 g; sale 0,01 g.',
+                'Average wine values per 100 ml: energy 330 kJ / 79 kcal; fat 0 g (of which saturates 0 g); carbohydrate 2.6 g (of which sugars 0.6 g); protein 0 g; salt 0.01 g.',
+            ],
+            $html
+        );
+
+        if ($lang === 'en') {
+            return str_replace(
+                [
+                    '<tr><th scope="row">Carbohydrate</th><td>0 g</td></tr>',
+                    '<tr><th scope="row">of which sugars</th><td>0 g</td></tr>',
+                    '<tr><th scope="row">Salt</th><td>0 g</td></tr>',
+                ],
+                [
+                    '<tr><th scope="row">Carbohydrate</th><td>2.6 g</td></tr>',
+                    '<tr><th scope="row">of which sugars</th><td>0.6 g</td></tr>',
+                    '<tr><th scope="row">Salt</th><td>0.01 g</td></tr>',
+                ],
+                $replaced
+            );
+        }
+
+        return str_replace(
+            [
+                '<tr><th scope="row">Carboidrati</th><td>0 g</td></tr>',
+                '<tr><th scope="row">di cui zuccheri</th><td>0 g</td></tr>',
+                '<tr><th scope="row">Sale</th><td>0 g</td></tr>',
+            ],
+            [
+                '<tr><th scope="row">Carboidrati</th><td>2,6 g</td></tr>',
+                '<tr><th scope="row">di cui zuccheri</th><td>0,6 g</td></tr>',
+                '<tr><th scope="row">Sale</th><td>0,01 g</td></tr>',
+            ],
+            $replaced
         );
     }
 }

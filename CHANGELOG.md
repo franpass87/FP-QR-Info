@@ -1,3 +1,9 @@
+## [0.1.13] - 2026-04-14
+### Changed
+- Preset nutrizionale vino aggiornato con valori già compilati per 100 ml (330 kJ / 79 kcal; grassi 0 g; saturi 0 g; carboidrati 2,6 g; zuccheri 0,6 g; proteine 0 g; sale 0,01 g).
+- Rimossa la dicitura “Sostituire i segni …” dai testi nutrizionali, sostituita con formulazione diretta sui valori medi vino.
+- Compatibilità contenuti già salvati: normalizzazione automatica frontend dei vecchi placeholder “…” e del vecchio testo istruzione.
+
 ## [0.1.12] - 2026-04-14
 ### Changed
 - Sezione ingredienti vino: rimossa la dicitura “Esempio …” nei modelli predefiniti e sostituita con formulazione standard “Vino — dichiarazione ingredienti”.

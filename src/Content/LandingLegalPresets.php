@@ -177,13 +177,13 @@ final class LandingLegalPresets
             . '<th scope="col">' . esc_html__('Dato nutrizionale', 'fp-qr-info') . '</th>'
             . '<th scope="col">' . esc_html__('per 100 ml', 'fp-qr-info') . '</th>'
             . '</tr></thead><tbody>'
-            . '<tr><th scope="row">' . esc_html__('Valore energetico', 'fp-qr-info') . '</th><td>… kJ / … kcal</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Grassi', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('di cui acidi grassi saturi', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Carboidrati', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('di cui zuccheri', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Proteine', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Sale', 'fp-qr-info') . '</th><td>… g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Valore energetico', 'fp-qr-info') . '</th><td>330 kJ / 79 kcal</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Grassi', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('di cui acidi grassi saturi', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Carboidrati', 'fp-qr-info') . '</th><td>2,6 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('di cui zuccheri', 'fp-qr-info') . '</th><td>0,6 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Proteine', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Sale', 'fp-qr-info') . '</th><td>0,01 g</td></tr>'
             . '</tbody></table>';
 
         $saltNote = '<p class="fpqi-legal-note"><em>' . esc_html__(
@@ -192,7 +192,7 @@ final class LandingLegalPresets
         ) . '</em></p>';
 
         $foot = '<p><em>' . esc_html__(
-            'Sostituire i segni «…» con i valori analitici del prodotto. Il valore energetico deve essere espresso in chilojoule (kJ) e in chilocalorie (kcal), con il kJ indicato per primo (art. 33, paragrafo 5, e Allegato XV). Le quantità di nutrienti si esprimono in grammi (g) per 100 ml (art. 32).',
+            'Valori medi per vino per 100 ml: energia 330 kJ / 79 kcal; grassi 0 g (di cui saturi 0 g); carboidrati 2,6 g (di cui zuccheri 0,6 g); proteine 0 g; sale 0,01 g.',
             'fp-qr-info'
         ) . '</em></p>';
 
@@ -215,13 +215,13 @@ final class LandingLegalPresets
             . '<th scope="col">' . esc_html__('Nutrition information', 'fp-qr-info') . '</th>'
             . '<th scope="col">' . esc_html__('per 100 ml', 'fp-qr-info') . '</th>'
             . '</tr></thead><tbody>'
-            . '<tr><th scope="row">' . esc_html__('Energy', 'fp-qr-info') . '</th><td>… kJ / … kcal</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Fat', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('of which saturates', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Carbohydrate', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('of which sugars', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Protein', 'fp-qr-info') . '</th><td>… g</td></tr>'
-            . '<tr><th scope="row">' . esc_html__('Salt', 'fp-qr-info') . '</th><td>… g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Energy', 'fp-qr-info') . '</th><td>330 kJ / 79 kcal</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Fat', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('of which saturates', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Carbohydrate', 'fp-qr-info') . '</th><td>2.6 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('of which sugars', 'fp-qr-info') . '</th><td>0.6 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Protein', 'fp-qr-info') . '</th><td>0 g</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Salt', 'fp-qr-info') . '</th><td>0.01 g</td></tr>'
             . '</tbody></table>';
 
         $saltNote = '<p class="fpqi-legal-note"><em>' . esc_html__(
@@ -230,7 +230,7 @@ final class LandingLegalPresets
         ) . '</em></p>';
 
         $foot = '<p><em>' . esc_html__(
-            'Replace the ellipses with product analytical values. Energy value must be given in kilojoules (kJ) and kilocalories (kcal), with kJ first (Article 33(5) and Annex XV). Amounts of nutrients are expressed in grams (g) per 100 ml (Article 32).',
+            'Average wine values per 100 ml: energy 330 kJ / 79 kcal; fat 0 g (of which saturates 0 g); carbohydrate 2.6 g (of which sugars 0.6 g); protein 0 g; salt 0.01 g.',
             'fp-qr-info'
         ) . '</em></p>';
 
