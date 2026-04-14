@@ -1,3 +1,7 @@
+## [0.1.18] - 2026-04-14
+### Changed
+- Palette blocchi smaltimento aggiornata: **Capsula/Plastica** in blu, **Bottiglia/Vetro** in verde, **Tappo** invariato.
+
 ## [0.1.17] - 2026-04-14
 ### Changed
 - Blocchi smaltimento in landing: introdotta palette colore coerente per tutte le card (`Tappo`, `Bottiglia`, `Capsula`) invece dell’evidenziazione singola della sola capsula.
