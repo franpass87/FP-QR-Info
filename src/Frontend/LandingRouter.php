@@ -316,10 +316,10 @@ final class LandingRouter
                 .fpqi-title { margin: 0; font-size: 1.35rem; }
                 .fpqi-main-section-headline {
                     margin: 0 0 16px;
-                    font-size: 0.98rem;
+                    font-size: 1.15rem;
                     color: var(--fpqi-primary);
                     line-height: 1.45;
-                    letter-spacing: 0.02em;
+                    letter-spacing: 0.04em;
                     text-transform: uppercase;
                     font-weight: 700;
                 }

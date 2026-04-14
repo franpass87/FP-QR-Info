@@ -1,3 +1,7 @@
+## [0.1.26] - 2026-04-14
+### Changed
+- Headline sezione “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” allineata alla stessa dimensione tipografica di “Storia ed etichetta”.
+
 ## [0.1.25] - 2026-04-14
 ### Changed
 - Hero landing aggiornata a tema chiaro: sfondo sezione immagine ora bianco (rimossa dominante blu/scura).
