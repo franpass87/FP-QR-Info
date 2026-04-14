@@ -107,7 +107,10 @@ final class LandingRouter
     private function renderStandalonePage(\WP_Post $post): void
     {
         $title = get_the_title($post);
-        $intro = __('INFORMAZIONI DI SMALTIMENTO NUTRIZIONALI E INGREDIENTI - DISPOSAL AND NUTRITIONAL INFO, INGREDIENTS', 'fp-qr-info');
+        $sectionHeadline = [
+            'it' => __('INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI', 'fp-qr-info'),
+            'en' => __('DISPOSAL, NUTRITIONAL INFO AND INGREDIENTS', 'fp-qr-info'),
+        ];
         $accentColor = $this->resolveAccentColor($post->ID);
         $useDisposalBlocks = $this->disposalBlocksInUse($post->ID);
         $sections = [
@@ -151,6 +154,7 @@ final class LandingRouter
 
         $i18nPayload = [
             'sections' => [],
+            'sectionHeadline' => $sectionHeadline,
             'story' => [
                 'mode' => $storyShowHero ? 'hero' : ($storyShowBlock ? 'card' : 'none'),
                 'title' => ['it' => $storyTitleIt, 'en' => $storyTitleEn],
@@ -312,9 +316,11 @@ final class LandingRouter
                 .fpqi-title { margin: 0; font-size: 1.35rem; }
                 .fpqi-intro {
                     margin: 8px 0 0;
-                    font-size: 0.9rem;
+                    font-size: 0.95rem;
                     color: var(--fpqi-muted);
                     line-height: 1.45;
+                    letter-spacing: 0.02em;
+                    text-transform: uppercase;
                 }
                 .fpqi-lang {
                     display: inline-flex;
@@ -528,7 +534,7 @@ final class LandingRouter
                     <header class="fpqi-head">
                         <div>
                             <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
-                            <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
+                            <h2 class="fpqi-intro" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
                         </div>
                         <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
                             <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
@@ -556,7 +562,7 @@ final class LandingRouter
                 <header class="fpqi-head">
                     <div>
                         <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
-                        <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
+                        <h2 class="fpqi-intro" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
                     </div>
                     <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
                         <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
@@ -606,11 +612,15 @@ final class LandingRouter
                     var story = data.story || {};
                     var stTitle = document.getElementById('fpqi-story-title');
                     var stBody = document.getElementById('fpqi-story-body');
+                    var sectionTitle = document.getElementById('fpqi-main-section-title');
                     if (stTitle && story.title) {
                         stTitle.textContent = story.title[lang] || '';
                     }
                     if (stBody && story.body) {
                         stBody.textContent = story.body[lang] || '';
+                    }
+                    if (sectionTitle && data.sectionHeadline) {
+                        sectionTitle.textContent = data.sectionHeadline[lang] || '';
                     }
                 }
                 buttons.forEach(function (btn) {

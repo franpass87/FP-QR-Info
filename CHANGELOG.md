@@ -1,3 +1,8 @@
+## [0.1.22] - 2026-04-14
+### Changed
+- Testo introduttivo sezioni reso un vero titolo di sezione (headline) sotto il nome vino.
+- Headline ora bilingue dinamica: in IT mostra solo italiano, in EN mostra solo inglese (niente stringa mista IT/EN).
+
 ## [0.1.21] - 2026-04-14
 ### Changed
 - Hero landing con immagine storia riprogettata per bottiglia scontornata: visual centrale con `object-fit: contain` (niente crop 16:9 di background).
