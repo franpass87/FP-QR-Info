@@ -1,3 +1,8 @@
+## [0.1.15] - 2026-04-14
+### Changed
+- Sezione ingredienti vino ulteriormente semplificata per produzione: rimossa la frase operativa su additivi/coadiuvanti/ordine elenco.
+- Compatibilità contenuti legacy: rimozione automatica frontend anche della frase “Ove siano utilizzati additivi…” (e equivalente EN) se presente in landing già salvate.
+
 ## [0.1.14] - 2026-04-14
 ### Changed
 - Sezione ingredienti vino resa più “production-ready”: rimossa la nota consulenziale su «contiene solfiti» dai preset IT/EN.

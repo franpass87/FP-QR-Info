@@ -254,11 +254,7 @@ final class LandingLegalPresets
             . esc_html__('Ingredienti:', 'fp-qr-info') . ' '
             . esc_html__('uva', 'fp-qr-info') . '; '
             . esc_html__('conservatore:', 'fp-qr-info') . ' <strong>' . esc_html__('anidride solforosa', 'fp-qr-info') . '</strong> / <strong>'
-            . esc_html__('solfiti', 'fp-qr-info') . '</strong>.</p>'
-            . '<p>' . esc_html__(
-                'Ove siano utilizzati additivi, coadiuvanti tecnologici o altri ingredienti, inserirli con la denominazione legalmente prevista (inclusi i numeri E ove applicabili) e nell’ordine previsto dal regolamento (UE) n. 1169/2011.',
-                'fp-qr-info'
-            ) . '</p>';
+            . esc_html__('solfiti', 'fp-qr-info') . '</strong>.</p>';
     }
 
     private static function ingredientsEnHtml(): string
@@ -278,11 +274,7 @@ final class LandingLegalPresets
             . esc_html__('Ingredients:', 'fp-qr-info') . ' '
             . esc_html__('grapes', 'fp-qr-info') . '; '
             . esc_html__('preservative:', 'fp-qr-info') . ' <strong>' . esc_html__('sulphur dioxide', 'fp-qr-info') . '</strong> / <strong>'
-            . esc_html__('sulphites', 'fp-qr-info') . '</strong>.</p>'
-            . '<p>' . esc_html__(
-                'Where additives, technological aids or other ingredients are used, list them with the legally required designation (including E numbers where applicable) and in the order required by Regulation (EU) No 1169/2011.',
-                'fp-qr-info'
-            ) . '</p>';
+            . esc_html__('sulphites', 'fp-qr-info') . '</strong>.</p>';
     }
 
     /**
