@@ -55,18 +55,29 @@ final class QrDownloadController
 
         $filenameBase = 'fp-qr-info-' . $postId . '-' . $token;
 
-        if ($format === 'svg') {
-            $result = (new SvgWriter())->write($qrCode);
-            header('Content-Type: image/svg+xml; charset=UTF-8');
-            header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.svg"');
+        try {
+            if ($format === 'svg') {
+                $result = $this->runWithoutDeprecated(
+                    static fn (): \Endroid\QrCode\Writer\Result\ResultInterface => (new SvgWriter())->write($qrCode)
+                );
+                $this->prepareBinaryResponse();
+                header('Content-Type: image/svg+xml; charset=UTF-8');
+                header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.svg"');
+                echo $result->getString();
+                exit;
+            }
+
+            $result = $this->runWithoutDeprecated(
+                static fn (): \Endroid\QrCode\Writer\Result\ResultInterface => (new PngWriter())->write($qrCode)
+            );
+            $this->prepareBinaryResponse();
+            header('Content-Type: image/png');
+            header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.png"');
             echo $result->getString();
-            exit;
+        } catch (\Throwable $exception) {
+            wp_die(esc_html__('Generazione QR non riuscita.', 'fp-qr-info'));
         }
 
-        $result = (new PngWriter())->write($qrCode);
-        header('Content-Type: image/png');
-        header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.png"');
-        echo $result->getString();
         exit;
     }
 
@@ -97,7 +108,9 @@ final class QrDownloadController
             size: 900,
             margin: 10
         );
-        $qrSvg = (new SvgWriter())->write($qrCode)->getString();
+        $qrSvg = $this->runWithoutDeprecated(
+            static fn (): string => (new SvgWriter())->write($qrCode)->getString()
+        );
         ?>
         <!DOCTYPE html>
         <html <?php language_attributes(); ?>>
@@ -142,5 +155,51 @@ final class QrDownloadController
         </html>
         <?php
         exit;
+    }
+
+    /**
+     * Esegue callback QR evitando output di warning/deprecated nei binary response.
+     *
+     * @template T
+     * @param callable():T $callback Callback da eseguire.
+     * @return T
+     */
+    private function runWithoutDeprecated(callable $callback): mixed
+    {
+        $previousDisplayErrors = ini_get('display_errors');
+        $previousReporting = error_reporting();
+
+        ini_set('display_errors', '0');
+        error_reporting($previousReporting & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
+        set_error_handler(
+            static function (int $severity): bool {
+                if ($severity === E_DEPRECATED || $severity === E_USER_DEPRECATED) {
+                    return true;
+                }
+
+                return false;
+            }
+        );
+
+        try {
+            return $callback();
+        } finally {
+            restore_error_handler();
+            error_reporting($previousReporting);
+            if (is_string($previousDisplayErrors)) {
+                ini_set('display_errors', $previousDisplayErrors);
+            }
+        }
+    }
+
+    /**
+     * Pulisce eventuale output buffer prima di inviare payload binario.
+     */
+    private function prepareBinaryResponse(): void
+    {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
     }
 }

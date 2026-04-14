@@ -1,3 +1,8 @@
+## [0.1.19] - 2026-04-14
+### Fixed
+- Endpoint QR (`admin-post.php?action=fp_qr_info_download`) reso robusto su PHP 8.4: soppressione locale dei `Deprecated` della libreria QR durante la generazione PNG/SVG.
+- Risposte binarie QR (preview inline + download) ora puliscono l'output buffer prima degli header, evitando immagini corrotte/rotte in admin.
+
 ## [0.1.18] - 2026-04-14
 ### Changed
 - Palette blocchi smaltimento aggiornata: **Capsula/Plastica** in blu, **Bottiglia/Vetro** in verde, **Tappo** invariato.
