@@ -1,3 +1,8 @@
+## [0.1.8] - 2026-04-14
+### Changed
+- Schermata lista `QR Landing` (`edit.php?post_type=fp_qr_landing`) allineata al design system FP con banner header dedicato (titolo, descrizione, badge versione).
+- Rifinitura visuale tabella elenco landing (bordi/ombra/header righe) per coerenza con card e componenti admin FP.
+
 ## [0.1.7] - 2026-04-14
 ### Changed
 - Editor del CPT `fp_qr_landing`: aggiunto header in stile FP sopra le metabox (banner gradiente, descrizione e badge versione) per rendere la schermata coerente con il design system anche fuori dalla dashboard.

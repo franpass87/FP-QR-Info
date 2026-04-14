@@ -28,6 +28,7 @@ final class LandingCpt
         add_action('manage_' . self::POST_TYPE . '_posts_custom_column', [$this, 'renderColumn'], 10, 2);
         add_action('admin_enqueue_scripts', [$this, 'enqueueStoryAssets']);
         add_action('edit_form_after_title', [$this, 'renderEditorHeader']);
+        add_action('all_admin_notices', [$this, 'renderListHeader']);
     }
 
     /**
@@ -53,6 +54,31 @@ final class LandingCpt
                 </p>
             </div>
             <span class="fpqri-editor-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
+        </div>
+        <?php
+    }
+
+    /**
+     * Renderizza un header FP nella schermata lista del CPT.
+     */
+    public function renderListHeader(): void
+    {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen instanceof \WP_Screen || $screen->id !== 'edit-' . self::POST_TYPE) {
+            return;
+        }
+        ?>
+        <div class="fpqri-list-header" role="region" aria-label="<?php echo esc_attr__('FP QR Info lista landing', 'fp-qr-info'); ?>">
+            <div class="fpqri-list-header-content">
+                <h2 class="fpqri-list-header-title">
+                    <span class="dashicons dashicons-media-code" aria-hidden="true"></span>
+                    <?php esc_html_e('FP QR Info', 'fp-qr-info'); ?>
+                </h2>
+                <p class="fpqri-list-header-desc">
+                    <?php esc_html_e('Gestisci token, URL pubbliche e download rapidi QR direttamente dalla lista.', 'fp-qr-info'); ?>
+                </p>
+            </div>
+            <span class="fpqri-list-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
         </div>
         <?php
     }
