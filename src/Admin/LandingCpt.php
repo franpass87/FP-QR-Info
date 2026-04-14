@@ -74,8 +74,14 @@ final class LandingCpt
             'FP_QRI_LANDING_PRESETS_CFG',
             [
                 'presets' => LandingLegalPresets::getPresets(),
+                'disposalBlockExamples' => LandingLegalPresets::getDisposalBlockExamples(),
+                'disposalBlockSlugs' => LandingLegalPresets::DISPOSAL_BLOCK_SLUGS,
                 'confirmOverwrite' => __(
                     'Questa sezione contiene già del testo. Sostituirlo con il modello normativo selezionato?',
+                    'fp-qr-info'
+                ),
+                'confirmDisposalBlocks' => __(
+                    'I campi dei blocchi smaltimento contengono già dati. Sostituirli con l’esempio?',
                     'fp-qr-info'
                 ),
             ]
@@ -192,7 +198,7 @@ final class LandingCpt
         <hr>
         <p class="description" style="max-width:860px;">
             <?php esc_html_e(
-                'Per smaltimento, dichiarazione nutrizionale e ingredienti puoi usare HTML sicuro (tabelle, grassetto, immagini con URL validi). I pulsanti “Inserisci modello” aggiungono testi di partenza con icone già collegate al plugin.',
+                'Smaltimento: usa i tre blocchi (Tappo, Bottiglia, Capsula) con codice materiale e testi IT/EN; se restano vuoti, vale il blocco HTML unico sotto. Per nutrizionali e ingredienti puoi usare HTML sicuro; i pulsanti “Inserisci modello” aggiungono testi di partenza.',
                 'fp-qr-info'
             ); ?>
         </p>
@@ -203,9 +209,63 @@ final class LandingCpt
                 'fp-qr-info'
             ); ?>
         </p>
+        <h3><?php esc_html_e('Etichetta ambientale — smaltimento imballaggi', 'fp-qr-info'); ?></h3>
+        <p class="description"><?php esc_html_e('Codici es. FOR 51, GL 70, C/PVC 90 secondo la Decisione 97/129/CE (verificare sul vostro imballaggio reale).', 'fp-qr-info'); ?></p>
+        <p>
+            <button type="button" class="button button-secondary fp-qri-insert-preset" data-preset="disposal-blocks">
+                <?php esc_html_e('Inserisci esempio: blocchi Tappo / Bottiglia / Capsula', 'fp-qr-info'); ?>
+            </button>
+        </p>
+        <?php
+        foreach (LandingLegalPresets::getDisposalBlockDefinitions() as $blockDef) {
+            $slug = (string) $blockDef['slug'];
+            $titleIt = (string) $blockDef['title_it'];
+            $code = (string) get_post_meta($post->ID, 'fp_qr_info_disposal_block_' . $slug . '_code', true);
+            $it = (string) get_post_meta($post->ID, 'fp_qr_info_disposal_block_' . $slug . '_it', true);
+            $en = (string) get_post_meta($post->ID, 'fp_qr_info_disposal_block_' . $slug . '_en', true);
+            ?>
+            <fieldset style="border:1px solid #c3c4c7;padding:12px 14px;margin:0 0 14px;border-radius:6px;background:#fafafa;">
+                <legend><strong><?php echo esc_html($titleIt); ?></strong></legend>
+                <p>
+                    <label for="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_code"><?php esc_html_e('Codice materiale / identificazione', 'fp-qr-info'); ?></label><br>
+                    <input type="text" class="regular-text" id="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_code" name="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_code" value="<?php echo esc_attr($code); ?>" maxlength="64" autocomplete="off">
+                </p>
+                <p>
+                    <label for="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_it"><?php esc_html_e('Testo (Italiano)', 'fp-qr-info'); ?></label><br>
+                    <textarea id="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_it" name="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_it" rows="4" class="large-text"><?php echo esc_textarea($it); ?></textarea>
+                </p>
+                <p>
+                    <label for="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_en"><?php esc_html_e('Text (English)', 'fp-qr-info'); ?></label><br>
+                    <textarea id="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_en" name="fp_qr_info_disposal_block_<?php echo esc_attr($slug); ?>_en" rows="4" class="large-text"><?php echo esc_textarea($en); ?></textarea>
+                </p>
+            </fieldset>
+            <?php
+        }
+        ?>
+        <details style="margin:16px 0;padding:8px 0;border-top:1px solid #dcdcde;">
+            <summary><?php esc_html_e('Smaltimento come HTML unico (retrocompatibilità)', 'fp-qr-info'); ?></summary>
+            <p class="description"><?php esc_html_e('Usato solo se tutti e tre i blocchi sopra sono vuoti.', 'fp-qr-info'); ?></p>
+            <?php
+            $legacyIt = (string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true);
+            $legacyEn = (string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true);
+            ?>
+            <p>
+                <button type="button" class="button button-secondary fp-qri-insert-preset" data-preset="disposal">
+                    <?php esc_html_e('Inserisci modello: testo normativo smaltimento (HTML)', 'fp-qr-info'); ?>
+                </button>
+            </p>
+            <p>
+                <label for="fp_qr_info_disposal_it"><?php esc_html_e('Italiano', 'fp-qr-info'); ?></label><br>
+                <textarea id="fp_qr_info_disposal_it" name="fp_qr_info_disposal_it" rows="8" class="large-text code"><?php echo esc_textarea($legacyIt); ?></textarea>
+            </p>
+            <p>
+                <label for="fp_qr_info_disposal_en"><?php esc_html_e('English', 'fp-qr-info'); ?></label><br>
+                <textarea id="fp_qr_info_disposal_en" name="fp_qr_info_disposal_en" rows="8" class="large-text code"><?php echo esc_textarea($legacyEn); ?></textarea>
+            </p>
+        </details>
+        <hr>
         <?php
         $presetButtonLabels = [
-            'disposal' => __('Inserisci modello: smaltimento imballaggi + simboli', 'fp-qr-info'),
             'nutrition' => __('Inserisci modello: dichiarazione nutrizionale (tabella)', 'fp-qr-info'),
             'ingredients' => __('Inserisci modello: ingredienti / allergeni (vino)', 'fp-qr-info'),
         ];
@@ -367,6 +427,27 @@ final class LandingCpt
         update_post_meta($postId, 'fp_qr_info_story_it', $storyIt);
         update_post_meta($postId, 'fp_qr_info_story_en', $storyEn);
 
+        foreach (LandingLegalPresets::DISPOSAL_BLOCK_SLUGS as $slug) {
+            $codeKey = 'fp_qr_info_disposal_block_' . $slug . '_code';
+            $itKey = 'fp_qr_info_disposal_block_' . $slug . '_it';
+            $enKey = 'fp_qr_info_disposal_block_' . $slug . '_en';
+            $codeVal = isset($_POST[$codeKey]) ? sanitize_text_field(wp_unslash((string) $_POST[$codeKey])) : '';
+            $itVal = isset($_POST[$itKey]) ? wp_kses_post(wp_unslash((string) $_POST[$itKey])) : '';
+            $enVal = isset($_POST[$enKey]) ? wp_kses_post(wp_unslash((string) $_POST[$enKey])) : '';
+            update_post_meta($postId, $codeKey, $codeVal);
+            update_post_meta($postId, $itKey, $itVal);
+            update_post_meta($postId, $enKey, $enVal);
+        }
+
+        $legacyDisposalIt = isset($_POST['fp_qr_info_disposal_it'])
+            ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_disposal_it']))
+            : '';
+        $legacyDisposalEn = isset($_POST['fp_qr_info_disposal_en'])
+            ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_disposal_en']))
+            : '';
+        update_post_meta($postId, 'fp_qr_info_disposal_it', $legacyDisposalIt);
+        update_post_meta($postId, 'fp_qr_info_disposal_en', $legacyDisposalEn);
+
         foreach (array_keys($this->getFields()) as $fieldKey) {
             $itValue = isset($_POST['fp_qr_info_' . $fieldKey . '_it'])
                 ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_' . $fieldKey . '_it']))
@@ -445,7 +526,6 @@ final class LandingCpt
     private function getFields(): array
     {
         return [
-            'disposal' => __('Informazioni di smaltimento / Disposal info', 'fp-qr-info'),
             'nutrition' => __('Informazioni nutrizionali / Nutritional info', 'fp-qr-info'),
             'ingredients' => __('Ingredienti / Ingredients', 'fp-qr-info'),
         ];

@@ -108,12 +108,17 @@ final class LandingRouter
     {
         $title = get_the_title($post);
         $intro = __('INFORMAZIONI DI SMALTIMENTO NUTRIZIONALI E INGREDIENTI - DISPOSAL AND NUTRITIONAL INFO, INGREDIENTS', 'fp-qr-info');
+        $useDisposalBlocks = $this->disposalBlocksInUse($post->ID);
         $sections = [
             'disposal' => [
-                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true)),
-                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true)),
-                'label_it' => __('INFORMAZIONI DI SMALTIMENTO', 'fp-qr-info'),
-                'label_en' => __('DISPOSAL INFO', 'fp-qr-info'),
+                'it' => $useDisposalBlocks
+                    ? $this->buildDisposalBlocksHtml($post->ID, 'it')
+                    : $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true)),
+                'en' => $useDisposalBlocks
+                    ? $this->buildDisposalBlocksHtml($post->ID, 'en')
+                    : $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true)),
+                'label_it' => __('Etichetta ambientale / Imballaggi', 'fp-qr-info'),
+                'label_en' => __('Environmental labelling / Packaging', 'fp-qr-info'),
             ],
             'nutrition' => [
                 'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true)),
@@ -385,6 +390,57 @@ final class LandingRouter
                     font-size: 0.82rem;
                     margin: 10px 0 0;
                 }
+                .fpqi-packaging-grid {
+                    display: grid;
+                    gap: 12px;
+                    grid-template-columns: 1fr;
+                    margin-top: 4px;
+                }
+                @media (min-width: 640px) {
+                    .fpqi-packaging-grid {
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+                }
+                .fpqi-pack-card {
+                    border: 1px solid var(--fpqi-border);
+                    border-radius: 12px;
+                    padding: 14px 12px;
+                    background: #fff;
+                    min-height: 100%;
+                }
+                .fpqi-pack-card.fpqi-pack-capsule {
+                    border-color: #ca8a04;
+                    box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.35);
+                }
+                .fpqi-pack-title {
+                    margin: 0 0 10px;
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    color: var(--fpqi-text);
+                }
+                .fpqi-pack-code {
+                    margin-bottom: 10px;
+                }
+                .fpqi-pack-code-inner {
+                    display: inline-block;
+                    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    padding: 6px 10px;
+                    border-radius: 8px;
+                    background: #f1f5f9;
+                    border: 1px solid #cbd5e1;
+                    color: #0f172a;
+                }
+                .fpqi-pack-body {
+                    font-size: 0.9rem;
+                    color: var(--fpqi-muted);
+                    line-height: 1.5;
+                    white-space: pre-line;
+                }
+                .fpqi-pack-body p {
+                    margin: 0 0 6px;
+                }
             </style>
         </head>
         <body>
@@ -488,5 +544,62 @@ final class LandingRouter
         $expanded = LandingLegalPresets::expandPlaceholder($raw);
 
         return wp_kses_post($expanded);
+    }
+
+    /**
+     * Verifica se è compilato almeno un campo dei blocchi smaltimento (Tappo, Bottiglia, Capsula).
+     */
+    private function disposalBlocksInUse(int $postId): bool
+    {
+        foreach (LandingLegalPresets::DISPOSAL_BLOCK_SLUGS as $slug) {
+            $code = trim((string) get_post_meta($postId, 'fp_qr_info_disposal_block_' . $slug . '_code', true));
+            $it = trim((string) get_post_meta($postId, 'fp_qr_info_disposal_block_' . $slug . '_it', true));
+            $en = trim((string) get_post_meta($postId, 'fp_qr_info_disposal_block_' . $slug . '_en', true));
+            if ($code !== '' || $it !== '' || $en !== '') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Costruisce la griglia HTML dei blocchi imballaggio per la lingua richiesta.
+     */
+    private function buildDisposalBlocksHtml(int $postId, string $lang): string
+    {
+        $lang = $lang === 'en' ? 'en' : 'it';
+        $parts = [];
+        foreach (LandingLegalPresets::getDisposalBlockDefinitions() as $def) {
+            $slug = (string) $def['slug'];
+            $code = trim((string) get_post_meta($postId, 'fp_qr_info_disposal_block_' . $slug . '_code', true));
+            $bodyRaw = (string) get_post_meta($postId, 'fp_qr_info_disposal_block_' . $slug . '_' . $lang, true);
+            $bodyTrim = trim($bodyRaw);
+            if ($code === '' && $bodyTrim === '') {
+                continue;
+            }
+            $title = $lang === 'en' ? (string) $def['title_en'] : (string) $def['title_it'];
+            $cardClass = 'fpqi-pack-card fpqi-pack-' . preg_replace('/[^a-z0-9_-]/', '', $slug);
+            if ($slug === 'capsule') {
+                $cardClass .= ' fpqi-pack-capsule';
+            }
+            $codeHtml = $code !== ''
+                ? '<div class="fpqi-pack-code"><span class="fpqi-pack-code-inner">' . esc_html($code) . '</span></div>'
+                : '';
+            $bodyHtml = $bodyTrim !== ''
+                ? '<div class="fpqi-pack-body">' . wp_kses_post(LandingLegalPresets::expandPlaceholder($bodyRaw)) . '</div>'
+                : '';
+            $parts[] = '<article class="' . esc_attr($cardClass) . '" role="listitem">'
+                . '<h3 class="fpqi-pack-title">' . esc_html($title) . '</h3>'
+                . $codeHtml
+                . $bodyHtml
+                . '</article>';
+        }
+
+        if ($parts === []) {
+            return '';
+        }
+
+        return '<div class="fpqi-packaging-grid" role="list">' . implode('', $parts) . '</div>';
     }
 }

@@ -1,3 +1,8 @@
+## [0.1.5] - 2026-04-14
+### Added
+- Smaltimento a **blocchi** Tappo, Bottiglia e Capsula (codice materiale + testi IT/EN), griglia responsive sulla landing e pulsante «Inserisci esempio» (FOR 51, GL 70, C/PVC 90).
+- Retrocompatibilità: se tutti i blocchi sono vuoti si usa l’HTML unico in `<details>`; titolo sezione «Etichetta ambientale / Imballaggi».
+
 ## [0.1.4] - 2026-04-14
 ### Changed
 - Modelli legali allineati a riferimenti espliciti: Reg. (UE) 1169/2011 (FIC, artt. 18, 21, 30–34, Allegato XV), Reg. (UE) 2021/2117 (vino), reg. delegato (UE) 2023/1606, Direttiva (UE) 2018/852, Decisione 97/129/CE; tabella nutrizionale con diciture Allegato XV (IT/EN), nota sale art. 30(5), ordine energetico kJ prima dei kcal (art. 33).

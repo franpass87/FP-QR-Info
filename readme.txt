@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.4
+Stable tag: 0.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.5 =
+* Blocchi smaltimento Tappo/Bottiglia/Capsula con codici e testi bilingue; esempio precompilato; fallback HTML unico.
 
 = 0.1.4 =
 * Modelli precompilati aggiornati con riferimenti normativi UE puntuali (FIC 1169/2011, vino 2021/2117, imballaggi 2018/852 e 97/129/CE) e diciture tabella nutrizionale conformi all’Allegato XV.

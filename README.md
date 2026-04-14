@@ -15,6 +15,7 @@ Plugin WordPress per creare landing page standalone (senza tema) dedicate ai QR 
   - Ingredienti / Ingredients
 - Opzionale: storia del vino e dell’etichetta con immagine bottiglia a tutto schermo (hero) e testi IT/EN; senza immagine resta un blocco testuale in evidenza.
 - Modelli precompilati con riferimenti normativi UE citati nel testo (FIC 1169/2011, vino 2021/2117, imballaggi 2018/852 e Decisione 97/129/CE), tabella nutrizionale in ordine Allegato XV e nota sale (art. 30(5)); pulsanti in admin; simbolo riciclaggio Unicode U+267B e icona vetro illustrativa in SVG.
+- Smaltimento a tre blocchi (Tappo, Bottiglia, Capsula) con codice materiale e testi IT/EN, griglia su mobile/desktop; esempio FOR 51 / GL 70 / C/PVC 90; HTML unico opzionale se i blocchi sono vuoti.
 - Download QR code PNG/SVG dalla schermata admin.
 - Anteprima QR nella sidebar della singola landing.
 - Dashboard admin `FP QR Info` con grafica allineata al design system FP.

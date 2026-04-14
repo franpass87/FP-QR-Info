@@ -15,6 +15,61 @@ final class LandingLegalPresets
 {
     public const PLACEHOLDER = '{{FP_QR_INFO_ICONS_URL}}';
 
+    /** @var list<string> */
+    public const DISPOSAL_BLOCK_SLUGS = ['cork', 'bottle', 'capsule'];
+
+    /**
+     * Definizione blocchi smaltimento (Tappo, Bottiglia, Capsula) per titoli bilingue.
+     *
+     * @return list<array{slug: string, title_it: string, title_en: string}>
+     */
+    public static function getDisposalBlockDefinitions(): array
+    {
+        return [
+            [
+                'slug' => 'cork',
+                'title_it' => __('Tappo', 'fp-qr-info'),
+                'title_en' => __('Cork (closure)', 'fp-qr-info'),
+            ],
+            [
+                'slug' => 'bottle',
+                'title_it' => __('Bottiglia', 'fp-qr-info'),
+                'title_en' => __('Bottle', 'fp-qr-info'),
+            ],
+            [
+                'slug' => 'capsule',
+                'title_it' => __('Capsula', 'fp-qr-info'),
+                'title_en' => __('Capsule / sleeve', 'fp-qr-info'),
+            ],
+        ];
+    }
+
+    /**
+     * Valori di esempio per i blocchi (codici tipo Decisione 97/129/CE — verificare sul prodotto reale).
+     *
+     * @return array<string, array{code: string, it: string, en: string}>
+     */
+    public static function getDisposalBlockExamples(): array
+    {
+        return [
+            'cork' => [
+                'code' => 'FOR 51',
+                'it' => "Sughero\n" . __('Raccolta differenziata dedicata', 'fp-qr-info'),
+                'en' => "Cork\n" . __('Dedicated separate collection', 'fp-qr-info'),
+            ],
+            'bottle' => [
+                'code' => 'GL 70',
+                'it' => __('Vetro incolore', 'fp-qr-info') . "\n" . __('Raccolta vetro', 'fp-qr-info'),
+                'en' => __('Clear glass', 'fp-qr-info') . "\n" . __('Glass collection', 'fp-qr-info'),
+            ],
+            'capsule' => [
+                'code' => 'C/PVC 90',
+                'it' => __('Capsule in PVC', 'fp-qr-info') . "\n" . __('Raccolta plastica', 'fp-qr-info'),
+                'en' => __('PVC capsules', 'fp-qr-info') . "\n" . __('Plastic collection', 'fp-qr-info'),
+            ],
+        ];
+    }
+
     /**
      * URL base delle icone statiche del plugin (SVG illustrativi, non sostituiscono marchi o codici obbligatori nazionali).
      */
