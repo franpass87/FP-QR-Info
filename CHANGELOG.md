@@ -1,3 +1,8 @@
+## [0.1.24] - 2026-04-14
+### Changed
+- Headline “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” riposizionata sotto “Storia ed etichetta”.
+- Nella testata alta restano solo nome vino e switch lingua; la headline sezioni è separata e contestuale ai blocchi informativi.
+
 ## [0.1.23] - 2026-04-14
 ### Changed
 - Hero landing: sezione di testa (titolo + switch lingua) resa su sfondo bianco con card/header chiaro, al posto dell’aspetto scuro/trasparente precedente.

@@ -252,8 +252,7 @@ final class LandingRouter
                     padding: 12px 14px;
                     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
                 }
-                .fpqi-story-hero-top .fpqi-title,
-                .fpqi-story-hero-top .fpqi-intro {
+                .fpqi-story-hero-top .fpqi-title {
                     color: var(--fpqi-text);
                 }
                 .fpqi-story-hero-top .fpqi-lang {
@@ -315,13 +314,14 @@ final class LandingRouter
                     margin-bottom: 20px;
                 }
                 .fpqi-title { margin: 0; font-size: 1.35rem; }
-                .fpqi-intro {
-                    margin: 8px 0 0;
-                    font-size: 0.95rem;
-                    color: var(--fpqi-muted);
+                .fpqi-main-section-headline {
+                    margin: 0 0 16px;
+                    font-size: 0.98rem;
+                    color: var(--fpqi-primary);
                     line-height: 1.45;
                     letter-spacing: 0.02em;
                     text-transform: uppercase;
+                    font-weight: 700;
                 }
                 .fpqi-lang {
                     display: inline-flex;
@@ -535,7 +535,6 @@ final class LandingRouter
                     <header class="fpqi-head">
                         <div>
                             <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
-                            <h2 class="fpqi-intro" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
                         </div>
                         <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
                             <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
@@ -559,11 +558,11 @@ final class LandingRouter
                     <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
                 </section>
             <?php endif; ?>
+            <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
             <?php if (!$storyShowHero): ?>
                 <header class="fpqi-head">
                     <div>
                         <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
-                        <h2 class="fpqi-intro" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
                     </div>
                     <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
                         <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
