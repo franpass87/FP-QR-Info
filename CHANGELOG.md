@@ -1,3 +1,8 @@
+## [0.1.33] - 2026-04-14
+### Changed
+- Spaziatura verticale tra i box hero uniformata: rimossi i comportamenti `100vh/space-between` che creavano gap irregolari.
+- Header, box immagine e box “Storia ed etichetta” ora seguono ritmo costante con padding coerenti tra i blocchi.
+
 ## [0.1.32] - 2026-04-14
 ### Changed
 - Etichetta footer link aggiornata da “Torna alla home” a formulazione più neutra “Vai al sito web” (EN: “Visit website”).
