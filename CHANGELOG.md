@@ -1,3 +1,9 @@
+## [0.1.11] - 2026-04-14
+### Added
+- Nuovo campo admin **Colore accent landing** per ogni `QR Landing`, con color picker e fallback predefinito.
+### Changed
+- Landing frontend `/qr-info/{token}` ora usa il colore accent salvato nei metadati per switch lingua, titoli sezione e altri accenti UI.
+
 ## [0.1.10] - 2026-04-14
 ### Fixed
 - Switch lingua ITA/ENG della landing (`/qr-info/{token}`): layout reso stabile e consistente come segmented control, evitando il rendering schiacciato/impilato su alcuni browser/device.

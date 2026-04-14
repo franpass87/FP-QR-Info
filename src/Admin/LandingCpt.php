@@ -15,6 +15,7 @@ final class LandingCpt
     private const NONCE_ACTION = 'fp_qr_info_save_meta';
     private const NONCE_NAME = 'fp_qr_info_nonce';
     private const META_TOKEN = 'fp_qr_info_token';
+    private const META_ACCENT_COLOR = 'fp_qr_info_accent_color';
 
     /**
      * Registra hook admin del CPT.
@@ -214,6 +215,15 @@ final class LandingCpt
             <label for="fp_qr_info_token"><strong><?php esc_html_e('Token URL', 'fp-qr-info'); ?></strong></label><br>
             <input type="text" id="fp_qr_info_token" name="fp_qr_info_token" class="regular-text" value="<?php echo esc_attr($token); ?>">
             <span class="description"><?php esc_html_e('Usato nella route /qr-info/{token}', 'fp-qr-info'); ?></span>
+        </p>
+        <?php
+        $accentColor = (string) get_post_meta($post->ID, self::META_ACCENT_COLOR, true);
+        $accentColor = sanitize_hex_color($accentColor) ?: '#5b21b6';
+        ?>
+        <p>
+            <label for="fp_qr_info_accent_color"><strong><?php esc_html_e('Colore accent landing', 'fp-qr-info'); ?></strong></label><br>
+            <input type="color" id="fp_qr_info_accent_color" name="fp_qr_info_accent_color" value="<?php echo esc_attr($accentColor); ?>">
+            <span class="description"><?php esc_html_e('Usato per switch lingua, titoli sezione e accenti grafici frontend.', 'fp-qr-info'); ?></span>
         </p>
         <p>
             <button type="button" class="button" id="fp-qri-regenerate-token"><?php esc_html_e('Rigenera token', 'fp-qr-info'); ?></button>
@@ -462,6 +472,10 @@ final class LandingCpt
         }
         $token = $this->ensureUniqueToken($token, $postId);
         update_post_meta($postId, self::META_TOKEN, $token);
+        $accentColor = isset($_POST['fp_qr_info_accent_color'])
+            ? sanitize_hex_color(wp_unslash((string) $_POST['fp_qr_info_accent_color']))
+            : null;
+        update_post_meta($postId, self::META_ACCENT_COLOR, is_string($accentColor) && $accentColor !== '' ? $accentColor : '#5b21b6');
 
         $storyImageId = isset($_POST['fp_qr_info_story_image_id']) ? absint(wp_unslash((string) $_POST['fp_qr_info_story_image_id'])) : 0;
         if ($storyImageId > 0 && get_post($storyImageId) === null) {

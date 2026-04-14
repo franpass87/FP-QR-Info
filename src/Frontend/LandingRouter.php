@@ -108,6 +108,7 @@ final class LandingRouter
     {
         $title = get_the_title($post);
         $intro = __('INFORMAZIONI DI SMALTIMENTO NUTRIZIONALI E INGREDIENTI - DISPOSAL AND NUTRITIONAL INFO, INGREDIENTS', 'fp-qr-info');
+        $accentColor = $this->resolveAccentColor($post->ID);
         $useDisposalBlocks = $this->disposalBlocksInUse($post->ID);
         $sections = [
             'disposal' => [
@@ -184,7 +185,7 @@ final class LandingRouter
                     --fpqi-surface: #ffffff;
                     --fpqi-text: #1f2937;
                     --fpqi-muted: #4b5563;
-                    --fpqi-primary: #5b21b6;
+                    --fpqi-primary: <?php echo esc_html($accentColor); ?>;
                     --fpqi-border: #e5e7eb;
                     --fpqi-radius: 14px;
                 }
@@ -625,5 +626,16 @@ final class LandingRouter
         }
 
         return '<div class="fpqi-packaging-grid" role="list">' . implode('', $parts) . '</div>';
+    }
+
+    /**
+     * Restituisce il colore accent valido della landing.
+     */
+    private function resolveAccentColor(int $postId): string
+    {
+        $raw = (string) get_post_meta($postId, 'fp_qr_info_accent_color', true);
+        $sanitized = sanitize_hex_color($raw);
+
+        return is_string($sanitized) && $sanitized !== '' ? $sanitized : '#5b21b6';
     }
 }
