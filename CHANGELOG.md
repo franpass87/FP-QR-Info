@@ -1,3 +1,7 @@
+## [0.1.6] - 2026-04-14
+### Changed
+- Admin dashboard e schermata CPT: UI allineata al **FP Admin UI Design System** (token `--fpdms-*`, banner gradiente standard FP Mail, card con header/body, badge, status pill, bottoni `fpqri-btn*`), classe body `fpqri-admin-shell`, enqueue CSS con fallback `$_GET['page']`.
+
 ## [0.1.5] - 2026-04-14
 ### Added
 - Smaltimento a **blocchi** Tappo, Bottiglia e Capsula (codice materiale + testi IT/EN), griglia responsive sulla landing e pulsante «Inserisci esempio» (FOR 51, GL 70, C/PVC 90).

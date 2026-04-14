@@ -21,6 +21,7 @@ final class AdminMenu
     {
         add_action('admin_menu', [$this, 'registerMenu']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAssets']);
+        add_filter('admin_body_class', [$this, 'filterAdminBodyClass']);
     }
 
     /**
@@ -46,7 +47,8 @@ final class AdminMenu
      */
     public function enqueueAssets(string $hook): void
     {
-        $isPluginDashboard = str_contains($hook, self::MENU_SLUG);
+        $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash((string) $_GET['page'])) : '';
+        $isPluginDashboard = str_contains($hook, self::MENU_SLUG) || $page === self::MENU_SLUG;
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
         $isQrCptScreen = $screen instanceof \WP_Screen && $screen->post_type === 'fp_qr_landing';
 
@@ -60,6 +62,26 @@ final class AdminMenu
             [],
             FP_QR_INFO_VERSION
         );
+    }
+
+    /**
+     * Aggiunge classe body sulle schermate del plugin (margini e skin coerenti).
+     *
+     * @param string $classes Classi esistenti (prefisso spazio lasciato a WP).
+     * @return string Classi con suffisso plugin.
+     */
+    public function filterAdminBodyClass(string $classes): string
+    {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        $isDashboard = $screen instanceof \WP_Screen
+            && ($screen->id === 'toplevel_page_' . self::MENU_SLUG || str_contains((string) $screen->id, self::MENU_SLUG));
+        $isCpt = $screen instanceof \WP_Screen && $screen->post_type === 'fp_qr_landing';
+
+        if ($isDashboard || $isCpt) {
+            return $classes . ' fpqri-admin-shell';
+        }
+
+        return $classes;
     }
 
     /**
@@ -79,27 +101,54 @@ final class AdminMenu
                         <span class="dashicons dashicons-media-code"></span>
                         <?php esc_html_e('FP QR Info', 'fp-qr-info'); ?>
                     </h2>
-                    <p><?php esc_html_e('Landing standalone IT/EN per etichette QR code, non indicizzabili solo sulle route del plugin.', 'fp-qr-info'); ?></p>
+                    <p class="fpqri-page-header-desc"><?php esc_html_e('Landing standalone IT/EN per etichette QR code, non indicizzabili solo sulle route del plugin.', 'fp-qr-info'); ?></p>
                 </div>
                 <span class="fpqri-page-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
             </div>
 
-            <div class="fpqri-card">
-                <h3><?php esc_html_e('Operativita', 'fp-qr-info'); ?></h3>
-                <p><?php esc_html_e('Crea e gestisci landing pubbliche con token, contenuti IT/EN e download QR in PNG/SVG.', 'fp-qr-info'); ?></p>
-                <p>
-                    <a class="button button-primary" href="<?php echo esc_url($newUrl); ?>"><?php esc_html_e('Crea nuova landing', 'fp-qr-info'); ?></a>
-                    <a class="button" href="<?php echo esc_url($listUrl); ?>"><?php esc_html_e('Vai alla lista landing', 'fp-qr-info'); ?></a>
-                </p>
+            <div class="fpqri-status-bar" role="status">
+                <span class="fpqri-status-pill is-active">
+                    <span class="dot" aria-hidden="true"></span>
+                    <?php esc_html_e('Plugin attivo', 'fp-qr-info'); ?>
+                </span>
+                <span class="fpqri-status-pill is-active">
+                    <span class="dot" aria-hidden="true"></span>
+                    <?php esc_html_e('Route pubblica /qr-info/{token}', 'fp-qr-info'); ?>
+                </span>
             </div>
 
             <div class="fpqri-card">
-                <h3><?php esc_html_e('Best practice QR', 'fp-qr-info'); ?></h3>
-                <ul class="fpqri-list">
-                    <li><?php esc_html_e('Mantieni token non banali e univoci.', 'fp-qr-info'); ?></li>
-                    <li><?php esc_html_e('Usa il formato SVG per stampa ad alta qualita.', 'fp-qr-info'); ?></li>
-                    <li><?php esc_html_e('Verifica il contenuto in ITA e ENG prima di stampare le etichette.', 'fp-qr-info'); ?></li>
-                </ul>
+                <div class="fpqri-card-header">
+                    <div class="fpqri-card-header-left">
+                        <span class="dashicons dashicons-plus-alt" aria-hidden="true"></span>
+                        <h2><?php esc_html_e('Operatività', 'fp-qr-info'); ?></h2>
+                    </div>
+                    <span class="fpqri-badge fpqri-badge-success"><?php esc_html_e('Pronto', 'fp-qr-info'); ?></span>
+                </div>
+                <div class="fpqri-card-body">
+                    <p class="description"><?php esc_html_e('Crea e gestisci landing pubbliche con token, contenuti IT/EN e download QR in PNG/SVG.', 'fp-qr-info'); ?></p>
+                    <div class="fpqri-card-actions">
+                        <a class="fpqri-btn fpqri-btn-primary fpqri-btn-lg" href="<?php echo esc_url($newUrl); ?>"><?php esc_html_e('Crea nuova landing', 'fp-qr-info'); ?></a>
+                        <a class="fpqri-btn fpqri-btn-secondary fpqri-btn-lg" href="<?php echo esc_url($listUrl); ?>"><?php esc_html_e('Vai alla lista landing', 'fp-qr-info'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fpqri-card">
+                <div class="fpqri-card-header">
+                    <div class="fpqri-card-header-left">
+                        <span class="dashicons dashicons-info" aria-hidden="true"></span>
+                        <h2><?php esc_html_e('Best practice QR', 'fp-qr-info'); ?></h2>
+                    </div>
+                    <span class="fpqri-badge fpqri-badge-neutral"><?php esc_html_e('Guida', 'fp-qr-info'); ?></span>
+                </div>
+                <div class="fpqri-card-body">
+                    <ul class="fpqri-list">
+                        <li><?php esc_html_e('Mantieni token non banali e univoci.', 'fp-qr-info'); ?></li>
+                        <li><?php esc_html_e('Usa il formato SVG per stampa ad alta qualità.', 'fp-qr-info'); ?></li>
+                        <li><?php esc_html_e('Verifica il contenuto in ITA e ENG prima di stampare le etichette.', 'fp-qr-info'); ?></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <?php
