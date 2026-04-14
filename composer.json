@@ -1,0 +1,22 @@
+{
+  "name": "franpass87/fp-qr-info",
+  "description": "Standalone QR landing pages for product labels",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Francesco Passeri",
+      "email": "info@francescopasseri.com",
+      "homepage": "https://francescopasseri.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "endroid/qr-code": "^5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "FP\\QrInfo\\": "src/"
+    }
+  }
+}

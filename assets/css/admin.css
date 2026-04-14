@@ -1,0 +1,79 @@
+.fpqri-admin-page {
+    margin-top: 16px;
+}
+
+.fpqri-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, #5b21b6, #7c3aed);
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.fpqri-page-header-title {
+    margin: 0 0 6px;
+    font-size: 1.35rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fpqri-page-header p {
+    margin: 0;
+    opacity: 0.95;
+}
+
+.fpqri-page-header-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fpqri-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.fpqri-card h3 {
+    margin-top: 0;
+}
+
+.fpqri-list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+/* Migliora leggibilita metabox CPT senza alterare flusso core notice */
+.post-type-fp_qr_landing #poststuff .postbox {
+    border-radius: 12px;
+    border: 1px solid #dcdcde;
+}
+
+.post-type-fp_qr_landing #poststuff .postbox-header {
+    background: #f6f3ff;
+}
+
+.post-type-fp_qr_landing #fp_qr_info_meta textarea {
+    min-height: 110px;
+}
+
+.post-type-fp_qr_landing #fp_qr_info_actions .button + .button {
+    margin-top: 8px;
+}
+
+.post-type-fp_qr_landing #fp_qr_info_actions .button {
+    margin-bottom: 6px;
+}
