@@ -128,8 +128,8 @@ final class LandingRouter
                 'label_en' => __('NUTRITIONAL INFO', 'fp-qr-info'),
             ],
             'ingredients' => [
-                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true)),
-                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true)),
+                'it' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true), 'it')),
+                'en' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true), 'en')),
                 'label_it' => __('INGREDIENTI', 'fp-qr-info'),
                 'label_en' => __('INGREDIENTS', 'fp-qr-info'),
             ],
@@ -637,5 +637,33 @@ final class LandingRouter
         $sanitized = sanitize_hex_color($raw);
 
         return is_string($sanitized) && $sanitized !== '' ? $sanitized : '#5b21b6';
+    }
+
+    /**
+     * Aggiorna etichette legacy "Esempio" in formulazione standard vino.
+     *
+     * @param string $html Blocco ingredienti salvato.
+     * @param string $lang Lingua corrente (it|en).
+     * @return string HTML normalizzato.
+     */
+    private function normalizeLegacyIngredientsCopy(string $html, string $lang): string
+    {
+        if ($html === '') {
+            return $html;
+        }
+
+        if ($lang === 'en') {
+            return str_replace(
+                'Example (wine — adapt to the actual product)',
+                'Wine — ingredients declaration',
+                $html
+            );
+        }
+
+        return str_replace(
+            'Esempio (vino — da adattare al prodotto reale)',
+            'Vino — dichiarazione ingredienti',
+            $html
+        );
     }
 }

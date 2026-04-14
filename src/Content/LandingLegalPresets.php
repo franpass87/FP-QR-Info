@@ -250,7 +250,7 @@ final class LandingLegalPresets
                 'Le sostanze o i prodotti elencati nell’allegato II che causano allergie o intolleranze devono essere evidenziati come richiesto dall’articolo 21, paragrafo 1, lettera a), del regolamento (UE) n. 1169/2011.',
                 'fp-qr-info'
             ) . '</p>'
-            . '<p><strong>' . esc_html__('Esempio (vino — da adattare al prodotto reale)', 'fp-qr-info') . '</strong><br />'
+            . '<p><strong>' . esc_html__('Vino — dichiarazione ingredienti', 'fp-qr-info') . '</strong><br />'
             . esc_html__('Ingredienti:', 'fp-qr-info') . ' '
             . esc_html__('uva', 'fp-qr-info') . '; '
             . esc_html__('conservatore:', 'fp-qr-info') . ' <strong>' . esc_html__('anidride solforosa', 'fp-qr-info') . '</strong> / <strong>'
@@ -278,7 +278,7 @@ final class LandingLegalPresets
                 'Substances or products listed in Annex II causing allergies or intolerances shall be emphasised as required by Article 21(1)(a) of Regulation (EU) No 1169/2011.',
                 'fp-qr-info'
             ) . '</p>'
-            . '<p><strong>' . esc_html__('Example (wine — adapt to the actual product)', 'fp-qr-info') . '</strong><br />'
+            . '<p><strong>' . esc_html__('Wine — ingredients declaration', 'fp-qr-info') . '</strong><br />'
             . esc_html__('Ingredients:', 'fp-qr-info') . ' '
             . esc_html__('grapes', 'fp-qr-info') . '; '
             . esc_html__('preservative:', 'fp-qr-info') . ' <strong>' . esc_html__('sulphur dioxide', 'fp-qr-info') . '</strong> / <strong>'

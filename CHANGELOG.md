@@ -1,3 +1,8 @@
+## [0.1.12] - 2026-04-14
+### Changed
+- Sezione ingredienti vino: rimossa la dicitura “Esempio …” nei modelli predefiniti e sostituita con formulazione standard “Vino — dichiarazione ingredienti”.
+- Compatibilità contenuti già salvati: in frontend viene normalizzata automaticamente la vecchia stringa legacy “Esempio (vino — da adattare al prodotto reale)” / “Example (wine — adapt to the actual product)”.
+
 ## [0.1.11] - 2026-04-14
 ### Added
 - Nuovo campo admin **Colore accent landing** per ogni `QR Landing`, con color picker e fallback predefinito.
