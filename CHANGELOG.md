@@ -1,3 +1,8 @@
+## [0.1.10] - 2026-04-14
+### Fixed
+- Switch lingua ITA/ENG della landing (`/qr-info/{token}`): layout reso stabile e consistente come segmented control, evitando il rendering schiacciato/impilato su alcuni browser/device.
+- Migliorati stati visuali/accessibilità dello switch (dimensioni minime, focus visibile, stato attivo con contrasto migliore).
+
 ## [0.1.9] - 2026-04-14
 ### Changed
 - Menu admin: aggiunta voce submenu esplicita **Dashboard** sotto `FP QR Info` per rendere visibile e raggiungibile la pagina dashboard.

@@ -274,21 +274,45 @@ final class LandingRouter
                     line-height: 1.45;
                 }
                 .fpqi-lang {
+                    display: inline-flex;
+                    align-items: center;
                     border: 1px solid var(--fpqi-border);
                     border-radius: 999px;
                     overflow: hidden;
                     background: #fff;
+                    padding: 2px;
+                    min-height: 42px;
+                    flex-shrink: 0;
                 }
                 .fpqi-lang button {
+                    appearance: none;
+                    -webkit-appearance: none;
                     border: 0;
                     background: transparent;
-                    padding: 8px 12px;
+                    color: var(--fpqi-text);
+                    min-width: 64px;
+                    min-height: 36px;
+                    padding: 8px 14px;
+                    margin: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     cursor: pointer;
-                    font-weight: 600;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    line-height: 1;
+                    letter-spacing: 0.02em;
+                    border-radius: 999px;
+                    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
                 }
                 .fpqi-lang button[aria-pressed="true"] {
                     background: var(--fpqi-primary);
                     color: #fff;
+                    box-shadow: 0 2px 8px rgba(91, 33, 182, 0.25);
+                }
+                .fpqi-lang button:focus-visible {
+                    outline: 2px solid var(--fpqi-primary);
+                    outline-offset: 2px;
                 }
                 .fpqi-card {
                     background: var(--fpqi-surface);
