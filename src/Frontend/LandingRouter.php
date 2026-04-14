@@ -433,6 +433,14 @@ final class LandingRouter
                     background: #fff;
                     min-height: 100%;
                 }
+                .fpqi-pack-card.fpqi-pack-cork {
+                    border-color: #92400e;
+                    box-shadow: 0 0 0 1px rgba(146, 64, 14, 0.25);
+                }
+                .fpqi-pack-card.fpqi-pack-bottle {
+                    border-color: #0369a1;
+                    box-shadow: 0 0 0 1px rgba(3, 105, 161, 0.25);
+                }
                 .fpqi-pack-card.fpqi-pack-capsule {
                     border-color: #ca8a04;
                     box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.35);

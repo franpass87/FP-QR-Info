@@ -1,3 +1,7 @@
+## [0.1.17] - 2026-04-14
+### Changed
+- Blocchi smaltimento in landing: introdotta palette colore coerente per tutte le card (`Tappo`, `Bottiglia`, `Capsula`) invece dell’evidenziazione singola della sola capsula.
+
 ## [0.1.16] - 2026-04-14
 ### Changed
 - Sezione nutrizionale vino semplificata: rimosso il paragrafo testuale ridondante “Valori medi per vino…” perché i dati sono già presenti in tabella.
