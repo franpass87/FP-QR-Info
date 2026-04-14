@@ -328,6 +328,11 @@ final class LandingRouter
                     letter-spacing: 0.04em;
                     text-transform: uppercase;
                     font-weight: 700;
+                    background: var(--fpqi-surface);
+                    border: 1px solid var(--fpqi-border);
+                    border-radius: var(--fpqi-radius);
+                    padding: 16px;
+                    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
                 }
                 .fpqi-lang {
                     display: inline-flex;

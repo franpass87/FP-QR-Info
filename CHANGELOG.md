@@ -1,3 +1,7 @@
+## [0.1.28] - 2026-04-14
+### Changed
+- Headline “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” resa in box/card dedicato (sfondo, bordo, raggio e padding) per coerenza con gli altri blocchi.
+
 ## [0.1.27] - 2026-04-14
 ### Changed
 - Blocco “Storia ed etichetta” reso una card/box come le altre sezioni, anche nella versione hero con immagine bottiglia.
