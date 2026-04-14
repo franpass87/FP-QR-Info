@@ -207,7 +207,7 @@ final class LandingRouter
                     min-height: 100vh;
                     min-height: 100dvh;
                     width: 100%;
-                    background: radial-gradient(circle at 20% 15%, rgba(99, 102, 241, 0.22), transparent 40%), linear-gradient(180deg, #111827 0%, #1f2937 40%, #0f172a 100%);
+                    background: #ffffff;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
@@ -216,7 +216,7 @@ final class LandingRouter
                     content: "";
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 72%);
+                    background: linear-gradient(to top, rgba(15, 23, 42, 0.03) 0%, rgba(15, 23, 42, 0.01) 45%, transparent 72%);
                     pointer-events: none;
                 }
                 .fpqi-story-hero-visual {
@@ -269,7 +269,7 @@ final class LandingRouter
                     max-width: 720px;
                     margin: 0 auto;
                     width: 100%;
-                    color: #f8fafc;
+                    color: var(--fpqi-text);
                 }
                 .fpqi-story-hero-inner h2 {
                     margin: 0 0 10px;
@@ -277,13 +277,13 @@ final class LandingRouter
                     font-weight: 700;
                     letter-spacing: 0.04em;
                     text-transform: uppercase;
-                    color: #e9d5ff;
+                    color: var(--fpqi-primary);
                 }
                 .fpqi-story-hero-inner p {
                     margin: 0;
                     font-size: 1rem;
                     line-height: 1.6;
-                    color: #f1f5f9;
+                    color: var(--fpqi-muted);
                     white-space: pre-wrap;
                 }
                 .fpqi-story-card {

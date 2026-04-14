@@ -1,3 +1,8 @@
+## [0.1.25] - 2026-04-14
+### Changed
+- Hero landing aggiornata a tema chiaro: sfondo sezione immagine ora bianco (rimossa dominante blu/scura).
+- Testi blocco “Storia ed etichetta” nella hero riallineati a colori scuri per coerenza su sfondo chiaro.
+
 ## [0.1.24] - 2026-04-14
 ### Changed
 - Headline “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” riposizionata sotto “Storia ed etichetta”.
