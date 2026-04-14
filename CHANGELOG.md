@@ -1,3 +1,8 @@
+## [0.1.31] - 2026-04-14
+### Changed
+- Box immagine bottiglia riallineato allo stile delle altre card: dimensioni più compatte, layout centrato a larghezza contenuto, rimosso effetto eccessivo di card “fuori scala”.
+- Ridotta l’impronta visiva della hero image area (meno spazio verticale e ombra più leggera) per coerenza con i blocchi informativi.
+
 ## [0.1.30] - 2026-04-14
 ### Added
 - Footer in fondo alla landing con link alla home del sito.

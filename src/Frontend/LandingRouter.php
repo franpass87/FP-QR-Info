@@ -227,26 +227,31 @@ final class LandingRouter
                 .fpqi-story-hero-visual {
                     position: relative;
                     z-index: 1;
-                    flex: 1;
+                    flex: 0 0 auto;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 70px 20px 20px;
+                    max-width: 720px;
+                    margin: 0 auto;
+                    width: 100%;
+                    padding: 16px 20px 18px;
                 }
                 .fpqi-story-hero-visual-box {
                     background: var(--fpqi-surface);
                     border: 1px solid var(--fpqi-border);
                     border-radius: var(--fpqi-radius);
-                    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
                     padding: 16px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
                 }
                 .fpqi-story-hero-image {
                     display: block;
-                    width: min(92vw, 520px);
-                    max-height: min(68vh, 760px);
+                    width: min(100%, 360px);
+                    max-height: 520px;
                     object-fit: contain;
                     object-position: center center;
-                    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.45));
+                    filter: drop-shadow(0 10px 18px rgba(15, 23, 42, 0.22));
                 }
                 .fpqi-story-hero-top {
                     position: relative;

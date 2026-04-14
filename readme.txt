@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.30
+Stable tag: 0.1.31
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.31 =
+* Box immagine bottiglia reso coerente alle altre card (proporzioni più compatte, meno spazio verticale e stile uniforme).
 
 = 0.1.30 =
 * Aggiunto in fondo alla landing il link alla home del sito (testo bilingue con switch lingua).
