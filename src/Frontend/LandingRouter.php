@@ -207,7 +207,7 @@ final class LandingRouter
                     background-position: center;
                     display: flex;
                     flex-direction: column;
-                    justify-content: flex-end;
+                    justify-content: space-between;
                 }
                 .fpqi-story-hero::after {
                     content: "";
@@ -215,6 +215,32 @@ final class LandingRouter
                     inset: 0;
                     background: linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 72%);
                     pointer-events: none;
+                }
+                .fpqi-story-hero-top {
+                    position: relative;
+                    z-index: 1;
+                    max-width: 720px;
+                    margin: 0 auto;
+                    width: 100%;
+                    padding: 18px 20px 0;
+                }
+                .fpqi-story-hero-top .fpqi-head {
+                    margin-bottom: 0;
+                }
+                .fpqi-story-hero-top .fpqi-title,
+                .fpqi-story-hero-top .fpqi-intro {
+                    color: #f8fafc;
+                }
+                .fpqi-story-hero-top .fpqi-lang {
+                    border-color: rgba(255, 255, 255, 0.35);
+                    background: rgba(255, 255, 255, 0.12);
+                    backdrop-filter: blur(2px);
+                }
+                .fpqi-story-hero-top .fpqi-lang button {
+                    color: #f8fafc;
+                }
+                .fpqi-story-hero-top .fpqi-lang button[aria-pressed="false"] {
+                    opacity: 0.9;
                 }
                 .fpqi-story-hero-inner {
                     position: relative;
@@ -484,6 +510,18 @@ final class LandingRouter
                 role="img"
                 aria-label="<?php echo esc_attr($title); ?>"
             >
+                <div class="fpqi-story-hero-top">
+                    <header class="fpqi-head">
+                        <div>
+                            <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
+                            <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
+                        </div>
+                        <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
+                            <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
+                            <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
+                        </div>
+                    </header>
+                </div>
                 <div class="fpqi-story-hero-inner">
                     <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
                     <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
@@ -497,16 +535,18 @@ final class LandingRouter
                     <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
                 </section>
             <?php endif; ?>
-            <header class="fpqi-head">
-                <div>
-                    <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
-                    <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
-                </div>
-                <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
-                    <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
-                    <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
-                </div>
-            </header>
+            <?php if (!$storyShowHero): ?>
+                <header class="fpqi-head">
+                    <div>
+                        <h1 class="fpqi-title"><?php echo esc_html($title); ?></h1>
+                        <p class="fpqi-intro"><?php echo esc_html($intro); ?></p>
+                    </div>
+                    <div class="fpqi-lang" role="group" aria-label="<?php esc_attr_e('Selettore lingua', 'fp-qr-info'); ?>">
+                        <button type="button" class="fpqi-lang-btn" data-lang="it" aria-pressed="true">ITA</button>
+                        <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
+                    </div>
+                </header>
+            <?php endif; ?>
             <?php foreach ($i18nPayload['sections'] as $idx => $sec): ?>
                 <section class="fpqi-card" data-section-id="<?php echo esc_attr((string) $sec['id']); ?>">
                     <h2 class="fpqi-section-title"><?php echo esc_html((string) $sec['label']['it']); ?></h2>

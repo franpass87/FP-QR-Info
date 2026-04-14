@@ -1,3 +1,8 @@
+## [0.1.20] - 2026-04-14
+### Changed
+- Landing con hero immagine: titolo principale e switch lingua spostati in testa all’hero (overlay top) invece che sotto la hero.
+- Layout senza hero invariato: titolo e switch restano nell’header standard sopra le sezioni contenuto.
+
 ## [0.1.19] - 2026-04-14
 ### Fixed
 - Endpoint QR (`admin-post.php?action=fp_qr_info_download`) reso robusto su PHP 8.4: soppressione locale dei `Deprecated` della libreria QR durante la generazione PNG/SVG.
