@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace FP\QrInfo\Content;
 
 /**
- * Modelli HTML indicativi per smaltimento, dichiarazione nutrizionale e ingredienti (prassi UE, vino).
+ * Modelli HTML per smaltimento, dichiarazione nutrizionale e ingredienti, allineati ai riferimenti normativi UE citati nel testo.
  *
- * Testi e layout sono strumenti editoriali: la responsabilità del contenuto conforme resta sul produttore.
+ * Riferimenti principali: Reg. (UE) n. 1169/2011 (FIC), in particolare artt. 18, 21 e 30–34 e Allegato XV;
+ * per i prodotti vitivinicoli anche Reg. (UE) 2021/2117; per gli imballaggi Direttiva (UE) 2018/852 e Decisione 97/129/CE.
+ * I testi restano strumenti editoriali: la validazione finale spetta al responsabile di messa a mercato.
  */
 final class LandingLegalPresets
 {
     public const PLACEHOLDER = '{{FP_QR_INFO_ICONS_URL}}';
 
     /**
-     * URL base delle icone statiche del plugin (SVG).
+     * URL base delle icone statiche del plugin (SVG illustrativi, non sostituiscono marchi o codici obbligatori nazionali).
      */
     public static function iconsBaseUrl(): string
     {
@@ -34,7 +36,7 @@ final class LandingLegalPresets
     }
 
     /**
-     * Preset per editor admin (IT/EN), con placeholder icone.
+     * Preset per editor admin (IT/EN).
      *
      * @return array<string, array{it: string, en: string}>
      */
@@ -58,42 +60,48 @@ final class LandingLegalPresets
 
     private static function disposalItHtml(): string
     {
-        $icons = self::iconRowHtml();
+        $icons = self::iconRowHtml('it');
 
         return $icons
-            . '<p><strong>' . esc_html__('Smaltimento degli imballaggi', 'fp-qr-info') . '</strong><br />'
-            . esc_html__(
-                'Imballaggi: conferire secondo le norme del proprio Comune sulla raccolta differenziata (vetro, carta/cartone, plastica, legno, metalli dove previsto).',
-                'fp-qr-info'
-            )
-            . '</p>'
+            . '<p><strong>' . esc_html__('Informazioni per lo smaltimento degli imballaggi', 'fp-qr-info') . '</strong></p>'
             . '<p>' . esc_html__(
-                'Simboli: il simbolo del riciclaggio (Möbius) richiama l’obbligo di gestione responsabile dei rifiuti di imballaggio; le modalità concrete dipendono dagli impianti locali.',
+                'Riferimenti: Direttiva (UE) 2018/852 del Parlamento europeo e del Consiglio, recante modifica della direttiva 94/62/CE relativa agli imballaggi e ai rifiuti di imballaggio, e normativa nazionale di attuazione per la gestione dei rifiuti e la raccolta differenziata.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p>' . esc_html__(
+                'Identificazione della materia dell’imballaggio: la Decisione della Commissione 97/129/CE (come da revisioni successive) disciplina il sistema di numerazione/codifica volontario per l’identificazione del materiale (es. codici numerici associati alle materie plastiche, al vetro, ecc.). Verificare presso il proprio consulente quale combinazione di codici o marchi è richiesta o consentita sul mercato di destinazione.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p>' . esc_html__(
+                'Simbolo Unicode U+267B (BLACK UNIVERSAL RECYCLING SYMBOL, ISO/IEC 10646): spesso usato come richiamo grafico alla raccolta; non sostituisce da solo obblighi nazionali di etichettatura ambientale o di riciclaggio.',
                 'fp-qr-info'
             ) . '</p>'
             . '<p><em>' . esc_html__(
-                'Modello indicativo (normativa UE su imballaggi e informazione ambientale). Verificare testi definitivi con il vostro consulente legale.',
+                'Conferire gli imballaggi secondo le istruzioni del proprio ente locale di raccolta. Validare testi e pittogrammi con il consulente legale/ambientale.',
                 'fp-qr-info'
             ) . '</em></p>';
     }
 
     private static function disposalEnHtml(): string
     {
-        $icons = self::iconRowHtml();
+        $icons = self::iconRowHtml('en');
 
         return $icons
-            . '<p><strong>' . esc_html__('Packaging disposal', 'fp-qr-info') . '</strong><br />'
-            . esc_html__(
-                'Dispose of packaging according to your local authority rules for separate collection (glass, paper/cardboard, plastic, wood, metals where applicable).',
-                'fp-qr-info'
-            )
-            . '</p>'
+            . '<p><strong>' . esc_html__('Information on packaging disposal', 'fp-qr-info') . '</strong></p>'
             . '<p>' . esc_html__(
-                'Symbols: the chasing-arrows (Möbius) mark reminds consumers that packaging waste should be managed responsibly; actual sorting rules depend on local infrastructure.',
+                'References: Directive (EU) 2018/852 of the European Parliament and of the Council amending Directive 94/62/EC on packaging and packaging waste, and national implementing rules on waste management and separate collection.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p>' . esc_html__(
+                'Packaging material identification: Commission Decision 97/129/EC (as amended) establishes the voluntary numbering/identification system for packaging materials (e.g. numeric codes for plastics, glass, etc.). Check with your advisor which codes or marks are mandatory or permitted on your target market.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p>' . esc_html__(
+                'Unicode character U+267B (BLACK UNIVERSAL RECYCLING SYMBOL, ISO/IEC 10646) is often used as a consumer cue for recycling; it alone does not replace national environmental labelling or recycling obligations.',
                 'fp-qr-info'
             ) . '</p>'
             . '<p><em>' . esc_html__(
-                'Indicative template (EU packaging / environmental information practice). Please validate final wording with your legal advisor.',
+                'Dispose of packaging according to your local waste authority instructions. Validate wording and pictograms with your legal/environmental advisor.',
                 'fp-qr-info'
             ) . '</em></p>';
     }
@@ -101,14 +109,20 @@ final class LandingLegalPresets
     private static function nutritionItHtml(): string
     {
         $head = '<p><strong>' . esc_html__('Dichiarazione nutrizionale', 'fp-qr-info') . '</strong> — '
-            . esc_html__('per 100 ml (Reg. UE 1169/2011, Allegato XV — valori da compilare in laboratorio)', 'fp-qr-info')
-            . '</p>';
+            . esc_html__('per 100 ml', 'fp-qr-info') . '<br />'
+            . '<span class="fpqi-legal-ref">'
+            . esc_html__(
+                'Regolamento (UE) n. 1169/2011: articoli 30, 31, 32 e 34 e Allegato XV, parte B (ordine e unità di misura). Per i prodotti vitivinicoli si applicano anche le disposizioni del regolamento (UE) 2021/2117 in materia di informazioni obbligatorie, inclusa la presentazione per mezzi elettronici ove consentita.',
+                'fp-qr-info'
+            )
+            . '</span></p>';
 
-        $table = '<table class="fpqi-nutrition-table"><thead><tr>'
-            . '<th scope="col">' . esc_html__('Voce', 'fp-qr-info') . '</th>'
+        $table = '<p class="fpqi-sr-only">' . esc_html__('Dichiarazione nutrizionale per 100 ml', 'fp-qr-info') . '</p>'
+            . '<table class="fpqi-nutrition-table"><thead><tr>'
+            . '<th scope="col">' . esc_html__('Dato nutrizionale', 'fp-qr-info') . '</th>'
             . '<th scope="col">' . esc_html__('per 100 ml', 'fp-qr-info') . '</th>'
             . '</tr></thead><tbody>'
-            . '<tr><th scope="row">' . esc_html__('Energia', 'fp-qr-info') . '</th><td>… kJ / … kcal</td></tr>'
+            . '<tr><th scope="row">' . esc_html__('Valore energetico', 'fp-qr-info') . '</th><td>… kJ / … kcal</td></tr>'
             . '<tr><th scope="row">' . esc_html__('Grassi', 'fp-qr-info') . '</th><td>… g</td></tr>'
             . '<tr><th scope="row">' . esc_html__('di cui acidi grassi saturi', 'fp-qr-info') . '</th><td>… g</td></tr>'
             . '<tr><th scope="row">' . esc_html__('Carboidrati', 'fp-qr-info') . '</th><td>… g</td></tr>'
@@ -117,22 +131,33 @@ final class LandingLegalPresets
             . '<tr><th scope="row">' . esc_html__('Sale', 'fp-qr-info') . '</th><td>… g</td></tr>'
             . '</tbody></table>';
 
-        $foot = '<p><em>' . esc_html__(
-            'Sostituire i puntini con i valori analitici del lotto. Per bevande alcoliche valgono deroghe/quadri specifici: adeguare la tabella alle indicazioni del consulente di settore.',
+        $saltNote = '<p class="fpqi-legal-note"><em>' . esc_html__(
+            'Nota (art. 30, paragrafo 5, del regolamento (UE) n. 1169/2011): ove il tenore di sale sia imputabile unicamente alla presenza di sodio naturalmente presente nell’alimento, può essere indicato in prossimità della dichiarazione nutrizionale che il tenore di sale è dovuto unicamente al sodio naturalmente presente.',
             'fp-qr-info'
         ) . '</em></p>';
 
-        return $head . $table . $foot;
+        $foot = '<p><em>' . esc_html__(
+            'Sostituire i segni «…» con i valori analitici del prodotto. Il valore energetico deve essere espresso in chilojoule (kJ) e in chilocalorie (kcal), con il kJ indicato per primo (art. 33, paragrafo 5, e Allegato XV). Le quantità di nutrienti si esprimono in grammi (g) per 100 ml (art. 32).',
+            'fp-qr-info'
+        ) . '</em></p>';
+
+        return $head . $table . $saltNote . $foot;
     }
 
     private static function nutritionEnHtml(): string
     {
         $head = '<p><strong>' . esc_html__('Nutrition declaration', 'fp-qr-info') . '</strong> — '
-            . esc_html__('per 100 ml (EU Reg. 1169/2011, Annex XV — values to be filled from lab analysis)', 'fp-qr-info')
-            . '</p>';
+            . esc_html__('per 100 ml', 'fp-qr-info') . '<br />'
+            . '<span class="fpqi-legal-ref">'
+            . esc_html__(
+                'Regulation (EU) No 1169/2011: Articles 30, 31, 32 and 34 and Annex XV, Part B (order and units of measurement). For grapevine-based products, Regulation (EU) 2021/2117 also applies to mandatory particulars, including electronic presentation where permitted.',
+                'fp-qr-info'
+            )
+            . '</span></p>';
 
-        $table = '<table class="fpqi-nutrition-table"><thead><tr>'
-            . '<th scope="col">' . esc_html__('Item', 'fp-qr-info') . '</th>'
+        $table = '<p class="fpqi-sr-only">' . esc_html__('Nutrition declaration per 100 ml', 'fp-qr-info') . '</p>'
+            . '<table class="fpqi-nutrition-table"><thead><tr>'
+            . '<th scope="col">' . esc_html__('Nutrition information', 'fp-qr-info') . '</th>'
             . '<th scope="col">' . esc_html__('per 100 ml', 'fp-qr-info') . '</th>'
             . '</tr></thead><tbody>'
             . '<tr><th scope="row">' . esc_html__('Energy', 'fp-qr-info') . '</th><td>… kJ / … kcal</td></tr>'
@@ -144,77 +169,93 @@ final class LandingLegalPresets
             . '<tr><th scope="row">' . esc_html__('Salt', 'fp-qr-info') . '</th><td>… g</td></tr>'
             . '</tbody></table>';
 
-        $foot = '<p><em>' . esc_html__(
-            'Replace the ellipses with batch analytical values. Alcoholic beverages may follow specific EU formats/exemptions—adjust with your regulatory advisor.',
+        $saltNote = '<p class="fpqi-legal-note"><em>' . esc_html__(
+            'Note (Article 30(5) of Regulation (EU) No 1169/2011): where the salt content is exclusively due to the presence of naturally occurring sodium, a statement may be indicated in close proximity to the nutrition declaration to the effect that the salt content is exclusively due to the presence of naturally occurring sodium.',
             'fp-qr-info'
         ) . '</em></p>';
 
-        return $head . $table . $foot;
+        $foot = '<p><em>' . esc_html__(
+            'Replace the ellipses with product analytical values. Energy value must be given in kilojoules (kJ) and kilocalories (kcal), with kJ first (Article 33(5) and Annex XV). Amounts of nutrients are expressed in grams (g) per 100 ml (Article 32).',
+            'fp-qr-info'
+        ) . '</em></p>';
+
+        return $head . $table . $saltNote . $foot;
     }
 
     private static function ingredientsItHtml(): string
     {
-        return '<p><span class="fpqi-allergen-warn" role="img" aria-label="'
-            . esc_attr__('Attenzione allergeni', 'fp-qr-info')
-            . '">⚠</span> <strong>'
-            . esc_html__('Allergeni', 'fp-qr-info')
-            . '</strong>: '
+        return '<p><strong>' . esc_html__('Ingredienti', 'fp-qr-info') . '</strong> — '
+            . '<span class="fpqi-legal-ref">'
             . esc_html__(
-                'evidenziare in grassetto gli ingredienti e le sostanze che causano allergie o intolleranze (Reg. UE 1169/2011, art. 21).',
+                'Regolamento (UE) n. 1169/2011: articoli 18, 20, 21 e 22 e allegati pertinenti; per l’elenco degli ingredienti dei prodotti vitivinicoli si applicano anche il regolamento (UE) 2021/2117 e il regolamento delegato (UE) 2023/1606 della Commissione, ove rilevanti.',
                 'fp-qr-info'
             )
-            . '</p>'
-            . '<p><strong>' . esc_html__('Ingredienti (modello vino)', 'fp-qr-info') . '</strong><br />'
-            . esc_html__('Uve.', 'fp-qr-info')
-            . ' <strong>' . esc_html__('Contiene solfiti', 'fp-qr-info') . '</strong> '
-            . esc_html__('(anidride solforosa).', 'fp-qr-info')
-            . '</p>'
+            . '</span></p>'
             . '<p>' . esc_html__(
-                'Aggiungere eventuali coadiuvanti di chiarifica filtrati (es. albumina, caseina) solo se effettivamente impiegati e secondo normativa vigente.',
+                'Le sostanze o i prodotti elencati nell’allegato II che causano allergie o intolleranze devono essere evidenziati come richiesto dall’articolo 21, paragrafo 1, lettera a), del regolamento (UE) n. 1169/2011.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p><strong>' . esc_html__('Esempio (vino — da adattare al prodotto reale)', 'fp-qr-info') . '</strong><br />'
+            . esc_html__('Ingredienti:', 'fp-qr-info') . ' '
+            . esc_html__('uva', 'fp-qr-info') . '; '
+            . esc_html__('conservatore:', 'fp-qr-info') . ' <strong>' . esc_html__('anidride solforosa', 'fp-qr-info') . '</strong> / <strong>'
+            . esc_html__('solfiti', 'fp-qr-info') . '</strong>.</p>'
+            . '<p>' . esc_html__(
+                'Ove siano utilizzati additivi, coadiuvanti tecnologici o altri ingredienti, inserirli con la denominazione legalmente prevista (inclusi i numeri E ove applicabili) e nell’ordine previsto dal regolamento (UE) n. 1169/2011.',
                 'fp-qr-info'
             ) . '</p>'
             . '<p><em>' . esc_html__(
-                'Modello indicativo: sostituire con la lista reale del prodotto e con la consulenza del vostro ufficio conformità.',
+                'L’indicazione «contiene solfiti» può essere richiesta sull’etichetta fisica ai sensi della normativa sui vini anche quando l’elenco completo è fornito per via elettronica: verificare il testo obbligatorio sul recipiente con il consulente di settore.',
                 'fp-qr-info'
             ) . '</em></p>';
     }
 
     private static function ingredientsEnHtml(): string
     {
-        return '<p><span class="fpqi-allergen-warn" role="img" aria-label="'
-            . esc_attr__('Allergen notice', 'fp-qr-info')
-            . '">⚠</span> <strong>'
-            . esc_html__('Allergens', 'fp-qr-info')
-            . '</strong>: '
+        return '<p><strong>' . esc_html__('Ingredients', 'fp-qr-info') . '</strong> — '
+            . '<span class="fpqi-legal-ref">'
             . esc_html__(
-                'emphasise in bold ingredients and substances causing allergies or intolerances (EU Reg. 1169/2011, Art. 21).',
+                'Regulation (EU) No 1169/2011: Articles 18, 20, 21 and 22 and relevant annexes; for the list of ingredients of grapevine-based products, Regulation (EU) 2021/2117 and Commission Delegated Regulation (EU) 2023/1606 also apply where relevant.',
                 'fp-qr-info'
             )
-            . '</p>'
-            . '<p><strong>' . esc_html__('Ingredients (wine template)', 'fp-qr-info') . '</strong><br />'
-            . esc_html__('Grapes.', 'fp-qr-info')
-            . ' <strong>' . esc_html__('Contains sulphites', 'fp-qr-info') . '</strong> '
-            . esc_html__('(sulphur dioxide).', 'fp-qr-info')
-            . '</p>'
+            . '</span></p>'
             . '<p>' . esc_html__(
-                'Add any filtration aids (e.g. albumin, casein) only if actually used and as required by applicable law.',
+                'Substances or products listed in Annex II causing allergies or intolerances shall be emphasised as required by Article 21(1)(a) of Regulation (EU) No 1169/2011.',
+                'fp-qr-info'
+            ) . '</p>'
+            . '<p><strong>' . esc_html__('Example (wine — adapt to the actual product)', 'fp-qr-info') . '</strong><br />'
+            . esc_html__('Ingredients:', 'fp-qr-info') . ' '
+            . esc_html__('grapes', 'fp-qr-info') . '; '
+            . esc_html__('preservative:', 'fp-qr-info') . ' <strong>' . esc_html__('sulphur dioxide', 'fp-qr-info') . '</strong> / <strong>'
+            . esc_html__('sulphites', 'fp-qr-info') . '</strong>.</p>'
+            . '<p>' . esc_html__(
+                'Where additives, technological aids or other ingredients are used, list them with the legally required designation (including E numbers where applicable) and in the order required by Regulation (EU) No 1169/2011.',
                 'fp-qr-info'
             ) . '</p>'
             . '<p><em>' . esc_html__(
-                'Indicative template: replace with the real product list and your compliance officer’s review.',
+                'The “contains sulphites” indication may be required on the physical label under wine-sector rules even when the full list is provided electronically: confirm mandatory on-pack wording with your sector advisor.',
                 'fp-qr-info'
             ) . '</em></p>';
     }
 
-    private static function iconRowHtml(): string
+    /**
+     * @param string $lang Codice lingua per testi alternativi su immagini (it|en).
+     */
+    private static function iconRowHtml(string $lang): string
     {
         $base = esc_url(self::iconsBaseUrl());
+        $glassAlt = $lang === 'en'
+            ? esc_attr__('Illustrative glass packaging pictogram (not a mandatory Union-wide mark)', 'fp-qr-info')
+            : esc_attr__('Pittogramma illustrativo dell’imballaggio in vetro (non è un marchio obbligatorio armonizzato a livello UE)', 'fp-qr-info');
+        $recycleLabel = $lang === 'en'
+            ? esc_attr__('Black Universal Recycling Symbol (Unicode U+267B, ISO/IEC 10646)', 'fp-qr-info')
+            : esc_attr__('Simbolo universale del riciclaggio nero (Unicode U+267B, ISO/IEC 10646)', 'fp-qr-info');
 
-        return '<div class="fpqi-preset-icons" role="presentation">'
-            . '<span class="fpqi-recycle-char" role="img" aria-label="'
-            . esc_attr__('Simbolo internazionale del riciclaggio (Unicode U+267B)', 'fp-qr-info')
-            . '">&#9851;</span>'
-            . '<img class="fpqi-legal-icon" src="' . $base . 'glass-bottle.svg" width="48" height="48" alt="" loading="lazy" decoding="async" />'
+        return '<div class="fpqi-preset-icons" role="group" aria-label="'
+            . esc_attr__('Simboli informativi', 'fp-qr-info') . '">'
+            . '<span class="fpqi-recycle-char" role="img" aria-label="' . $recycleLabel . '">&#9851;</span>'
+            . '<img class="fpqi-legal-icon" src="' . $base . 'glass-bottle.svg" width="48" height="48" alt="'
+            . $glassAlt . '" loading="lazy" decoding="async" />'
             . '</div>';
     }
 }

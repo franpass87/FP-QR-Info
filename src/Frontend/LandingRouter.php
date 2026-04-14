@@ -365,6 +365,26 @@ final class LandingRouter
                     font-size: 1.2rem;
                     margin-right: 4px;
                 }
+                .fpqi-sr-only {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    white-space: nowrap;
+                    border: 0;
+                }
+                .fpqi-legal-ref {
+                    font-size: 0.82rem;
+                    color: var(--fpqi-muted);
+                    font-weight: 400;
+                }
+                .fpqi-legal-note {
+                    font-size: 0.82rem;
+                    margin: 10px 0 0;
+                }
             </style>
         </head>
         <body>
