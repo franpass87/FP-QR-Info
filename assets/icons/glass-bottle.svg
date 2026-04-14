@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+  <title>Glass packaging</title>
+  <path fill="#0ea5e9" d="M52 10h16v12c0 8 6 14 6 22v48c0 10-8 18-18 18h-8c-10 0-18-8-18-18V44c0-8 6-14 6-22V10z"/>
+  <path fill="#e0f2fe" d="M54 22h12v8H54v-8zm-6 30h24v40c0 6-5 11-11 11h-2c-6 0-11-5-11-11V52z" opacity=".9"/>
+  <path fill="#0f172a" d="M48 10h24v6H48v-6z" opacity=".25"/>
+</svg>

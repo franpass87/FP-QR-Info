@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FP\QrInfo\Frontend;
 
+use FP\QrInfo\Content\LandingLegalPresets;
+
 /**
  * Router pubblico per landing standalone QR.
  */
@@ -108,20 +110,20 @@ final class LandingRouter
         $intro = __('INFORMAZIONI DI SMALTIMENTO NUTRIZIONALI E INGREDIENTI - DISPOSAL AND NUTRITIONAL INFO, INGREDIENTS', 'fp-qr-info');
         $sections = [
             'disposal' => [
-                'it' => (string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true),
-                'en' => (string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true),
+                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true)),
+                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true)),
                 'label_it' => __('INFORMAZIONI DI SMALTIMENTO', 'fp-qr-info'),
                 'label_en' => __('DISPOSAL INFO', 'fp-qr-info'),
             ],
             'nutrition' => [
-                'it' => (string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true),
-                'en' => (string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true),
+                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true)),
+                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true)),
                 'label_it' => __('INFORMAZIONI NUTRIZIONALI', 'fp-qr-info'),
                 'label_en' => __('NUTRITIONAL INFO', 'fp-qr-info'),
             ],
             'ingredients' => [
-                'it' => (string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true),
-                'en' => (string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true),
+                'it' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true)),
+                'en' => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true)),
                 'label_it' => __('INGREDIENTI', 'fp-qr-info'),
                 'label_en' => __('INGREDIENTS', 'fp-qr-info'),
             ],
@@ -303,6 +305,66 @@ final class LandingRouter
                     line-height: 1.55;
                     white-space: pre-wrap;
                 }
+                .fpqi-section-body.fpqi-legal-html {
+                    color: var(--fpqi-muted);
+                    line-height: 1.55;
+                    font-size: 0.95rem;
+                }
+                .fpqi-section-body.fpqi-legal-html p {
+                    margin: 0 0 10px;
+                    white-space: pre-wrap;
+                }
+                .fpqi-section-body.fpqi-legal-html p:last-child {
+                    margin-bottom: 0;
+                }
+                .fpqi-section-body.fpqi-legal-html table.fpqi-nutrition-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 10px 0 4px;
+                    background: #fff;
+                }
+                .fpqi-section-body.fpqi-legal-html table.fpqi-nutrition-table th,
+                .fpqi-section-body.fpqi-legal-html table.fpqi-nutrition-table td {
+                    border: 1px solid var(--fpqi-border);
+                    padding: 8px 10px;
+                    text-align: left;
+                    vertical-align: top;
+                }
+                .fpqi-section-body.fpqi-legal-html table.fpqi-nutrition-table thead th {
+                    background: #f3f4f6;
+                    color: var(--fpqi-text);
+                    font-weight: 700;
+                }
+                .fpqi-section-body.fpqi-legal-html table.fpqi-nutrition-table tbody th {
+                    font-weight: 600;
+                    color: var(--fpqi-text);
+                    width: 58%;
+                }
+                .fpqi-preset-icons {
+                    display: flex;
+                    gap: 14px;
+                    align-items: center;
+                    margin: 0 0 14px;
+                    flex-wrap: wrap;
+                }
+                .fpqi-recycle-char {
+                    font-size: 2.85rem;
+                    line-height: 1;
+                    color: #166534;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 48px;
+                    height: 48px;
+                }
+                .fpqi-legal-icon {
+                    display: block;
+                    flex-shrink: 0;
+                }
+                .fpqi-allergen-warn {
+                    font-size: 1.2rem;
+                    margin-right: 4px;
+                }
             </style>
         </head>
         <body>
@@ -339,7 +401,7 @@ final class LandingRouter
             <?php foreach ($i18nPayload['sections'] as $idx => $sec): ?>
                 <section class="fpqi-card" data-section-id="<?php echo esc_attr((string) $sec['id']); ?>">
                     <h2 class="fpqi-section-title"><?php echo esc_html((string) $sec['label']['it']); ?></h2>
-                    <p class="fpqi-section-body"><?php echo esc_html((string) $sec['body']['it']); ?></p>
+                    <div class="fpqi-section-body fpqi-legal-html"><?php echo $sec['body']['it']; ?></div>
                 </section>
             <?php endforeach; ?>
         </div>
@@ -372,7 +434,7 @@ final class LandingRouter
                             titleEl.textContent = sec.label[lang] || '';
                         }
                         if (bodyEl && sec.body) {
-                            bodyEl.textContent = sec.body[lang] || '';
+                            bodyEl.innerHTML = sec.body[lang] || '';
                         }
                     });
                     var story = data.story || {};
@@ -396,5 +458,15 @@ final class LandingRouter
         </body>
         </html>
         <?php
+    }
+
+    /**
+     * Espande segnaposto icone e applica filtro HTML sicuro per i blocchi legali.
+     */
+    private function prepareSectionBody(string $raw): string
+    {
+        $expanded = LandingLegalPresets::expandPlaceholder($raw);
+
+        return wp_kses_post($expanded);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FP\QrInfo\Admin;
 
+use FP\QrInfo\Content\LandingLegalPresets;
+
 /**
  * Gestione CPT e metadati per landing QR.
  */
@@ -57,6 +59,25 @@ final class LandingCpt
             [
                 'title' => esc_html__('Seleziona immagine bottiglia', 'fp-qr-info'),
                 'button' => esc_html__('Usa questa immagine', 'fp-qr-info'),
+            ]
+        );
+
+        wp_enqueue_script(
+            'fp-qr-info-admin-legal-presets',
+            FP_QR_INFO_URL . 'assets/js/admin-legal-presets.js',
+            ['jquery'],
+            FP_QR_INFO_VERSION,
+            true
+        );
+        wp_localize_script(
+            'fp-qr-info-admin-legal-presets',
+            'FP_QRI_LANDING_PRESETS_CFG',
+            [
+                'presets' => LandingLegalPresets::getPresets(),
+                'confirmOverwrite' => __(
+                    'Questa sezione contiene già del testo. Sostituirlo con il modello normativo selezionato?',
+                    'fp-qr-info'
+                ),
             ]
         );
     }
@@ -169,21 +190,45 @@ final class LandingCpt
             <textarea id="fp_qr_info_story_en" name="fp_qr_info_story_en" rows="6" class="large-text"><?php echo esc_textarea($storyEn); ?></textarea>
         </p>
         <hr>
+        <p class="description" style="max-width:860px;">
+            <?php esc_html_e(
+                'Per smaltimento, dichiarazione nutrizionale e ingredienti puoi usare HTML sicuro (tabelle, grassetto, immagini con URL validi). I pulsanti “Inserisci modello” aggiungono testi di partenza con icone già collegate al plugin.',
+                'fp-qr-info'
+            ); ?>
+        </p>
+        <p class="description" style="max-width:860px;">
+            <strong><?php esc_html_e('Avvertenza legale', 'fp-qr-info'); ?>:</strong>
+            <?php esc_html_e(
+                'I modelli sono solo ausili editoriali ispirati a prassi UE (es. Reg. 1169/2011, imballaggi). La conformità definitiva è responsabilità del produttore e va verificata con un consulente legale.',
+                'fp-qr-info'
+            ); ?>
+        </p>
         <?php
+        $presetButtonLabels = [
+            'disposal' => __('Inserisci modello: smaltimento imballaggi + simboli', 'fp-qr-info'),
+            'nutrition' => __('Inserisci modello: dichiarazione nutrizionale (tabella)', 'fp-qr-info'),
+            'ingredients' => __('Inserisci modello: ingredienti / allergeni (vino)', 'fp-qr-info'),
+        ];
         foreach ($fields as $fieldKey => $label) {
             $itValue = (string) get_post_meta($post->ID, 'fp_qr_info_' . $fieldKey . '_it', true);
             $enValue = (string) get_post_meta($post->ID, 'fp_qr_info_' . $fieldKey . '_en', true);
+            $presetLabel = $presetButtonLabels[$fieldKey] ?? __('Inserisci modello normativo UE (vino)', 'fp-qr-info');
             ?>
             <p>
                 <strong><?php echo esc_html($label); ?></strong>
             </p>
             <p>
+                <button type="button" class="button button-secondary fp-qri-insert-preset" data-preset="<?php echo esc_attr($fieldKey); ?>">
+                    <?php echo esc_html($presetLabel); ?>
+                </button>
+            </p>
+            <p>
                 <label for="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_it"><?php esc_html_e('Italiano', 'fp-qr-info'); ?></label><br>
-                <textarea id="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_it" name="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_it" rows="4" class="large-text"><?php echo esc_textarea($itValue); ?></textarea>
+                <textarea id="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_it" name="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_it" rows="12" class="large-text code"><?php echo esc_textarea($itValue); ?></textarea>
             </p>
             <p>
                 <label for="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_en"><?php esc_html_e('English', 'fp-qr-info'); ?></label><br>
-                <textarea id="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_en" name="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_en" rows="4" class="large-text"><?php echo esc_textarea($enValue); ?></textarea>
+                <textarea id="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_en" name="fp_qr_info_<?php echo esc_attr($fieldKey); ?>_en" rows="12" class="large-text code"><?php echo esc_textarea($enValue); ?></textarea>
             </p>
             <hr>
             <?php
@@ -324,10 +369,10 @@ final class LandingCpt
 
         foreach (array_keys($this->getFields()) as $fieldKey) {
             $itValue = isset($_POST['fp_qr_info_' . $fieldKey . '_it'])
-                ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_' . $fieldKey . '_it']))
+                ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_' . $fieldKey . '_it']))
                 : '';
             $enValue = isset($_POST['fp_qr_info_' . $fieldKey . '_en'])
-                ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_' . $fieldKey . '_en']))
+                ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_' . $fieldKey . '_en']))
                 : '';
 
             update_post_meta($postId, 'fp_qr_info_' . $fieldKey . '_it', $itValue);
