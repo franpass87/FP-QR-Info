@@ -1,3 +1,8 @@
+## [0.1.27] - 2026-04-14
+### Changed
+- Blocco “Storia ed etichetta” reso una card/box come le altre sezioni, anche nella versione hero con immagine bottiglia.
+- Uniformata la resa visiva della story section (container bianco con bordo e raggio coerenti al resto della landing).
+
 ## [0.1.26] - 2026-04-14
 ### Changed
 - Headline sezione “INFORMAZIONI DI SMALTIMENTO, NUTRIZIONALI E INGREDIENTI” allineata alla stessa dimensione tipografica di “Storia ed etichetta”.

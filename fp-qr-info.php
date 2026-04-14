@@ -3,7 +3,7 @@
  * Plugin Name: FP QR Info
  * Plugin URI: https://github.com/franpass87/FP-QR-Info
  * Description: Landing standalone per QR code con contenuti IT/EN su smaltimento, nutrizionali e ingredienti.
- * Version: 0.1.26
+ * Version: 0.1.27
  * Author: Francesco Passeri
  * Author URI: https://francescopasseri.com
  * License: GPL v2 or later
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('FP_QR_INFO_VERSION', '0.1.26');
+define('FP_QR_INFO_VERSION', '0.1.27');
 define('FP_QR_INFO_FILE', __FILE__);
 define('FP_QR_INFO_DIR', plugin_dir_path(__FILE__));
 define('FP_QR_INFO_URL', plugin_dir_url(__FILE__));

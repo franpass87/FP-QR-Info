@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.26
+Stable tag: 0.1.27
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.27 =
+* Sezione "Storia ed etichetta" visualizzata in un box/card come gli altri elementi della landing.
 
 = 0.1.26 =
 * Headline sezione informazioni allineata alla stessa grandezza tipografica di "Storia ed etichetta".

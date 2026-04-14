@@ -269,9 +269,15 @@ final class LandingRouter
                     max-width: 720px;
                     margin: 0 auto;
                     width: 100%;
-                    color: var(--fpqi-text);
                 }
-                .fpqi-story-hero-inner h2 {
+                .fpqi-story-content-box {
+                    background: var(--fpqi-surface);
+                    border: 1px solid var(--fpqi-border);
+                    border-radius: var(--fpqi-radius);
+                    padding: 16px;
+                    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+                }
+                .fpqi-story-content-box h2 {
                     margin: 0 0 10px;
                     font-size: 1.15rem;
                     font-weight: 700;
@@ -279,7 +285,7 @@ final class LandingRouter
                     text-transform: uppercase;
                     color: var(--fpqi-primary);
                 }
-                .fpqi-story-hero-inner p {
+                .fpqi-story-content-box p {
                     margin: 0;
                     font-size: 1rem;
                     line-height: 1.6;
@@ -287,7 +293,7 @@ final class LandingRouter
                     white-space: pre-wrap;
                 }
                 .fpqi-story-card {
-                    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 55%);
+                    background: var(--fpqi-surface);
                     border: 1px solid var(--fpqi-border);
                     border-radius: var(--fpqi-radius);
                     padding: 18px 16px;
@@ -546,8 +552,10 @@ final class LandingRouter
                     <img class="fpqi-story-hero-image" src="<?php echo esc_url($storyImageUrl); ?>" alt="<?php echo esc_attr($title); ?>">
                 </div>
                 <div class="fpqi-story-hero-inner">
-                    <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
-                    <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                    <div class="fpqi-story-content-box">
+                        <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
+                        <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                    </div>
                 </div>
             </section>
         <?php endif; ?>
