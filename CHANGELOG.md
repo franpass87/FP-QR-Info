@@ -1,3 +1,7 @@
+## [0.1.34] - 2026-04-18
+### Fixed
+- `AdminMenu.php`: rimosso duplicato accidentale in coda al file (parse error PHP) che provocava errore critico in admin; corretta stringa `qualità` nel testo best practice.
+
 ## [0.1.33] - 2026-04-14
 ### Changed
 - Spaziatura verticale tra i box hero uniformata: rimossi i comportamenti `100vh/space-between` che creavano gap irregolari.

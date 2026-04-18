@@ -203,3 +203,12 @@ final class QrDownloadController
         }
     }
 }
+output buffer prima di inviare payload binario.
+     */
+    private function prepareBinaryResponse(): void
+    {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+    }
+}
