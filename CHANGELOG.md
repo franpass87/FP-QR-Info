@@ -1,3 +1,7 @@
+## [0.1.35] - 2026-04-18
+### Fixed
+- `QrDownloadController.php`: rimossi frammenti duplicati in coda al file (introdotti in 0.1.34) che potevano provocare parse error; il metodo `prepareBinaryResponse` resta definito una sola volta.
+
 ## [0.1.34] - 2026-04-18
 ### Fixed
 - `AdminMenu.php`: rimosso duplicato accidentale in coda al file (parse error PHP) che provocava errore critico in admin; corretta stringa `qualità` nel testo best practice.
