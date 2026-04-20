@@ -405,5 +405,4 @@ final class QrDownloadController
         }
 
     }
-
 }

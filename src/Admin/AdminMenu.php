@@ -151,7 +151,7 @@ final class AdminMenu
                 <div class="fpqri-card-header">
                     <div class="fpqri-card-header-left">
                         <span class="dashicons dashicons-plus-alt" aria-hidden="true"></span>
-                        <h2><?php esc_html_e('Operatività', 'fp-qr-info'); ?></h2>
+                        <h2><?php esc_html_e('OperativitÃ ', 'fp-qr-info'); ?></h2>
                     </div>
                     <span class="fpqri-badge fpqri-badge-success"><?php esc_html_e('Pronto', 'fp-qr-info'); ?></span>
                 </div>
@@ -175,7 +175,7 @@ final class AdminMenu
                 <div class="fpqri-card-body">
                     <ul class="fpqri-list">
                         <li><?php esc_html_e('Mantieni token non banali e univoci.', 'fp-qr-info'); ?></li>
-                        <li><?php esc_html_e('Usa il formato SVG per stampa ad alta qualità.', 'fp-qr-info'); ?></li>
+                        <li><?php esc_html_e('Usa il formato SVG per stampa ad alta qualitÃ .', 'fp-qr-info'); ?></li>
                         <li><?php esc_html_e('Verifica il contenuto in ITA e ENG prima di stampare le etichette.', 'fp-qr-info'); ?></li>
                     </ul>
                 </div>
