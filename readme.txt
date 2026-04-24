@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.33
+Stable tag: 0.1.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.34 = (2026-04-24)
+* Fixed: parse error "Unmatched ')' " in `src/Admin/QrDownloadController.php` e "unexpected identifier 'in'" in `src/Admin/AdminMenu.php` causato dallo stesso pattern di corruzione "duplica-coda" gia' visto nella v0.1.34/0.1.35 (poi rollbackate). Tronco manuale dei due file alla reale chiusura della classe (AdminMenu a 186 righe, QrDownloadController a 408 righe). Senza questo fix il parse error impediva il boot di WordPress (Uncaught Error al load del plugin) e di conseguenza bloccava anche l'invio di email da altri plugin (es. reminder FP Experiences, notifiche FP Forms Accrediti).
 
 = 0.1.33 =
 * Spaziature verticali tra box hero uniformate (header, immagine, storia) con ritmo costante.

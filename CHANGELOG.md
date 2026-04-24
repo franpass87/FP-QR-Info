@@ -1,3 +1,10 @@
+## [0.1.34] - 2026-04-24
+
+### Fixed
+
+- **Parse error di boot bloccante in `src/Admin/AdminMenu.php` (riga 187) e `src/Admin/QrDownloadController.php` (riga 409)** causato dallo stesso pattern di corruzione "duplica-coda" già riscontrato nelle 0.1.34/0.1.35 pre-rollback: un tool esterno al repo ha appeso in fondo ai due file una copia parziale delle ultime righe, tagliando a metà le prime e spezzando la sintassi ("unexpected identifier 'in'" e "Unmatched ')' "). Senza fix, `require` del plugin generava `Uncaught Error` al boot di WordPress: tutto il sito andava in "errore critico" (bianco), bloccando in cascata l'invio di email da altri plugin (es. reminder QR di FP Experiences, notifiche FP Forms Accrediti). Troncati manualmente i due file al terminatore reale delle classi.
+- Sconsigliato qualunque tool di sync/auto-format che produce questo pattern finché la causa upstream non è identificata.
+
 ## [0.1.33] - 2026-04-14
 ### Changed
 - Spaziatura verticale tra i box hero uniformata: rimossi i comportamenti `100vh/space-between` che creavano gap irregolari.
