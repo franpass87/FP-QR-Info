@@ -1,3 +1,10 @@
+## [0.1.35] - 2026-04-26
+
+### Fixed
+
+- **`AdminMenu.php`**: stringhe della dashboard con sequenze UTF-8 corrotte (`Operatività`, `qualità`) producevano ancora parse error **"unexpected identifier 'in'"** (PHP interpretava male il sorgente). Sostituite con testo UTF-8 valido.
+- **`QrDownloadController.php`**: rimosso un **frammento duplicato parziale** dopo la chiusura reale della classe (`is_string($previousDisplayErrors)) {` … seconda copia di `prepareBinaryResponse`) che causava **"Unmatched ')'"** al parse.
+
 ## [0.1.34] - 2026-04-24
 
 ### Fixed
