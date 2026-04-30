@@ -406,3 +406,69 @@ final class QrDownloadController
 
     }
 }
+is_string($previousDisplayErrors)) {
+
+                ini_set('display_errors', $previousDisplayErrors);
+
+            }
+
+        }
+
+    }
+
+
+
+    /**
+
+     * Pulisce eventuale output buffer prima di inviare payload binario.
+
+     */
+
+    private function prepareBinaryResponse(): void
+
+    {
+
+        while (ob_get_level() > 0) {
+
+            ob_end_clean();
+
+        }
+
+    }
+}
+();
+
+        }
+
+    }
+}
+is_string($previousDisplayErrors)) {
+
+                ini_set('display_errors', $previousDisplayErrors);
+
+            }
+
+        }
+
+    }
+
+
+
+    /**
+
+     * Pulisce eventuale output buffer prima di inviare payload binario.
+
+     */
+
+    private function prepareBinaryResponse(): void
+
+    {
+
+        while (ob_get_level() > 0) {
+
+            ob_end_clean();
+
+        }
+
+    }
+}

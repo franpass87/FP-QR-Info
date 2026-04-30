@@ -1,3 +1,9 @@
+## [0.1.36] - 2026-04-30
+
+### Fixed
+
+- **`AdminMenu.php`**: rimosso di nuovo un **frammento duplicato parziale** dopo la `}` di chiusura della classe (stesso pattern «duplica-coda»: testo spezzato `to in ITA…` fuori stringa), che causava **parse error** e **errore critico** WordPress al boot del plugin.
+
 ## [0.1.35] - 2026-04-26
 
 ### Fixed
