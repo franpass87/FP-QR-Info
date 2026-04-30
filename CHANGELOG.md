@@ -1,3 +1,9 @@
+## [0.1.37] - 2026-04-30
+
+### Fixed
+
+- **`QrDownloadController.php`**: ripristinata la chiusura corretta della classe (rimosso duplicato/corruzione introdotta per errore nello stesso push della 0.1.36).
+
 ## [0.1.36] - 2026-04-30
 
 ### Fixed

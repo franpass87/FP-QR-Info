@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.36
+Stable tag: 0.1.37
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.37 = (2026-04-30)
+* Fixed: `QrDownloadController.php` — ripristino chiusura classe (regressione accidentale nello stesso rilascio della 0.1.36).
 
 = 0.1.36 = (2026-04-30)
 * Fixed: `AdminMenu.php` — rimosso frammento duplicato dopo la chiusura classe (parse error «unexpected identifier in», errore critico WP al boot).
