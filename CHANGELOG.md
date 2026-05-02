@@ -1,3 +1,9 @@
+## [0.1.38] - 2026-05-02
+
+### Fixed
+
+- **`AdminMenu.php`** e **`QrDownloadController.php`**: rimossa di nuovo la **coda duplicata parziale** dopo la `}` di chiusura della classe (stesso pattern già documentato in 0.1.34–0.1.37), che causava **parse error** al boot (`unexpected identifier "in"` / `Unmatched ')'`) e **HTTP 500** su tutto WordPress in locale.
+
 ## [0.1.37] - 2026-04-30
 
 ### Fixed
