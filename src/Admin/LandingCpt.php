@@ -16,6 +16,9 @@ final class LandingCpt
     private const NONCE_NAME = 'fp_qr_info_nonce';
     private const META_TOKEN = 'fp_qr_info_token';
     private const META_ACCENT_COLOR = 'fp_qr_info_accent_color';
+    private const META_ENABLE_DISPOSAL = 'fp_qr_info_enable_disposal';
+    private const META_ENABLE_NUTRITION = 'fp_qr_info_enable_nutrition';
+    private const META_ENABLE_INGREDIENTS = 'fp_qr_info_enable_ingredients';
 
     /**
      * Registra hook admin del CPT.
@@ -266,6 +269,26 @@ final class LandingCpt
                 'fp-qr-info'
             ); ?>
         </p>
+        <h3><?php esc_html_e('Visibilita sezioni legali in landing', 'fp-qr-info'); ?></h3>
+        <p class="description"><?php esc_html_e('Attiva/disattiva in modo opzionale i blocchi normativi pubblicati nella landing.', 'fp-qr-info'); ?></p>
+        <?php
+        $toggles = [
+            self::META_ENABLE_DISPOSAL => __('Mostra sezione smaltimento', 'fp-qr-info'),
+            self::META_ENABLE_NUTRITION => __('Mostra sezione nutrizionale', 'fp-qr-info'),
+            self::META_ENABLE_INGREDIENTS => __('Mostra sezione ingredienti', 'fp-qr-info'),
+        ];
+        foreach ($toggles as $metaKey => $label) {
+            $enabled = $this->isSectionEnabled($post->ID, $metaKey);
+            ?>
+            <p>
+                <label>
+                    <input type="checkbox" name="<?php echo esc_attr($metaKey); ?>" value="1" <?php checked($enabled); ?>>
+                    <?php echo esc_html($label); ?>
+                </label>
+            </p>
+            <?php
+        }
+        ?>
         <p class="description" style="max-width:860px;">
             <strong><?php esc_html_e('Avvertenza legale', 'fp-qr-info'); ?>:</strong>
             <?php esc_html_e(
@@ -466,6 +489,8 @@ final class LandingCpt
             return;
         }
 
+        $this->saveSectionToggles($postId);
+
         $token = isset($_POST['fp_qr_info_token']) ? sanitize_key(wp_unslash((string) $_POST['fp_qr_info_token'])) : '';
         if ($token === '') {
             $token = $this->generateUniqueToken();
@@ -597,6 +622,36 @@ final class LandingCpt
             'nutrition' => __('Informazioni nutrizionali / Nutritional info', 'fp-qr-info'),
             'ingredients' => __('Ingredienti / Ingredients', 'fp-qr-info'),
         ];
+    }
+
+    /**
+     * Salva i toggle di visibilita delle sezioni legali.
+     */
+    private function saveSectionToggles(int $postId): void
+    {
+        $toggleMetaKeys = [
+            self::META_ENABLE_DISPOSAL,
+            self::META_ENABLE_NUTRITION,
+            self::META_ENABLE_INGREDIENTS,
+        ];
+
+        foreach ($toggleMetaKeys as $metaKey) {
+            $enabled = isset($_POST[$metaKey]) ? '1' : '0';
+            update_post_meta($postId, $metaKey, $enabled);
+        }
+    }
+
+    /**
+     * Restituisce true se la sezione e abilitata (default true per retrocompatibilita).
+     */
+    private function isSectionEnabled(int $postId, string $metaKey): bool
+    {
+        $raw = (string) get_post_meta($postId, $metaKey, true);
+        if ($raw === '') {
+            return true;
+        }
+
+        return $raw === '1';
     }
 
     /**

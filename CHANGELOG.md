@@ -1,3 +1,24 @@
+## [0.1.40] - 2026-05-15
+
+### Added
+
+- **Sezioni legali opzionali per landing**: aggiunti toggle in admin per abilitare/disabilitare in modo indipendente i blocchi `Smaltimento`, `Nutrizionali` e `Ingredienti` per ogni `QR Landing`.
+
+### Changed
+
+- **Frontend `/qr-info/{token}`**: le sezioni legali vengono renderizzate solo se abilitate; default retrocompatibile su landing esistenti (se toggle non ancora salvati, le sezioni restano attive).
+
+## [0.1.39] - 2026-05-15
+
+### Added
+
+- **Guardrail permanenti anti-regressione parse error**: introdotto script `scripts/verify-integrity.php` che esegue lint PHP su tutti i file plugin (escluso `vendor`) e controlli mirati di integrita su `AdminMenu.php` e `QrDownloadController.php` per intercettare il pattern "duplica-coda".
+- **CI automatica**: aggiunto workflow GitHub `.github/workflows/integrity-check.yml` che lancia il controllo integrita ad ogni push/pull request.
+
+### Changed
+
+- **Runtime warning di stabilita**: il plugin mostra un avviso in admin quando rileva che gira da percorso cloud sincronizzato (es. OneDrive/junction), scenario in cui si sono verificati i parse error ciclici al boot.
+
 ## [0.1.38] - 2026-05-02
 
 ### Fixed

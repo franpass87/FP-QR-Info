@@ -18,5 +18,9 @@
     "psr-4": {
       "FP\\QrInfo\\": "src/"
     }
+  },
+  "scripts": {
+    "verify:integrity": "@php scripts/verify-integrity.php",
+    "lint": "@verify:integrity"
   }
 }

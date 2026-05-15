@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.38
+Stable tag: 0.1.40
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,15 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.1.40 = (2026-05-15)
+* Added: toggle opzionali per singola landing per attivare/disattivare blocchi legali `Smaltimento`, `Nutrizionali`, `Ingredienti`.
+* Changed: frontend `/qr-info/{token}` renderizza solo le sezioni abilitate; retrocompatibilita mantenuta sulle landing gia esistenti.
+
+= 0.1.39 = (2026-05-15)
+* Added: script `scripts/verify-integrity.php` per lint PHP e controlli anti-regressione sui file critici (`AdminMenu.php`, `QrDownloadController.php`).
+* Added: workflow GitHub `.github/workflows/integrity-check.yml` per verifica automatica ad ogni push/pull request.
+* Changed: avviso admin quando il plugin gira da percorso cloud sincronizzato (es. OneDrive/junction), per prevenire ricorrenza di parse error ciclici.
 
 = 0.1.38 = (2026-05-02)
 * Fixed: `AdminMenu.php` e `QrDownloadController.php` — rimossa di nuovo coda duplicata parziale dopo la `}` della classe (parse error boot, HTTP 500).

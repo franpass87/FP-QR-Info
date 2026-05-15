@@ -114,8 +114,10 @@ final class LandingRouter
         ];
         $accentColor = $this->resolveAccentColor($post->ID);
         $useDisposalBlocks = $this->disposalBlocksInUse($post->ID);
-        $sections = [
-            'disposal' => [
+        $sections = [];
+
+        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_disposal')) {
+            $sections['disposal'] = [
                 'it' => $useDisposalBlocks
                     ? $this->buildDisposalBlocksHtml($post->ID, 'it')
                     : $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_it', true)),
@@ -124,20 +126,28 @@ final class LandingRouter
                     : $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_disposal_en', true)),
                 'label_it' => __('Etichetta ambientale / Imballaggi', 'fp-qr-info'),
                 'label_en' => __('Environmental labelling / Packaging', 'fp-qr-info'),
-            ],
-            'nutrition' => [
+            ];
+        }
+
+        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_nutrition')) {
+            $sections['nutrition'] = [
                 'it' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true), 'it')),
                 'en' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true), 'en')),
                 'label_it' => __('INFORMAZIONI NUTRIZIONALI', 'fp-qr-info'),
                 'label_en' => __('NUTRITIONAL INFO', 'fp-qr-info'),
-            ],
-            'ingredients' => [
+            ];
+        }
+
+        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_ingredients')) {
+            $sections['ingredients'] = [
                 'it' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true), 'it')),
                 'en' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true), 'en')),
                 'label_it' => __('INGREDIENTI', 'fp-qr-info'),
                 'label_en' => __('INGREDIENTS', 'fp-qr-info'),
-            ],
-        ];
+            ];
+        }
+
+        $hasLegalSections = $sections !== [];
 
         $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
         $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
@@ -614,7 +624,9 @@ final class LandingRouter
                     <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
                 </section>
             <?php endif; ?>
-            <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
+            <?php if ($hasLegalSections): ?>
+                <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
+            <?php endif; ?>
             <?php if (!$storyShowHero): ?>
                 <header class="fpqi-head">
                     <div>
@@ -775,6 +787,19 @@ final class LandingRouter
         $sanitized = sanitize_hex_color($raw);
 
         return is_string($sanitized) && $sanitized !== '' ? $sanitized : '#5b21b6';
+    }
+
+    /**
+     * Restituisce true se una sezione legale e attiva (default true per retrocompatibilita).
+     */
+    private function isLegalSectionEnabled(int $postId, string $metaKey): bool
+    {
+        $raw = (string) get_post_meta($postId, $metaKey, true);
+        if ($raw === '') {
+            return true;
+        }
+
+        return $raw === '1';
     }
 
     /**
