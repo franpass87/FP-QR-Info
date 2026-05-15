@@ -108,7 +108,11 @@ final class QrDownloadController
 
 
 
-        $filenameBase = 'fp-qr-info-' . $postId . '-' . $token;
+        $safeTokenForFilename = sanitize_file_name($token);
+        if ($safeTokenForFilename === '') {
+            $safeTokenForFilename = 'token';
+        }
+        $filenameBase = 'fp-qr-info-' . $postId . '-' . $safeTokenForFilename;
 
 
 
@@ -125,6 +129,8 @@ final class QrDownloadController
                 $this->prepareBinaryResponse();
 
                 header('Content-Type: image/svg+xml; charset=UTF-8');
+                header('X-Content-Type-Options: nosniff');
+                header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
                 header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.svg"');
 
@@ -145,6 +151,8 @@ final class QrDownloadController
             $this->prepareBinaryResponse();
 
             header('Content-Type: image/png');
+            header('X-Content-Type-Options: nosniff');
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
             header('Content-Disposition: ' . ($inline ? 'inline' : 'attachment') . '; filename="' . $filenameBase . '.png"');
 
