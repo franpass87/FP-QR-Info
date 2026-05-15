@@ -1,3 +1,9 @@
+## [0.1.41] - 2026-05-15
+
+### Fixed
+
+- **Hardening download QR PNG/SVG**: sanitizzato il token usato nel filename di download e aggiunti header `X-Content-Type-Options: nosniff` e `Cache-Control` per rendere piu robusta la consegna binaria durante stampa/scarico etichette.
+
 ## [0.1.40] - 2026-05-15
 
 ### Added
