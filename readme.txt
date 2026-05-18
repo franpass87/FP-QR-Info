@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,11 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.3.0 = (2026-05-18)
+* Changed: i toggle `Mostra sezione smaltimento / nutrizionale / ingredienti` partono ora DISATTIVATI per le nuove landing.
+* Changed: `isSectionEnabled` (admin) e `isLegalSectionEnabled` (frontend) restituiscono `false` per meta vuoto (prima `true`).
+* Added: migrazione one-shot al primo `init` dopo l'aggiornamento — scrive `'1'` su tutte le landing gia esistenti per preservarne il comportamento attuale (sezioni visibili). Gated da opzione `fp_qr_info_legal_defaults_migrated_v1`.
 
 = 0.2.0 = (2026-05-18)
 * Added: HTML sicuro nella sezione "Storia ed etichetta" (campi `Storia (Italiano)` e `Story (English)`) tramite `wp_kses_post`, coerente con le altre sezioni della landing.

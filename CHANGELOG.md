@@ -1,3 +1,14 @@
+## [0.3.0] - 2026-05-18
+
+### Changed
+
+- **Default sezioni legali → OFF**: i toggle `Mostra sezione smaltimento`, `Mostra sezione nutrizionale` e `Mostra sezione ingredienti` partono ora **disattivati** per le nuove landing. Per attivarli è necessario flaggarli esplicitamente nel metabox CPT.
+- **Comportamento `isSectionEnabled` (admin) e `isLegalSectionEnabled` (frontend)**: ora restituiscono `false` quando il meta è vuoto (prima `true` per retrocompatibilità).
+
+### Added
+
+- **Migrazione one-shot `maybeMigrateLegalDefaults`** (gated da opzione `fp_qr_info_legal_defaults_migrated_v1`): al primo `init` dopo l'aggiornamento, scrive esplicitamente `'1'` su tutte le landing pre-esistenti che non hanno ancora un valore salvato per i 3 toggle. Le landing già pubblicate mantengono così il comportamento attuale (sezioni visibili). Il flag impedisce ri-esecuzioni successive.
+
 ## [0.2.0] - 2026-05-18
 
 ### Added

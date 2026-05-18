@@ -19,6 +19,7 @@ final class LandingCpt
     private const META_ENABLE_DISPOSAL = 'fp_qr_info_enable_disposal';
     private const META_ENABLE_NUTRITION = 'fp_qr_info_enable_nutrition';
     private const META_ENABLE_INGREDIENTS = 'fp_qr_info_enable_ingredients';
+    private const OPT_LEGAL_DEFAULTS_MIGRATED = 'fp_qr_info_legal_defaults_migrated_v1';
 
     /**
      * Registra hook admin del CPT.
@@ -26,6 +27,7 @@ final class LandingCpt
     public function register(): void
     {
         add_action('init', [$this, 'registerPostType']);
+        add_action('init', [$this, 'maybeMigrateLegalDefaults'], 11);
         add_action('add_meta_boxes', [$this, 'registerMetaBox']);
         add_action('save_post_' . self::POST_TYPE, [$this, 'saveMeta']);
         add_filter('manage_' . self::POST_TYPE . '_posts_columns', [$this, 'addColumns']);
@@ -33,6 +35,54 @@ final class LandingCpt
         add_action('admin_enqueue_scripts', [$this, 'enqueueStoryAssets']);
         add_action('edit_form_after_title', [$this, 'renderEditorHeader']);
         add_action('all_admin_notices', [$this, 'renderListHeader']);
+    }
+
+    /**
+     * Migrazione one-shot: prima del passaggio al default OFF per le sezioni legali (v 0.3.0),
+     * marca esplicitamente come abilitate ('1') tutte le landing esistenti che non hanno ancora
+     * un valore salvato per i toggle. Cosi le landing pre-esistenti mantengono il comportamento
+     * precedente (sezioni visibili) e solo le NUOVE landing partono con default OFF.
+     *
+     * Idempotente: gated da opzione `fp_qr_info_legal_defaults_migrated_v1`.
+     */
+    public function maybeMigrateLegalDefaults(): void
+    {
+        if (get_option(self::OPT_LEGAL_DEFAULTS_MIGRATED) === '1') {
+            return;
+        }
+
+        $toggleMetaKeys = [
+            self::META_ENABLE_DISPOSAL,
+            self::META_ENABLE_NUTRITION,
+            self::META_ENABLE_INGREDIENTS,
+        ];
+
+        $query = new \WP_Query([
+            'post_type'              => self::POST_TYPE,
+            'post_status'            => 'any',
+            'posts_per_page'         => -1,
+            'fields'                 => 'ids',
+            'no_found_rows'          => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => false,
+            'suppress_filters'       => true,
+        ]);
+
+        $postIds = is_array($query->posts) ? $query->posts : [];
+        foreach ($postIds as $postId) {
+            $postId = (int) $postId;
+            if ($postId <= 0) {
+                continue;
+            }
+            foreach ($toggleMetaKeys as $metaKey) {
+                $raw = (string) get_post_meta($postId, $metaKey, true);
+                if ($raw === '') {
+                    update_post_meta($postId, $metaKey, '1');
+                }
+            }
+        }
+
+        update_option(self::OPT_LEGAL_DEFAULTS_MIGRATED, '1', false);
     }
 
     /**
@@ -642,14 +692,15 @@ final class LandingCpt
     }
 
     /**
-     * Restituisce true se la sezione e abilitata (default true per retrocompatibilita).
+     * Restituisce true se la sezione e abilitata.
+     *
+     * Default: false (sezioni legali OFF di default per nuove landing).
+     * Le landing pre-esistenti vengono migrate a '1' una sola volta da
+     * {@see self::maybeMigrateLegalDefaults()} per preservare il loro comportamento.
      */
     private function isSectionEnabled(int $postId, string $metaKey): bool
     {
         $raw = (string) get_post_meta($postId, $metaKey, true);
-        if ($raw === '') {
-            return true;
-        }
 
         return $raw === '1';
     }

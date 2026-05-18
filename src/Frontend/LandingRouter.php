@@ -820,14 +820,15 @@ final class LandingRouter
     }
 
     /**
-     * Restituisce true se una sezione legale e attiva (default true per retrocompatibilita).
+     * Restituisce true se una sezione legale e attiva.
+     *
+     * Default: false (sezioni legali OFF di default per nuove landing).
+     * Le landing pre-esistenti vengono migrate a '1' una sola volta in admin
+     * (vedi {@see \FP\QrInfo\Admin\LandingCpt::maybeMigrateLegalDefaults()}).
      */
     private function isLegalSectionEnabled(int $postId, string $metaKey): bool
     {
         $raw = (string) get_post_meta($postId, $metaKey, true);
-        if ($raw === '') {
-            return true;
-        }
 
         return $raw === '1';
     }
