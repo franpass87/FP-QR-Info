@@ -1,3 +1,17 @@
+## [0.2.0] - 2026-05-18
+
+### Added
+
+- **HTML sicuro nella sezione "Storia ed etichetta"**: i campi `Storia (Italiano)` e `Story (English)` accettano ora HTML sicuro (`wp_kses_post`) coerente con le altre sezioni della landing (smaltimento, nutrizionali, ingredienti). Tag consentiti tipici: `<strong>`, `<em>`, `<a>`, `<br>`, `<p>`, `<ul>`, `<ol>`, `<li>`.
+- **Stili dedicati per body story**: nuovo selettore `.fpqi-story-body` con regole per paragrafi, link e liste in entrambe le modalità (hero con immagine + card senza immagine).
+
+### Changed
+
+- **Salvataggio meta `fp_qr_info_story_it/_en`**: passa da `sanitize_textarea_field` (testo puro) a `wp_kses_post` (HTML filtrato). I contenuti già salvati come testo puro restano renderizzati identici grazie a `white-space: pre-wrap`.
+- **Render frontend body story** (`LandingRouter.php`): da `<p>` con `esc_html` a `<div class="fpqi-story-body">` con `wp_kses_post`, sia in modalità hero (con immagine bottiglia) che card. Il titolo "Storia ed etichetta" resta `esc_html` (stringa fissa traducibile).
+- **Switch lingua client-side**: il body story ora usa `innerHTML` (HTML già sanitizzato lato server prima del JSON encoding con `JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT`); il titolo resta `textContent`.
+- **Description metabox CPT**: aggiornata per indicare all'editor i tag HTML sicuri consentiti.
+
 ## [0.1.41] - 2026-05-15
 
 ### Fixed

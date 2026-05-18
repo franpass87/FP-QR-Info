@@ -233,7 +233,7 @@ final class LandingCpt
         </p>
         <hr>
         <h3><?php esc_html_e('Storia ed etichetta', 'fp-qr-info'); ?></h3>
-        <p class="description"><?php esc_html_e('Immagine bottiglia scontornata (consigliato PNG trasparente) e testo narrativo sul vino/etichetta. La landing mostra la bottiglia centrata senza taglio 16:9.', 'fp-qr-info'); ?></p>
+        <p class="description"><?php esc_html_e('Immagine bottiglia scontornata (consigliato PNG trasparente) e testo narrativo sul vino/etichetta. La landing mostra la bottiglia centrata senza taglio 16:9. HTML sicuro consentito (es. <strong>, <em>, <a>, <br>, <p>, <ul>, <li>).', 'fp-qr-info'); ?></p>
         <?php
         $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
         $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
@@ -512,10 +512,10 @@ final class LandingCpt
         update_post_meta($postId, 'fp_qr_info_story_image_id', $storyImageId);
 
         $storyIt = isset($_POST['fp_qr_info_story_it'])
-            ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_story_it']))
+            ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_story_it']))
             : '';
         $storyEn = isset($_POST['fp_qr_info_story_en'])
-            ? sanitize_textarea_field(wp_unslash((string) $_POST['fp_qr_info_story_en']))
+            ? wp_kses_post(wp_unslash((string) $_POST['fp_qr_info_story_en']))
             : '';
         update_post_meta($postId, 'fp_qr_info_story_it', $storyIt);
         update_post_meta($postId, 'fp_qr_info_story_en', $storyEn);

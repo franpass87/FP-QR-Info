@@ -312,12 +312,27 @@ final class LandingRouter
                     text-transform: uppercase;
                     color: var(--fpqi-primary);
                 }
-                .fpqi-story-content-box p {
+                .fpqi-story-content-box .fpqi-story-body {
                     margin: 0;
                     font-size: 1rem;
                     line-height: 1.6;
                     color: var(--fpqi-muted);
                     white-space: pre-wrap;
+                }
+                .fpqi-story-content-box .fpqi-story-body p {
+                    margin: 0 0 10px;
+                }
+                .fpqi-story-content-box .fpqi-story-body p:last-child {
+                    margin-bottom: 0;
+                }
+                .fpqi-story-content-box .fpqi-story-body a {
+                    color: var(--fpqi-primary);
+                    text-decoration: underline;
+                }
+                .fpqi-story-content-box .fpqi-story-body ul,
+                .fpqi-story-content-box .fpqi-story-body ol {
+                    margin: 0 0 10px;
+                    padding-left: 20px;
                 }
                 .fpqi-story-card {
                     background: var(--fpqi-surface);
@@ -333,11 +348,26 @@ final class LandingRouter
                     text-transform: uppercase;
                     letter-spacing: 0.03em;
                 }
-                .fpqi-story-card p {
+                .fpqi-story-card .fpqi-story-body {
                     margin: 0;
                     color: var(--fpqi-muted);
                     line-height: 1.55;
                     white-space: pre-wrap;
+                }
+                .fpqi-story-card .fpqi-story-body p {
+                    margin: 0 0 10px;
+                }
+                .fpqi-story-card .fpqi-story-body p:last-child {
+                    margin-bottom: 0;
+                }
+                .fpqi-story-card .fpqi-story-body a {
+                    color: var(--fpqi-primary);
+                    text-decoration: underline;
+                }
+                .fpqi-story-card .fpqi-story-body ul,
+                .fpqi-story-card .fpqi-story-body ol {
+                    margin: 0 0 10px;
+                    padding-left: 20px;
                 }
                 .fpqi-head {
                     display: flex;
@@ -612,7 +642,7 @@ final class LandingRouter
                 <div class="fpqi-story-hero-inner">
                     <div class="fpqi-story-content-box">
                         <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
-                        <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                        <div id="fpqi-story-body" class="fpqi-story-body"><?php echo wp_kses_post($storyIt); ?></div>
                     </div>
                 </div>
             </section>
@@ -621,7 +651,7 @@ final class LandingRouter
             <?php if ($storyShowBlock): ?>
                 <section class="fpqi-story-card" aria-labelledby="fpqi-story-title">
                     <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
-                    <p id="fpqi-story-body"><?php echo esc_html($storyIt); ?></p>
+                    <div id="fpqi-story-body" class="fpqi-story-body"><?php echo wp_kses_post($storyIt); ?></div>
                 </section>
             <?php endif; ?>
             <?php if ($hasLegalSections): ?>
@@ -689,7 +719,7 @@ final class LandingRouter
                         stTitle.textContent = story.title[lang] || '';
                     }
                     if (stBody && story.body) {
-                        stBody.textContent = story.body[lang] || '';
+                        stBody.innerHTML = story.body[lang] || '';
                     }
                     if (sectionTitle && data.sectionHeadline) {
                         sectionTitle.textContent = data.sectionHeadline[lang] || '';

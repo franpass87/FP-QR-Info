@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.1.41
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,13 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.2.0 = (2026-05-18)
+* Added: HTML sicuro nella sezione "Storia ed etichetta" (campi `Storia (Italiano)` e `Story (English)`) tramite `wp_kses_post`, coerente con le altre sezioni della landing.
+* Added: stili dedicati `.fpqi-story-body` per paragrafi, link e liste sia in modalita hero che card.
+* Changed: salvataggio meta `fp_qr_info_story_it/_en` da `sanitize_textarea_field` a `wp_kses_post`. Retrocompatibile: i contenuti gia salvati come testo puro restano identici (white-space: pre-wrap mantiene gli a-capo).
+* Changed: render frontend body story da `<p>` con `esc_html` a `<div class="fpqi-story-body">` con `wp_kses_post`; switch lingua client-side passa da `textContent` a `innerHTML`. Il titolo resta `esc_html` / `textContent` (stringa fissa).
+* Changed: description metabox CPT aggiornata per indicare i tag HTML sicuri consentiti.
 
 = 0.1.41 = (2026-05-15)
 * Fixed: hardening download QR PNG/SVG (filename sanitizzato da token, header `X-Content-Type-Options: nosniff` e `Cache-Control` per risposta binaria piu robusta).
