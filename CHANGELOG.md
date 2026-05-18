@@ -1,3 +1,9 @@
+## [0.3.1] - 2026-05-18
+
+### Fixed
+
+- **Ordine di rendering landing in modalità card** (nessuna immagine bottiglia caricata): il blocco "Storia ed etichetta" veniva mostrato PRIMA del titolo del vino + switch lingua. Ora la sequenza è coerente con la modalità hero: **titolo vino + switch lingua → storia → eventuali sezioni legali**. La modalità hero (con immagine) è invariata: titolo + lang in alto, immagine al centro, storia sotto.
+
 ## [0.3.0] - 2026-05-18
 
 ### Changed

@@ -648,15 +648,6 @@ final class LandingRouter
             </section>
         <?php endif; ?>
         <div class="fpqi-wrap">
-            <?php if ($storyShowBlock): ?>
-                <section class="fpqi-story-card" aria-labelledby="fpqi-story-title">
-                    <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
-                    <div id="fpqi-story-body" class="fpqi-story-body"><?php echo wp_kses_post($storyIt); ?></div>
-                </section>
-            <?php endif; ?>
-            <?php if ($hasLegalSections): ?>
-                <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
-            <?php endif; ?>
             <?php if (!$storyShowHero): ?>
                 <header class="fpqi-head">
                     <div>
@@ -667,6 +658,15 @@ final class LandingRouter
                         <button type="button" class="fpqi-lang-btn" data-lang="en" aria-pressed="false">ENG</button>
                     </div>
                 </header>
+            <?php endif; ?>
+            <?php if ($storyShowBlock): ?>
+                <section class="fpqi-story-card" aria-labelledby="fpqi-story-title">
+                    <h2 id="fpqi-story-title"><?php echo esc_html($storyTitleIt); ?></h2>
+                    <div id="fpqi-story-body" class="fpqi-story-body"><?php echo wp_kses_post($storyIt); ?></div>
+                </section>
+            <?php endif; ?>
+            <?php if ($hasLegalSections): ?>
+                <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
             <?php endif; ?>
             <?php foreach ($i18nPayload['sections'] as $idx => $sec): ?>
                 <section class="fpqi-card" data-section-id="<?php echo esc_attr((string) $sec['id']); ?>">

@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,9 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.3.1 = (2026-05-18)
+* Fixed: ordine di rendering landing in modalita card (senza immagine bottiglia). Il blocco "Storia ed etichetta" veniva mostrato prima del titolo del vino + switch lingua; ora la sequenza e: titolo vino + switch lingua, storia, eventuali sezioni legali. Modalita hero (con immagine) invariata.
 
 = 0.3.0 = (2026-05-18)
 * Changed: i toggle `Mostra sezione smaltimento / nutrizionale / ingredienti` partono ora DISATTIVATI per le nuove landing.
