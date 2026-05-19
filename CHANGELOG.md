@@ -1,3 +1,24 @@
+## [0.6.0] - 2026-05-19
+
+### Added
+
+- **"Guida AI" per generare i testi della landing**: nuovo pulsante nell'header del CPT editor (`FP QR Info → modifica landing`) che apre un modale con linee guida editoriali e prompt copiabili separati per ogni campo.
+- **`AiGuide`** (`src/Admin/AiGuide.php`): contenitore statico delle linee guida + 4 prompt template (Storia, Sentori e profumi, Abbinamenti, Note di servizio). Tutto localizzabile via `__()`.
+- **Linee guida generali**: lingue IT+EN obbligatorie, HTML sicuro consentito/vietato (con tag specifici), tono editoriale, divieto claim salutistici (Reg. UE 1924/2006), revisione editoriale obbligatoria, adattabilità ad altri prodotti.
+- **Prompt-template per VINO**: 4 prompt curati con CONTESTO PRODOTTO (campi da compilare), VINCOLI (lunghezza, tono, HTML, claim) e formato OUTPUT IT/EN. Ogni prompt ha bottone "Copia prompt" con feedback visivo.
+- **Avvertenza esplicita**: smaltimento, nutrizionali e ingredienti **non** vanno generati con AI (sono campi normativi: usa i modelli precompilati esistenti).
+
+### Changed
+
+- **`LandingCpt::renderEditorHeader`**: aggiunto wrapper `.fpqri-editor-header-actions` che raggruppa nuovo pulsante "Guida AI" + badge versione esistente. Il CSS legacy `.fpqri-editor-header { display: flex; justify-content: space-between; }` continua a funzionare invariato.
+
+### Notes
+
+- Il modale è 100% client-side: HTML inline, CSS inline (scoped), JS inline (vanilla, no dipendenze). Z-index 100050 (sotto admin bar 99999 + buffer).
+- A11y: `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus management (apertura → primo close button, chiusura → bottone che ha aperto), chiusura via X / overlay click / `Escape`.
+- Copy-to-clipboard: usa `navigator.clipboard.writeText` con fallback `document.execCommand('copy')` per browser legacy.
+- Sicurezza: i prompt sono stringhe statiche curate; le linee guida con HTML inline passano da `wp_kses` con whitelist ridotta (`<strong>`, `<em>`, `<code>`, `<br>`); i prompt vanno in `<textarea readonly>` via `esc_textarea`.
+
 ## [0.5.0] - 2026-05-19
 
 ### Added

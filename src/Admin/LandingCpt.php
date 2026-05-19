@@ -120,8 +120,266 @@ final class LandingCpt
                     <?php esc_html_e('Compila i contenuti IT/EN e genera una landing QR pronta per etichetta e stampa.', 'fp-qr-info'); ?>
                 </p>
             </div>
-            <span class="fpqri-editor-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
+            <div class="fpqri-editor-header-actions">
+                <button type="button" class="button button-secondary fpqri-ai-guide-open" aria-haspopup="dialog" aria-controls="fpqri-ai-guide-modal">
+                    <span class="dashicons dashicons-lightbulb" aria-hidden="true" style="vertical-align:text-bottom;"></span>
+                    <?php esc_html_e('Guida AI', 'fp-qr-info'); ?>
+                </button>
+                <span class="fpqri-editor-header-badge">v<?php echo esc_html(FP_QR_INFO_VERSION); ?></span>
+            </div>
         </div>
+        <?php $this->renderAiGuideModal(); ?>
+        <?php
+    }
+
+    /**
+     * Renderizza il modale "Guida AI" (hidden by default) con linee guida generali
+     * e prompt copiabili per ogni campo editoriale.
+     *
+     * Usato solo nella schermata editor del CPT (chiamato da `renderEditorHeader`).
+     */
+    private function renderAiGuideModal(): void
+    {
+        $guidelines = AiGuide::getGeneralGuidelines();
+        $prompts = AiGuide::getFieldPrompts();
+        $copyLabel = __('Copia prompt', 'fp-qr-info');
+        $copiedLabel = __('Copiato', 'fp-qr-info');
+        ?>
+        <div id="fpqri-ai-guide-modal" class="fpqri-ai-guide-modal" hidden role="dialog" aria-modal="true" aria-labelledby="fpqri-ai-guide-title">
+            <div class="fpqri-ai-guide-overlay" data-fpqri-ai-close></div>
+            <div class="fpqri-ai-guide-dialog" role="document">
+                <header class="fpqri-ai-guide-head">
+                    <h2 id="fpqri-ai-guide-title">
+                        <span class="dashicons dashicons-lightbulb" aria-hidden="true" style="vertical-align:text-bottom;"></span>
+                        <?php esc_html_e('Guida AI per generare i testi della landing', 'fp-qr-info'); ?>
+                    </h2>
+                    <button type="button" class="button-link fpqri-ai-guide-close" data-fpqri-ai-close aria-label="<?php esc_attr_e('Chiudi guida', 'fp-qr-info'); ?>">
+                        <span class="dashicons dashicons-no-alt" aria-hidden="true"></span>
+                    </button>
+                </header>
+                <div class="fpqri-ai-guide-body">
+                    <section class="fpqri-ai-guide-section">
+                        <h3><?php echo esc_html($guidelines['title']); ?></h3>
+                        <p><?php echo esc_html($guidelines['intro']); ?></p>
+                        <ul class="fpqri-ai-guide-rules">
+                            <?php foreach ($guidelines['items'] as $item): ?>
+                                <li><?php echo wp_kses($item, [
+                                    'strong' => [],
+                                    'em' => [],
+                                    'code' => [],
+                                    'br' => [],
+                                ]); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </section>
+                    <?php foreach ($prompts as $promptDef): ?>
+                        <section class="fpqri-ai-guide-section fpqri-ai-guide-prompt-block" data-fpqri-prompt-id="<?php echo esc_attr((string) $promptDef['id']); ?>">
+                            <h3><?php echo esc_html((string) $promptDef['title']); ?></h3>
+                            <p class="fpqri-ai-guide-target"><strong><?php echo esc_html((string) $promptDef['target_field']); ?></strong></p>
+                            <p><?php echo esc_html((string) $promptDef['description']); ?></p>
+                            <div class="fpqri-ai-guide-prompt-toolbar">
+                                <button type="button" class="button button-primary fpqri-ai-guide-copy" data-fpqri-copy-target="fpqri-ai-prompt-<?php echo esc_attr((string) $promptDef['id']); ?>" data-label-copy="<?php echo esc_attr($copyLabel); ?>" data-label-copied="<?php echo esc_attr($copiedLabel); ?>">
+                                    <span class="dashicons dashicons-clipboard" aria-hidden="true" style="vertical-align:text-bottom;"></span>
+                                    <?php echo esc_html($copyLabel); ?>
+                                </button>
+                            </div>
+                            <textarea id="fpqri-ai-prompt-<?php echo esc_attr((string) $promptDef['id']); ?>" class="fpqri-ai-guide-prompt-text" rows="14" readonly aria-label="<?php echo esc_attr(sprintf(
+                                /* translators: %s: campo della landing per cui generare il testo */
+                                __('Prompt AI per il campo %s', 'fp-qr-info'),
+                                (string) $promptDef['title']
+                            )); ?>"><?php echo esc_textarea((string) $promptDef['prompt']); ?></textarea>
+                        </section>
+                    <?php endforeach; ?>
+                </div>
+                <footer class="fpqri-ai-guide-foot">
+                    <button type="button" class="button" data-fpqri-ai-close>
+                        <?php esc_html_e('Chiudi', 'fp-qr-info'); ?>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <style>
+            .fpqri-editor-header-actions {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+            }
+            .fpqri-ai-guide-modal[hidden] { display: none; }
+            .fpqri-ai-guide-modal {
+                position: fixed;
+                inset: 0;
+                z-index: 100050;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 32px 16px;
+            }
+            .fpqri-ai-guide-overlay {
+                position: absolute;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.55);
+                backdrop-filter: blur(2px);
+            }
+            .fpqri-ai-guide-dialog {
+                position: relative;
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+                max-width: 880px;
+                width: 100%;
+                max-height: calc(100vh - 64px);
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            .fpqri-ai-guide-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 18px 22px;
+                border-bottom: 1px solid #e5e7eb;
+                background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
+                color: #fff;
+            }
+            .fpqri-ai-guide-head h2 {
+                margin: 0;
+                font-size: 1.15rem;
+                color: #fff;
+            }
+            .fpqri-ai-guide-close {
+                color: rgba(255, 255, 255, 0.92);
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .fpqri-ai-guide-close:hover { color: #fff; }
+            .fpqri-ai-guide-body {
+                padding: 18px 22px;
+                overflow-y: auto;
+                flex: 1 1 auto;
+            }
+            .fpqri-ai-guide-section {
+                margin: 0 0 22px;
+                padding: 0 0 16px;
+                border-bottom: 1px dashed #e5e7eb;
+            }
+            .fpqri-ai-guide-section:last-of-type { border-bottom: 0; }
+            .fpqri-ai-guide-section h3 {
+                margin: 0 0 8px;
+                font-size: 1.02rem;
+                color: #1f2937;
+            }
+            .fpqri-ai-guide-target {
+                margin: 0 0 6px;
+                color: #6b7280;
+                font-size: 0.9rem;
+            }
+            .fpqri-ai-guide-rules { margin: 6px 0 0 18px; padding: 0; }
+            .fpqri-ai-guide-rules li { margin: 4px 0; line-height: 1.55; }
+            .fpqri-ai-guide-rules code {
+                background: #f1f5f9;
+                padding: 1px 5px;
+                border-radius: 3px;
+                font-size: 0.92em;
+            }
+            .fpqri-ai-guide-prompt-toolbar {
+                margin: 8px 0 6px;
+            }
+            .fpqri-ai-guide-prompt-text {
+                width: 100%;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                font-size: 0.85rem;
+                line-height: 1.45;
+                background: #f8fafc;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                padding: 10px 12px;
+                resize: vertical;
+                color: #1f2937;
+            }
+            .fpqri-ai-guide-foot {
+                padding: 12px 22px;
+                border-top: 1px solid #e5e7eb;
+                background: #f8fafc;
+                text-align: right;
+            }
+            @media (max-width: 600px) {
+                .fpqri-ai-guide-modal { padding: 0; }
+                .fpqri-ai-guide-dialog { max-height: 100vh; border-radius: 0; }
+            }
+        </style>
+        <script>
+            (function () {
+                var modal = document.getElementById('fpqri-ai-guide-modal');
+                if (!modal) { return; }
+                var openButtons = document.querySelectorAll('.fpqri-ai-guide-open');
+                var closeButtons = modal.querySelectorAll('[data-fpqri-ai-close]');
+                var copyButtons = modal.querySelectorAll('.fpqri-ai-guide-copy');
+                var lastFocused = null;
+
+                function openModal() {
+                    lastFocused = document.activeElement;
+                    modal.hidden = false;
+                    document.body.style.overflow = 'hidden';
+                    var firstClose = modal.querySelector('.fpqri-ai-guide-close');
+                    if (firstClose) { firstClose.focus(); }
+                }
+                function closeModal() {
+                    modal.hidden = true;
+                    document.body.style.overflow = '';
+                    if (lastFocused && typeof lastFocused.focus === 'function') {
+                        lastFocused.focus();
+                    }
+                }
+
+                openButtons.forEach(function (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        openModal();
+                    });
+                });
+                closeButtons.forEach(function (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        closeModal();
+                    });
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (!modal.hidden && (e.key === 'Escape' || e.key === 'Esc')) {
+                        closeModal();
+                    }
+                });
+
+                copyButtons.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var targetId = btn.getAttribute('data-fpqri-copy-target');
+                        if (!targetId) { return; }
+                        var target = document.getElementById(targetId);
+                        if (!target) { return; }
+                        var labelCopy = btn.getAttribute('data-label-copy') || 'Copy';
+                        var labelCopied = btn.getAttribute('data-label-copied') || 'Copied';
+                        var doFeedback = function () {
+                            var labelSpan = btn.lastChild;
+                            var original = btn.innerHTML;
+                            btn.innerHTML = '<span class="dashicons dashicons-yes" aria-hidden="true" style="vertical-align:text-bottom;"></span> ' + labelCopied;
+                            setTimeout(function () { btn.innerHTML = original; }, 1500);
+                        };
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(target.value).then(doFeedback).catch(function () {
+                                target.select();
+                                target.setSelectionRange(0, target.value.length);
+                                try { document.execCommand('copy'); doFeedback(); } catch (e) {}
+                            });
+                        } else {
+                            target.select();
+                            target.setSelectionRange(0, target.value.length);
+                            try { document.execCommand('copy'); doFeedback(); } catch (e) {}
+                        }
+                    });
+                });
+            })();
+        </script>
         <?php
     }
 

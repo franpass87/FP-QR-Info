@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,12 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.6.0 = (2026-05-19)
+* Added: "Guida AI" per generare i testi della landing. Pulsante nell'header del CPT editor che apre un modale con linee guida e prompt copiabili separati per Storia, Sentori e profumi, Abbinamenti, Note di servizio.
+* Added: nuova classe AiGuide (src/Admin/AiGuide.php) con linee guida editoriali e 4 prompt template ottimizzati per il vino (HTML sicuro, IT+EN, lunghezze indicative, divieto claim salutistici).
+* Added: avvertenza esplicita - non generare con AI smaltimento/nutrizionali/ingredienti (campi normativi, usare modelli precompilati).
+* Changed: renderEditorHeader avvolge pulsante AI + badge versione in .fpqri-editor-header-actions; layout flex esistente invariato.
 
 = 0.5.0 = (2026-05-19)
 * Added: icone SVG selezionabili per ogni card della scheda prodotto (Sentori, Abbinamenti, Servizio) accanto al titolo, set di 13 icone curate (stile lineare, currentColor, ereditano accent landing) + 'none'.
