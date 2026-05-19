@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FP\QrInfo\Frontend;
 
 use FP\QrInfo\Content\LandingLegalPresets;
+use FP\QrInfo\Content\SectionIconRegistry;
 
 /**
  * Router pubblico per landing standalone QR.
@@ -153,28 +154,34 @@ final class LandingRouter
 
         if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_tasting')) {
             $productSections['tasting'] = [
-                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_it', true)),
-                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_en', true)),
-                'label_it' => __('SENTORI E PROFUMI', 'fp-qr-info'),
-                'label_en' => __('AROMAS & TASTING NOTES', 'fp-qr-info'),
+                'it'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_it', true)),
+                'en'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_en', true)),
+                'label_it'   => __('SENTORI E PROFUMI', 'fp-qr-info'),
+                'label_en'   => __('AROMAS & TASTING NOTES', 'fp-qr-info'),
+                'icon_svg'   => $this->resolveSectionIconSvg($post->ID, 'fp_qr_info_tasting_icon'),
+                'icon_label' => $this->resolveSectionIconLabel($post->ID, 'fp_qr_info_tasting_icon'),
             ];
         }
 
         if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_pairings')) {
             $productSections['pairings'] = [
-                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_it', true)),
-                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_en', true)),
-                'label_it' => __('ABBINAMENTI', 'fp-qr-info'),
-                'label_en' => __('FOOD PAIRINGS', 'fp-qr-info'),
+                'it'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_it', true)),
+                'en'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_en', true)),
+                'label_it'   => __('ABBINAMENTI', 'fp-qr-info'),
+                'label_en'   => __('FOOD PAIRINGS', 'fp-qr-info'),
+                'icon_svg'   => $this->resolveSectionIconSvg($post->ID, 'fp_qr_info_pairings_icon'),
+                'icon_label' => $this->resolveSectionIconLabel($post->ID, 'fp_qr_info_pairings_icon'),
             ];
         }
 
         if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_service')) {
             $productSections['service'] = [
-                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_it', true)),
-                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_en', true)),
-                'label_it' => __('NOTE DI SERVIZIO', 'fp-qr-info'),
-                'label_en' => __('SERVING NOTES', 'fp-qr-info'),
+                'it'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_it', true)),
+                'en'         => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_en', true)),
+                'label_it'   => __('NOTE DI SERVIZIO', 'fp-qr-info'),
+                'label_en'   => __('SERVING NOTES', 'fp-qr-info'),
+                'icon_svg'   => $this->resolveSectionIconSvg($post->ID, 'fp_qr_info_service_icon'),
+                'icon_label' => $this->resolveSectionIconLabel($post->ID, 'fp_qr_info_service_icon'),
             ];
         }
 
@@ -225,6 +232,8 @@ final class LandingRouter
                 'id' => $key,
                 'label' => ['it' => $section['label_it'], 'en' => $section['label_en']],
                 'body' => ['it' => $section['it'], 'en' => $section['en']],
+                'icon_svg' => (string) ($section['icon_svg'] ?? ''),
+                'icon_label' => (string) ($section['icon_label'] ?? ''),
             ];
         }
         $i18nJson = wp_json_encode(
@@ -490,6 +499,25 @@ final class LandingRouter
                     text-transform: uppercase;
                     letter-spacing: 0.03em;
                 }
+                .fpqi-section-title.fpqi-section-title--with-icon {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .fpqi-section-icon {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 22px;
+                    height: 22px;
+                    flex: 0 0 auto;
+                    color: var(--fpqi-primary);
+                }
+                .fpqi-section-icon svg {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
                 .fpqi-card p {
                     margin: 0;
                     color: var(--fpqi-muted);
@@ -712,8 +740,18 @@ final class LandingRouter
             <?php if ($hasProductSections): ?>
                 <h2 class="fpqi-main-section-headline" id="fpqi-product-section-title"><?php echo esc_html($productHeadline['it']); ?></h2>
                 <?php foreach ($i18nPayload['productSections'] as $sec): ?>
+                    <?php
+                    $iconSvg = (string) ($sec['icon_svg'] ?? '');
+                    $iconLabel = (string) ($sec['icon_label'] ?? '');
+                    $hasIcon = $iconSvg !== '';
+                    ?>
                     <section class="fpqi-card" data-product-section-id="<?php echo esc_attr((string) $sec['id']); ?>">
-                        <h2 class="fpqi-section-title"><?php echo esc_html((string) $sec['label']['it']); ?></h2>
+                        <h2 class="fpqi-section-title<?php echo $hasIcon ? ' fpqi-section-title--with-icon' : ''; ?>">
+                            <?php if ($hasIcon): ?>
+                                <span class="fpqi-section-icon" aria-hidden="true"<?php echo $iconLabel !== '' ? ' title="' . esc_attr($iconLabel) . '"' : ''; ?>><?php echo $iconSvg; ?></span>
+                            <?php endif; ?>
+                            <span class="fpqi-section-title-text"><?php echo esc_html((string) $sec['label']['it']); ?></span>
+                        </h2>
                         <div class="fpqi-section-body fpqi-legal-html"><?php echo $sec['body']['it']; ?></div>
                     </section>
                 <?php endforeach; ?>
@@ -769,10 +807,10 @@ final class LandingRouter
                         if (!wrap) {
                             return;
                         }
-                        var titleEl = wrap.querySelector('.fpqi-section-title');
+                        var titleTextEl = wrap.querySelector('.fpqi-section-title-text') || wrap.querySelector('.fpqi-section-title');
                         var bodyEl = wrap.querySelector('.fpqi-section-body');
-                        if (titleEl && sec.label) {
-                            titleEl.textContent = sec.label[lang] || '';
+                        if (titleTextEl && sec.label) {
+                            titleTextEl.textContent = sec.label[lang] || '';
                         }
                         if (bodyEl && sec.body) {
                             bodyEl.innerHTML = sec.body[lang] || '';
@@ -904,6 +942,37 @@ final class LandingRouter
         $raw = (string) get_post_meta($postId, $metaKey, true);
 
         return $raw === '1';
+    }
+
+    /**
+     * Restituisce l'SVG inline dell'icona scelta per una card prodotto, oppure '' (nessuna).
+     *
+     * @param int    $postId  ID landing.
+     * @param string $metaKey Meta key icona (es. `fp_qr_info_tasting_icon`).
+     * @return string SVG inline (sicuro, statico nel registry) oppure stringa vuota.
+     */
+    private function resolveSectionIconSvg(int $postId, string $metaKey): string
+    {
+        $slug = (string) get_post_meta($postId, $metaKey, true);
+        if (!SectionIconRegistry::isValid($slug)) {
+            return '';
+        }
+
+        return SectionIconRegistry::getSvg($slug);
+    }
+
+    /**
+     * Restituisce la label accessibile (IT) dell'icona scelta, per `aria-label`/`title`.
+     *
+     * @param int    $postId  ID landing.
+     * @param string $metaKey Meta key icona.
+     * @return string Label IT, vuota se 'none' o slug invalido.
+     */
+    private function resolveSectionIconLabel(int $postId, string $metaKey): string
+    {
+        $slug = (string) get_post_meta($postId, $metaKey, true);
+
+        return SectionIconRegistry::getAccessibleLabel($slug);
     }
 
     /**

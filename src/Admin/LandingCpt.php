@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FP\QrInfo\Admin;
 
 use FP\QrInfo\Content\LandingLegalPresets;
+use FP\QrInfo\Content\SectionIconRegistry;
 
 /**
  * Gestione CPT e metadati per landing QR.
@@ -28,6 +29,9 @@ final class LandingCpt
     private const META_PAIRINGS_EN = 'fp_qr_info_pairings_en';
     private const META_SERVICE_IT = 'fp_qr_info_service_it';
     private const META_SERVICE_EN = 'fp_qr_info_service_en';
+    private const META_TASTING_ICON = 'fp_qr_info_tasting_icon';
+    private const META_PAIRINGS_ICON = 'fp_qr_info_pairings_icon';
+    private const META_SERVICE_ICON = 'fp_qr_info_service_icon';
     private const OPT_LEGAL_DEFAULTS_MIGRATED = 'fp_qr_info_legal_defaults_migrated_v1';
 
     /**
@@ -335,6 +339,7 @@ final class LandingCpt
                 'enable_meta' => self::META_ENABLE_TASTING,
                 'meta_it'     => self::META_TASTING_IT,
                 'meta_en'     => self::META_TASTING_EN,
+                'meta_icon'   => self::META_TASTING_ICON,
                 'legend'      => __('Sentori e profumi / Tasting notes', 'fp-qr-info'),
                 'toggle'      => __('Mostra sezione "Sentori e profumi" nella landing', 'fp-qr-info'),
             ],
@@ -342,6 +347,7 @@ final class LandingCpt
                 'enable_meta' => self::META_ENABLE_PAIRINGS,
                 'meta_it'     => self::META_PAIRINGS_IT,
                 'meta_en'     => self::META_PAIRINGS_EN,
+                'meta_icon'   => self::META_PAIRINGS_ICON,
                 'legend'      => __('Abbinamenti / Food pairings', 'fp-qr-info'),
                 'toggle'      => __('Mostra sezione "Abbinamenti" nella landing', 'fp-qr-info'),
             ],
@@ -349,14 +355,24 @@ final class LandingCpt
                 'enable_meta' => self::META_ENABLE_SERVICE,
                 'meta_it'     => self::META_SERVICE_IT,
                 'meta_en'     => self::META_SERVICE_EN,
+                'meta_icon'   => self::META_SERVICE_ICON,
                 'legend'      => __('Note di servizio / Serving notes', 'fp-qr-info'),
                 'toggle'      => __('Mostra sezione "Note di servizio" nella landing', 'fp-qr-info'),
             ],
         ];
+        $iconOptions = SectionIconRegistry::getSelectOptions();
+        $iconRegistry = SectionIconRegistry::all();
         foreach ($productBlocks as $slug => $block) {
             $enabled = $this->isSectionEnabled($post->ID, (string) $block['enable_meta']);
             $valueIt = (string) get_post_meta($post->ID, (string) $block['meta_it'], true);
             $valueEn = (string) get_post_meta($post->ID, (string) $block['meta_en'], true);
+            $iconSlug = (string) get_post_meta($post->ID, (string) $block['meta_icon'], true);
+            if (!SectionIconRegistry::isValid($iconSlug)) {
+                $iconSlug = SectionIconRegistry::SLUG_NONE;
+            }
+            $previewSvg = SectionIconRegistry::getSvg($iconSlug);
+            $iconFieldId = 'fp-qri-product-icon-' . $slug;
+            $previewId = 'fp-qri-product-icon-preview-' . $slug;
             ?>
             <fieldset style="border:1px solid #c3c4c7;padding:12px 14px;margin:0 0 14px;border-radius:6px;background:#fafafa;">
                 <legend><strong><?php echo esc_html((string) $block['legend']); ?></strong></legend>
@@ -365,6 +381,15 @@ final class LandingCpt
                         <input type="checkbox" name="<?php echo esc_attr((string) $block['enable_meta']); ?>" value="1" <?php checked($enabled); ?>>
                         <?php echo esc_html((string) $block['toggle']); ?>
                     </label>
+                </p>
+                <p>
+                    <label for="<?php echo esc_attr($iconFieldId); ?>"><?php esc_html_e('Icona accanto al titolo', 'fp-qr-info'); ?></label><br>
+                    <select id="<?php echo esc_attr($iconFieldId); ?>" name="<?php echo esc_attr((string) $block['meta_icon']); ?>" class="fp-qri-product-icon-select" data-preview-target="<?php echo esc_attr($previewId); ?>">
+                        <?php foreach ($iconOptions as $optSlug => $optLabel): ?>
+                            <option value="<?php echo esc_attr($optSlug); ?>" <?php selected($iconSlug, $optSlug); ?>><?php echo esc_html($optLabel); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span id="<?php echo esc_attr($previewId); ?>" class="fp-qri-product-icon-preview" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin-left:8px;color:#5b21b6;vertical-align:middle;"><?php echo $previewSvg; ?></span>
                 </p>
                 <p>
                     <label for="<?php echo esc_attr((string) $block['meta_it']); ?>"><?php esc_html_e('Italiano', 'fp-qr-info'); ?></label><br>
@@ -378,6 +403,32 @@ final class LandingCpt
             <?php
         }
         ?>
+        <script type="application/json" id="fp-qri-icon-registry"><?php
+            $registryForJs = [];
+            foreach ($iconRegistry as $regSlug => $regData) {
+                $registryForJs[$regSlug] = (string) $regData['svg'];
+            }
+            echo wp_json_encode($registryForJs, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
+        ?></script>
+        <script>
+            (function () {
+                var raw = document.getElementById('fp-qri-icon-registry');
+                if (!raw) { return; }
+                var registry = {};
+                try { registry = JSON.parse(raw.textContent || '{}'); } catch (e) { registry = {}; }
+                var selects = document.querySelectorAll('.fp-qri-product-icon-select');
+                selects.forEach(function (sel) {
+                    sel.addEventListener('change', function () {
+                        var targetId = sel.getAttribute('data-preview-target');
+                        if (!targetId) { return; }
+                        var target = document.getElementById(targetId);
+                        if (!target) { return; }
+                        var slug = sel.value || '';
+                        target.innerHTML = registry[slug] || '';
+                    });
+                });
+            })();
+        </script>
         <hr>
         <p class="description" style="max-width:860px;">
             <?php esc_html_e(
@@ -649,6 +700,21 @@ final class LandingCpt
                 ? wp_kses_post(wp_unslash((string) $_POST[$metaKey]))
                 : '';
             update_post_meta($postId, $metaKey, $value);
+        }
+
+        $productIconMetaKeys = [
+            self::META_TASTING_ICON,
+            self::META_PAIRINGS_ICON,
+            self::META_SERVICE_ICON,
+        ];
+        foreach ($productIconMetaKeys as $metaKey) {
+            $rawSlug = isset($_POST[$metaKey])
+                ? sanitize_key(wp_unslash((string) $_POST[$metaKey]))
+                : SectionIconRegistry::SLUG_NONE;
+            if (!SectionIconRegistry::isValid($rawSlug)) {
+                $rawSlug = SectionIconRegistry::SLUG_NONE;
+            }
+            update_post_meta($postId, $metaKey, $rawSlug);
         }
 
         foreach (LandingLegalPresets::DISPOSAL_BLOCK_SLUGS as $slug) {

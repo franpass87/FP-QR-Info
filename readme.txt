@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,14 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.5.0 = (2026-05-19)
+* Added: icone SVG selezionabili per ogni card della scheda prodotto (Sentori, Abbinamenti, Servizio) accanto al titolo, set di 13 icone curate (stile lineare, currentColor, ereditano accent landing) + 'none'.
+* Added: nuova classe SectionIconRegistry (src/Content/SectionIconRegistry.php) con slug, label IT/EN, emoji preview e SVG inline.
+* Added: UI admin con dropdown 'Icona accanto al titolo' e preview SVG live (no submit richiesto) per ogni fieldset prodotto.
+* Added: 3 nuove meta key (fp_qr_info_tasting_icon / _pairings_icon / _service_icon) sanitizzate con sanitize_key + whitelist registry, default 'none'.
+* Changed: markup card prodotto avvolge il testo del titolo in un .fpqi-section-title-text quando ha icona, cosi il JS switch lingua non sovrascrive l'SVG; CSS aggiunto per .fpqi-section-icon (22x22, currentColor) e .fpqi-section-title--with-icon (gap 8px).
+* Changed: JS applyLang per productSections aggiornato (preferisce .fpqi-section-title-text); sezioni legali invariate.
 
 = 0.4.0 = (2026-05-19)
 * Added: nuova sezione "Scheda prodotto" sotto la storia con 3 sotto-blocchi opzionali bilingue (IT/EN) e HTML sicuro: Sentori e profumi, Abbinamenti, Note di servizio.

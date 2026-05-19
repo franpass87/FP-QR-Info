@@ -1,3 +1,23 @@
+## [0.5.0] - 2026-05-19
+
+### Added
+
+- **Icone SVG per le card della scheda prodotto**: ogni sotto-blocco (Sentori, Abbinamenti, Servizio) può ora avere un'iconcina SVG accanto al titolo, scelta da un set curato di 13 icone in stile lineare (`stroke="currentColor"`, ereditano l'accent color della landing).
+- **`SectionIconRegistry`** (`src/Content/SectionIconRegistry.php`): registry centralizzato delle icone disponibili (slug, label IT/EN, emoji preview, SVG inline). Set: `wine-glass`, `grape`, `leaf`, `flower`, `sparkles`, `cutlery`, `chef-hat`, `cheese`, `bread`, `thermometer`, `snowflake`, `clock`, `decanter`, più `none` (default).
+- **UI admin**: dropdown `<select>` "Icona accanto al titolo" in ogni fieldset prodotto, con preview SVG live che si aggiorna al cambio (no salvataggio richiesto).
+- **3 nuove meta**: `fp_qr_info_tasting_icon`, `fp_qr_info_pairings_icon`, `fp_qr_info_service_icon` (sanitizzate via `sanitize_key` + whitelist registry, default `none`).
+
+### Changed
+
+- **Markup card prodotto**: il titolo `<h2 class="fpqi-section-title">` ora avvolge il testo in `<span class="fpqi-section-title-text">` quando ha un'icona, così il JS di switch lingua aggiorna solo il testo senza sovrascrivere l'SVG. Le card senza icona restano invariate.
+- **JS `applyLang` per `productSections`**: ora cerca prima `.fpqi-section-title-text`, poi fallback a `.fpqi-section-title`. Sezioni legali invariate.
+- **CSS**: nuove regole `.fpqi-section-icon` (22x22, currentColor, inline-flex) e `.fpqi-section-title--with-icon` (gap 8px tra icona e testo).
+
+### Notes
+
+- L'output SVG inline NON passa da `wp_kses_post` perché le stringhe sono statiche e curate nel registry. Non inserire mai input utente in `SectionIconRegistry`.
+- Le sezioni legali (smaltimento, nutrizionali, ingredienti) e la storia non hanno (ancora) supporto icone: scelta perimetrale richiesta dall'utente.
+
 ## [0.4.0] - 2026-05-19
 
 ### Added
