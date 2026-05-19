@@ -19,6 +19,15 @@ final class LandingCpt
     private const META_ENABLE_DISPOSAL = 'fp_qr_info_enable_disposal';
     private const META_ENABLE_NUTRITION = 'fp_qr_info_enable_nutrition';
     private const META_ENABLE_INGREDIENTS = 'fp_qr_info_enable_ingredients';
+    private const META_ENABLE_TASTING = 'fp_qr_info_enable_tasting';
+    private const META_ENABLE_PAIRINGS = 'fp_qr_info_enable_pairings';
+    private const META_ENABLE_SERVICE = 'fp_qr_info_enable_service';
+    private const META_TASTING_IT = 'fp_qr_info_tasting_it';
+    private const META_TASTING_EN = 'fp_qr_info_tasting_en';
+    private const META_PAIRINGS_IT = 'fp_qr_info_pairings_it';
+    private const META_PAIRINGS_EN = 'fp_qr_info_pairings_en';
+    private const META_SERVICE_IT = 'fp_qr_info_service_it';
+    private const META_SERVICE_EN = 'fp_qr_info_service_en';
     private const OPT_LEGAL_DEFAULTS_MIGRATED = 'fp_qr_info_legal_defaults_migrated_v1';
 
     /**
@@ -313,6 +322,63 @@ final class LandingCpt
             <textarea id="fp_qr_info_story_en" name="fp_qr_info_story_en" rows="6" class="large-text"><?php echo esc_textarea($storyEn); ?></textarea>
         </p>
         <hr>
+        <h3><?php esc_html_e('Scheda prodotto', 'fp-qr-info'); ?></h3>
+        <p class="description" style="max-width:860px;">
+            <?php esc_html_e(
+                'Sotto-blocchi opzionali per la scheda prodotto (sentori e profumi, abbinamenti, note di servizio). HTML sicuro consentito (es. <strong>, <em>, <a>, <br>, <p>, <ul>, <li>). Ogni sotto-blocco si attiva con la checkbox dedicata; default: nascosto.',
+                'fp-qr-info'
+            ); ?>
+        </p>
+        <?php
+        $productBlocks = [
+            'tasting' => [
+                'enable_meta' => self::META_ENABLE_TASTING,
+                'meta_it'     => self::META_TASTING_IT,
+                'meta_en'     => self::META_TASTING_EN,
+                'legend'      => __('Sentori e profumi / Tasting notes', 'fp-qr-info'),
+                'toggle'      => __('Mostra sezione "Sentori e profumi" nella landing', 'fp-qr-info'),
+            ],
+            'pairings' => [
+                'enable_meta' => self::META_ENABLE_PAIRINGS,
+                'meta_it'     => self::META_PAIRINGS_IT,
+                'meta_en'     => self::META_PAIRINGS_EN,
+                'legend'      => __('Abbinamenti / Food pairings', 'fp-qr-info'),
+                'toggle'      => __('Mostra sezione "Abbinamenti" nella landing', 'fp-qr-info'),
+            ],
+            'service' => [
+                'enable_meta' => self::META_ENABLE_SERVICE,
+                'meta_it'     => self::META_SERVICE_IT,
+                'meta_en'     => self::META_SERVICE_EN,
+                'legend'      => __('Note di servizio / Serving notes', 'fp-qr-info'),
+                'toggle'      => __('Mostra sezione "Note di servizio" nella landing', 'fp-qr-info'),
+            ],
+        ];
+        foreach ($productBlocks as $slug => $block) {
+            $enabled = $this->isSectionEnabled($post->ID, (string) $block['enable_meta']);
+            $valueIt = (string) get_post_meta($post->ID, (string) $block['meta_it'], true);
+            $valueEn = (string) get_post_meta($post->ID, (string) $block['meta_en'], true);
+            ?>
+            <fieldset style="border:1px solid #c3c4c7;padding:12px 14px;margin:0 0 14px;border-radius:6px;background:#fafafa;">
+                <legend><strong><?php echo esc_html((string) $block['legend']); ?></strong></legend>
+                <p>
+                    <label>
+                        <input type="checkbox" name="<?php echo esc_attr((string) $block['enable_meta']); ?>" value="1" <?php checked($enabled); ?>>
+                        <?php echo esc_html((string) $block['toggle']); ?>
+                    </label>
+                </p>
+                <p>
+                    <label for="<?php echo esc_attr((string) $block['meta_it']); ?>"><?php esc_html_e('Italiano', 'fp-qr-info'); ?></label><br>
+                    <textarea id="<?php echo esc_attr((string) $block['meta_it']); ?>" name="<?php echo esc_attr((string) $block['meta_it']); ?>" rows="5" class="large-text"><?php echo esc_textarea($valueIt); ?></textarea>
+                </p>
+                <p>
+                    <label for="<?php echo esc_attr((string) $block['meta_en']); ?>"><?php esc_html_e('English', 'fp-qr-info'); ?></label><br>
+                    <textarea id="<?php echo esc_attr((string) $block['meta_en']); ?>" name="<?php echo esc_attr((string) $block['meta_en']); ?>" rows="5" class="large-text"><?php echo esc_textarea($valueEn); ?></textarea>
+                </p>
+            </fieldset>
+            <?php
+        }
+        ?>
+        <hr>
         <p class="description" style="max-width:860px;">
             <?php esc_html_e(
                 'Smaltimento: usa i tre blocchi (Tappo, Bottiglia, Capsula) con codice materiale e testi IT/EN; se restano vuoti, vale il blocco HTML unico sotto. Per nutrizionali e ingredienti puoi usare HTML sicuro; i pulsanti “Inserisci modello” aggiungono testi di partenza.',
@@ -570,6 +636,21 @@ final class LandingCpt
         update_post_meta($postId, 'fp_qr_info_story_it', $storyIt);
         update_post_meta($postId, 'fp_qr_info_story_en', $storyEn);
 
+        $productBodyMetaKeys = [
+            self::META_TASTING_IT,
+            self::META_TASTING_EN,
+            self::META_PAIRINGS_IT,
+            self::META_PAIRINGS_EN,
+            self::META_SERVICE_IT,
+            self::META_SERVICE_EN,
+        ];
+        foreach ($productBodyMetaKeys as $metaKey) {
+            $value = isset($_POST[$metaKey])
+                ? wp_kses_post(wp_unslash((string) $_POST[$metaKey]))
+                : '';
+            update_post_meta($postId, $metaKey, $value);
+        }
+
         foreach (LandingLegalPresets::DISPOSAL_BLOCK_SLUGS as $slug) {
             $codeKey = 'fp_qr_info_disposal_block_' . $slug . '_code';
             $itKey = 'fp_qr_info_disposal_block_' . $slug . '_it';
@@ -675,7 +756,7 @@ final class LandingCpt
     }
 
     /**
-     * Salva i toggle di visibilita delle sezioni legali.
+     * Salva i toggle di visibilita delle sezioni legali e di scheda prodotto.
      */
     private function saveSectionToggles(int $postId): void
     {
@@ -683,6 +764,9 @@ final class LandingCpt
             self::META_ENABLE_DISPOSAL,
             self::META_ENABLE_NUTRITION,
             self::META_ENABLE_INGREDIENTS,
+            self::META_ENABLE_TASTING,
+            self::META_ENABLE_PAIRINGS,
+            self::META_ENABLE_SERVICE,
         ];
 
         foreach ($toggleMetaKeys as $metaKey) {

@@ -4,7 +4,7 @@ Tags: qr code, landing page, bilingual, product labels
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.3.1
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,14 @@ Interfaccia admin con menu `FP QR Info` e dashboard grafica allineata allo stile
 4. Crea una voce in `FP QR Info -> QR Landing`.
 
 == Changelog ==
+
+= 0.4.0 = (2026-05-19)
+* Added: nuova sezione "Scheda prodotto" sotto la storia con 3 sotto-blocchi opzionali bilingue (IT/EN) e HTML sicuro: Sentori e profumi, Abbinamenti, Note di servizio.
+* Added: 3 toggle dedicati (default OFF): fp_qr_info_enable_tasting / _pairings / _service.
+* Added: headline divider "SCHEDA PRODOTTO / PRODUCT SHEET" mostrata solo se almeno un sotto-blocco e attivo.
+* Added: switch lingua client-side esteso per productSections e productHeadline (selettore data-product-section-id, id fpqi-product-section-title).
+* Changed: rinominato metodo privato `isLegalSectionEnabled` -> `isSectionToggleEnabled` per riuso anche sui toggle scheda prodotto. Solo callsite interne aggiornate.
+* Changed: ordine landing = titolo+lang -> storia -> Scheda prodotto (se attiva) -> Informazioni legali (se attive) -> footer.
 
 = 0.3.1 = (2026-05-18)
 * Fixed: ordine di rendering landing in modalita card (senza immagine bottiglia). Il blocco "Storia ed etichetta" veniva mostrato prima del titolo del vino + switch lingua; ora la sequenza e: titolo vino + switch lingua, storia, eventuali sezioni legali. Modalita hero (con immagine) invariata.

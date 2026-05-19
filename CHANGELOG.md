@@ -1,3 +1,21 @@
+## [0.4.0] - 2026-05-19
+
+### Added
+
+- **Nuova sezione "Scheda prodotto"** subito sotto la storia, con 3 sotto-blocchi indipendenti, bilingue (IT/EN) e con HTML sicuro (`wp_kses_post`):
+  - **Sentori e profumi** (Aromas & tasting notes)
+  - **Abbinamenti** (Food pairings)
+  - **Note di servizio** (Serving notes)
+- **Toggle dedicati** per ciascun sotto-blocco (`fp_qr_info_enable_tasting`, `fp_qr_info_enable_pairings`, `fp_qr_info_enable_service`). Default: **OFF**.
+- **Headline divider** "SCHEDA PRODOTTO" / "PRODUCT SHEET" mostrata solo se almeno uno dei 3 sotto-blocchi è attivo.
+- **Switch lingua client-side** esteso per gestire `productSections` + `productHeadline` (selettore `data-product-section-id`, id `fpqi-product-section-title`).
+- **9 nuove meta key**: `fp_qr_info_enable_{tasting,pairings,service}`, `fp_qr_info_{tasting,pairings,service}_{it,en}`.
+
+### Changed
+
+- **`LandingRouter::isLegalSectionEnabled` → `isSectionToggleEnabled`**: rinominato (privato, callsite tutti interni) per coerenza semantica, ora usato anche per i toggle della scheda prodotto.
+- **Markup landing**: ordine = `titolo+lang → storia → SCHEDA PRODOTTO (se attiva) → INFORMAZIONI legali (se attive) → footer`.
+
 ## [0.3.1] - 2026-05-18
 
 ### Fixed

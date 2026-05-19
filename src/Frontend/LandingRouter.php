@@ -116,7 +116,7 @@ final class LandingRouter
         $useDisposalBlocks = $this->disposalBlocksInUse($post->ID);
         $sections = [];
 
-        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_disposal')) {
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_disposal')) {
             $sections['disposal'] = [
                 'it' => $useDisposalBlocks
                     ? $this->buildDisposalBlocksHtml($post->ID, 'it')
@@ -129,7 +129,7 @@ final class LandingRouter
             ];
         }
 
-        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_nutrition')) {
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_nutrition')) {
             $sections['nutrition'] = [
                 'it' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_it', true), 'it')),
                 'en' => $this->prepareSectionBody($this->normalizeLegacyNutritionCopy((string) get_post_meta($post->ID, 'fp_qr_info_nutrition_en', true), 'en')),
@@ -138,7 +138,7 @@ final class LandingRouter
             ];
         }
 
-        if ($this->isLegalSectionEnabled($post->ID, 'fp_qr_info_enable_ingredients')) {
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_ingredients')) {
             $sections['ingredients'] = [
                 'it' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_it', true), 'it')),
                 'en' => $this->prepareSectionBody($this->normalizeLegacyIngredientsCopy((string) get_post_meta($post->ID, 'fp_qr_info_ingredients_en', true), 'en')),
@@ -148,6 +148,41 @@ final class LandingRouter
         }
 
         $hasLegalSections = $sections !== [];
+
+        $productSections = [];
+
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_tasting')) {
+            $productSections['tasting'] = [
+                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_it', true)),
+                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_tasting_en', true)),
+                'label_it' => __('SENTORI E PROFUMI', 'fp-qr-info'),
+                'label_en' => __('AROMAS & TASTING NOTES', 'fp-qr-info'),
+            ];
+        }
+
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_pairings')) {
+            $productSections['pairings'] = [
+                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_it', true)),
+                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_pairings_en', true)),
+                'label_it' => __('ABBINAMENTI', 'fp-qr-info'),
+                'label_en' => __('FOOD PAIRINGS', 'fp-qr-info'),
+            ];
+        }
+
+        if ($this->isSectionToggleEnabled($post->ID, 'fp_qr_info_enable_service')) {
+            $productSections['service'] = [
+                'it'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_it', true)),
+                'en'       => $this->prepareSectionBody((string) get_post_meta($post->ID, 'fp_qr_info_service_en', true)),
+                'label_it' => __('NOTE DI SERVIZIO', 'fp-qr-info'),
+                'label_en' => __('SERVING NOTES', 'fp-qr-info'),
+            ];
+        }
+
+        $hasProductSections = $productSections !== [];
+        $productHeadline = [
+            'it' => __('SCHEDA PRODOTTO', 'fp-qr-info'),
+            'en' => __('PRODUCT SHEET', 'fp-qr-info'),
+        ];
 
         $storyImageId = (int) get_post_meta($post->ID, 'fp_qr_info_story_image_id', true);
         $storyIt = (string) get_post_meta($post->ID, 'fp_qr_info_story_it', true);
@@ -165,7 +200,9 @@ final class LandingRouter
 
         $i18nPayload = [
             'sections' => [],
+            'productSections' => [],
             'sectionHeadline' => $sectionHeadline,
+            'productHeadline' => $productHeadline,
             'homeLinkLabel' => [
                 'it' => __('Vai al sito web', 'fp-qr-info'),
                 'en' => __('Visit website', 'fp-qr-info'),
@@ -178,6 +215,13 @@ final class LandingRouter
         ];
         foreach ($sections as $key => $section) {
             $i18nPayload['sections'][] = [
+                'id' => $key,
+                'label' => ['it' => $section['label_it'], 'en' => $section['label_en']],
+                'body' => ['it' => $section['it'], 'en' => $section['en']],
+            ];
+        }
+        foreach ($productSections as $key => $section) {
+            $i18nPayload['productSections'][] = [
                 'id' => $key,
                 'label' => ['it' => $section['label_it'], 'en' => $section['label_en']],
                 'body' => ['it' => $section['it'], 'en' => $section['en']],
@@ -665,6 +709,15 @@ final class LandingRouter
                     <div id="fpqi-story-body" class="fpqi-story-body"><?php echo wp_kses_post($storyIt); ?></div>
                 </section>
             <?php endif; ?>
+            <?php if ($hasProductSections): ?>
+                <h2 class="fpqi-main-section-headline" id="fpqi-product-section-title"><?php echo esc_html($productHeadline['it']); ?></h2>
+                <?php foreach ($i18nPayload['productSections'] as $sec): ?>
+                    <section class="fpqi-card" data-product-section-id="<?php echo esc_attr((string) $sec['id']); ?>">
+                        <h2 class="fpqi-section-title"><?php echo esc_html((string) $sec['label']['it']); ?></h2>
+                        <div class="fpqi-section-body fpqi-legal-html"><?php echo $sec['body']['it']; ?></div>
+                    </section>
+                <?php endforeach; ?>
+            <?php endif; ?>
             <?php if ($hasLegalSections): ?>
                 <h2 class="fpqi-main-section-headline" id="fpqi-main-section-title"><?php echo esc_html($sectionHeadline['it']); ?></h2>
             <?php endif; ?>
@@ -710,10 +763,26 @@ final class LandingRouter
                             bodyEl.innerHTML = sec.body[lang] || '';
                         }
                     });
+                    var productSections = data.productSections || [];
+                    productSections.forEach(function (sec) {
+                        var wrap = document.querySelector('[data-product-section-id="' + sec.id + '"]');
+                        if (!wrap) {
+                            return;
+                        }
+                        var titleEl = wrap.querySelector('.fpqi-section-title');
+                        var bodyEl = wrap.querySelector('.fpqi-section-body');
+                        if (titleEl && sec.label) {
+                            titleEl.textContent = sec.label[lang] || '';
+                        }
+                        if (bodyEl && sec.body) {
+                            bodyEl.innerHTML = sec.body[lang] || '';
+                        }
+                    });
                     var story = data.story || {};
                     var stTitle = document.getElementById('fpqi-story-title');
                     var stBody = document.getElementById('fpqi-story-body');
                     var sectionTitle = document.getElementById('fpqi-main-section-title');
+                    var productTitle = document.getElementById('fpqi-product-section-title');
                     var homeLink = document.getElementById('fpqi-home-link');
                     if (stTitle && story.title) {
                         stTitle.textContent = story.title[lang] || '';
@@ -723,6 +792,9 @@ final class LandingRouter
                     }
                     if (sectionTitle && data.sectionHeadline) {
                         sectionTitle.textContent = data.sectionHeadline[lang] || '';
+                    }
+                    if (productTitle && data.productHeadline) {
+                        productTitle.textContent = data.productHeadline[lang] || '';
                     }
                     if (homeLink && data.homeLinkLabel) {
                         homeLink.textContent = data.homeLinkLabel[lang] || '';
@@ -820,13 +892,14 @@ final class LandingRouter
     }
 
     /**
-     * Restituisce true se una sezione legale e attiva.
+     * Restituisce true se un toggle di sezione e attivo (legale o scheda prodotto).
      *
-     * Default: false (sezioni legali OFF di default per nuove landing).
-     * Le landing pre-esistenti vengono migrate a '1' una sola volta in admin
-     * (vedi {@see \FP\QrInfo\Admin\LandingCpt::maybeMigrateLegalDefaults()}).
+     * Default: false (sezioni OFF di default per nuove landing).
+     * Le landing pre-esistenti per le 3 legali vengono migrate a '1' una sola volta
+     * in admin (vedi {@see \FP\QrInfo\Admin\LandingCpt::maybeMigrateLegalDefaults()}).
+     * Le sezioni di scheda prodotto sono nuove e partono OFF: nessuna migrazione richiesta.
      */
-    private function isLegalSectionEnabled(int $postId, string $metaKey): bool
+    private function isSectionToggleEnabled(int $postId, string $metaKey): bool
     {
         $raw = (string) get_post_meta($postId, $metaKey, true);
 

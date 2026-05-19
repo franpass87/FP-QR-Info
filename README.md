@@ -14,6 +14,7 @@ Plugin WordPress per creare landing page standalone (senza tema) dedicate ai QR 
   - Informazioni nutrizionali / Nutritional info
   - Ingredienti / Ingredients
 - Toggle opzionali per singola landing per attivare/disattivare i blocchi legali (smaltimento, nutrizionali, ingredienti). **Default: OFF per le nuove landing** (le landing pre-esistenti vengono migrate automaticamente al primo boot per mantenere il comportamento precedente).
+- Sezione "Scheda prodotto" sotto la storia con 3 sotto-blocchi opzionali bilingue (HTML sicuro): **Sentori e profumi**, **Abbinamenti**, **Note di servizio**. Ogni sotto-blocco ha toggle dedicato (default OFF) e supporta switch lingua client-side. Headline divider "SCHEDA PRODOTTO" mostrata solo se almeno un sotto-blocco è attivo.
 - Opzionale: storia del vino e dell’etichetta con immagine bottiglia a tutto schermo (hero) e testi IT/EN (con supporto HTML sicuro: `<strong>`, `<em>`, `<a>`, `<br>`, `<p>`, `<ul>`, `<ol>`, `<li>` filtrati via `wp_kses_post`); senza immagine resta un blocco testuale in evidenza.
 - Modelli precompilati con riferimenti normativi UE citati nel testo (FIC 1169/2011, vino 2021/2117, imballaggi 2018/852 e Decisione 97/129/CE), tabella nutrizionale in ordine Allegato XV e nota sale (art. 30(5)); pulsanti in admin; simbolo riciclaggio Unicode U+267B e icona vetro illustrativa in SVG.
 - Preset nutrizionale vino con valori medi già compilati per 100 ml (kJ/kcal, grassi, saturi, carboidrati, zuccheri, proteine, sale).
